@@ -1,7 +1,9 @@
 const PortfolioPage = () => {
   return (
-    <main>
-      <h1>this is portfolio page</h1>
+    <main className="bg-gray-800 px-2 py-20">
+      <section className="container mx-auto">
+        <h1 className="text-white text-3xl">Name Surname</h1>
+      </section>
     </main>
   );
 };

@@ -1,0 +1,32 @@
+{
+"tags": [
+	{
+		"id": 30001,
+		"label": "Marilyn Monroe"
+	},
+	{
+		"id": 30002,
+		"label": "Pop art"
+	},
+	{
+		"id": 30003,
+		"label": "Soup Can"
+	},
+	{
+		"id": 30004,
+		"label": "Elizabeth Taylor"
+	},
+	{
+		"id": 30005,
+		"label": "Queen Elizabeth II"
+	},
+	{
+		"id": 30006,
+		"label": "Portrait"
+	},
+	{
+		"id": 30007,
+		"label": "Landscape"
+	},
+	]
+}

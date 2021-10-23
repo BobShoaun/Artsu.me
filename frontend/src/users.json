@@ -1,0 +1,58 @@
+{
+"users": [
+	{
+	"id": 20001,
+	"name": "Andy Warhol",
+	"email": "awharhol@hotmail.com",
+	"password": "password",
+	"avatar": "https://upload.wikimedia.org/wikipedia/commons/4/42/Andy_Warhol_1975.jpg",
+	"portfolioSettings": {
+		"heading": "Pioneer of pop art",
+		"biography": "Andy Warhol is a one of the most famous Artists of the 20th Century.",
+		"artworkIds": [10001, 10002, 10003, 10004, 10005],
+		"themeColor": {
+			"primary": "pink",
+			"secondary": "purple",
+			"highlight": "red",
+		},
+		"layoutId": 1,	
+	},
+	},
+	{
+	"id": 20002,
+	"name": "Vincent van Gogh",
+	"email": "vvg@gmail.com",
+	"password": "password",
+	"avatar": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project.jpg/800px-Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project.jpg",
+	"portfolioSettings": {
+		"heading": "Starry Night",
+		"biography": "Vincent van Gogh is a one of the most iconic Artists of the 19th Century.",
+		"artworkIds": [10006, 10007, 10008, 10009, 10010],
+		"themeColor": {
+			"primary": "blue",
+			"secondary": "yellow",
+			"highlight": "white",
+		},
+		"layoutId": 2,	
+	},
+	},
+	{
+	"id": 20003,
+	"name": "Leanardo da Vinci",
+	"email": "davinci@yahoo.com",
+	"password": "password",
+	"avatar": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Francesco_Melzi_-_Portrait_of_Leonardo.png/800px-Francesco_Melzi_-_Portrait_of_Leonardo.png",
+	"portfolioSettings": {
+		"heading": "The works of da Vinci",
+		"biography": "A da vinci painting broke the record for the most expensive painting ever sold",
+		"artworkIds": [10011, 10012, 10013, 10014, 10015],
+		"themeColor": {
+			"primary": "black",
+			"secondary": "white",
+			"highlight": "red",
+		},
+		"layoutId": 3,	
+	},
+	}
+	]
+}

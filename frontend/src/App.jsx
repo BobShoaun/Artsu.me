@@ -7,17 +7,16 @@ import ArtworkPage from "./ArtworkPage";
 
 const App = () => {
   return (
-    <Router>
-      <Switch>
-        <Route path="/portfolio/:username" component={PortfolioPage} />
-        <Route
-          path="/portfolio/edit/:username"
-          component={PortfolioEditorPage}
-        />
-        <Route path="/artwork/:id" component={ArtworkPage} />
-        <Route path="/" component={MainPage} />
-      </Switch>
-    </Router>
+    <main className="dark">
+      <Router>
+        <Switch>
+          <Route path="/portfolio/:slug" component={PortfolioPage} />
+          <Route path="/portfolio/edit/:slug" component={PortfolioEditorPage} />
+          <Route path="/artwork/:id" component={ArtworkPage} />
+          <Route path="/" component={MainPage} />
+        </Switch>
+      </Router>
+    </main>
   );
 };
 

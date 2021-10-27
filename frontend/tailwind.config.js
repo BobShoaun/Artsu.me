@@ -1,4 +1,5 @@
 const colors = require("tailwindcss/colors");
+delete colors["lightBlue"];
 
 module.exports = {
   purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
@@ -18,4 +19,7 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  corePlugins: {
+    container: false,
+  },
 };

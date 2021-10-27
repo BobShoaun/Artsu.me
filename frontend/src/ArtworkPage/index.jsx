@@ -7,7 +7,7 @@ const ArtworkPage = () => {
       <Navbar />
       <div className="container mx-auto py-20">
 
-      <h1 className="text-2xl text-white">this is artwork page</h1>
+      <h1 className="text-2xl text-white">this is the artwork page</h1>
       </div>
       <Footer />
     </main>

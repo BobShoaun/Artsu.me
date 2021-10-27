@@ -12,25 +12,37 @@ const MainPage = () => {
       <Navbar />
       <div className="container mx-auto mb-20 flex py-20 gap-8">
         <aside style={{ flexBasis: "12em" }}>
-          <h3 className="dark:text-gray-200 mb-3">Tags:</h3>
+          <h3 className="dark:text-gray-200 mb-3 font-semibold">Tags:</h3>
           <div className="flex flex-wrap gap-3">
             {tags.map(tag => (
               <p
                 key={tag.id}
-                className={`text-gray-800 cursor-pointer font-semibold text-sm bg-${tag.color} rounded-sm px-2 py-1`}
+                className={`text-gray-700 cursor-pointer font-semibold text-sm bg-${tag.color} rounded-sm px-2 py-1`}
               >
-                {tag.label}
+                #{tag.label}
               </p>
             ))}
           </div>
         </aside>
-        <section className="grid  md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-5">
+        <section className="flex-1 grid md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-7">
           {users.map(user => (
             <Link
               to={`/portfolio/${user.slug}`}
               key={user.id}
-              className="mx-auto hover:bg-gray-800 rounded-lg transition-all p-5 cursor-pointer"
+              className={`mx-auto ${
+                user.featured
+                  ? "bg-gradient-to-br hover:from-fuchsia-500 hover:to-emerald-500"
+                  : "hover:bg-gray-800"
+              }  rounded-lg transition-all p-5 cursor-pointer`}
             >
+              {user.featured && (
+                <h3
+                  className="text-white text-sm font-semibold underline"
+                  style={{ textUnderlineOffset: "2px" }}
+                >
+                  Featured
+                </h3>
+              )}
               <div className="mb-2 p-3">
                 <img
                   style={{ maxWidth: "12em" }}

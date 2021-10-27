@@ -11,24 +11,26 @@ const PortfolioPage = () => {
 
   return (
     <main className="dark:bg-gray-900">
-      <header className="container z-20 mx-auto flex items-center gap-10 py-5 shadow-lg backdrop-filter backdrop-blur-sm sticky top-0">
-        <a href="#main" className="dark:text-white text-lg font-semibold">
-          {user.name}
-        </a>
-        <a
-          href="#artworks"
-          className="ml-auto text-gray-200 text-sm hover:underline"
-          style={{ textUnderlineOffset: "3px" }}
-        >
-          Artworks
-        </a>
-        <a
-          href="#contact"
-          className="text-gray-200 text-sm hover:underline"
-          style={{ textUnderlineOffset: "3px" }}
-        >
-          Contact Me
-        </a>
+      <header className="z-20 py-5 shadow-lg backdrop-filter backdrop-blur-sm sticky top-0">
+        <div className="container mx-auto flex item-center gap-10">
+          <a href="#main" className="dark:text-white text-lg font-semibold">
+            {user.name}
+          </a>
+          <a
+            href="#artworks"
+            className="ml-auto text-gray-200 text-sm hover:underline"
+            style={{ textUnderlineOffset: "3px" }}
+          >
+            Artworks
+          </a>
+          <a
+            href="#contact"
+            className="text-gray-200 text-sm hover:underline"
+            style={{ textUnderlineOffset: "3px" }}
+          >
+            Contact Me
+          </a>
+        </div>
       </header>
       <section
         id="main"
@@ -99,7 +101,7 @@ const PortfolioPage = () => {
         id="contact"
         className={`pt-20 pb-32 bg-gradient-to-br from-${primary.main} to-${secondary.main}`}
       >
-        <h1 className="dark:text-white text-2xl font-semibold text-center mb-14">
+        <h1 className="dark:text-white text-2xl font-semibold text-center mb-10">
           Contact Me
         </h1>
         <div className=" bg-gray-900 bg-opacity-80 rounded-lg p-14 mx-auto max-w-3xl shadow-xl">
@@ -107,22 +109,28 @@ const PortfolioPage = () => {
             className="grid gap-x-10 gap-y-7 mb-5"
             style={{ gridTemplateColumns: "auto 1fr" }}
           >
-            <label className="dark:text-white">Name</label>
+            <label className="dark:text-gray-200 text-sm text-right">
+              Name:
+            </label>
             <input className="px-2 py-1" type="text" />
-            <label className="dark:text-white">Email</label>
+            <label className="dark:text-gray-200 text-sm text-right">
+              Email:
+            </label>
             <input className="px-2 py-1" type="text" />
-            <label className="dark:text-white">Message</label>
+            <label className="dark:text-gray-200 text-sm text-right">
+              Message:
+            </label>
             <textarea
               className="px-2 py-1"
               name=""
               id=""
               cols="30"
-              rows="10"
+              rows="5"
             ></textarea>
           </form>
           <div className="text-right">
             <button
-              className={`dark:text-white bg-${primary.main} hover:bg-${primary.dark} py-1 px-3`}
+              className={`dark:text-gray-200 bg-${primary.main} hover:bg-${primary.dark} py-1 px-3`}
             >
               Submit
             </button>

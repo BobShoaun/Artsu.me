@@ -8,6 +8,11 @@
   .container {
     @apply px-4 sm:px-8 md:px-12 lg:px-16 lg:max-w-6xl xl:max-w-7xl;
   }
+  input,
+  textarea {
+    @apply px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200;
+    border-bottom-width: 1px;
+  }
 }
 
 html {

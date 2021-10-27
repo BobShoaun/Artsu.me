@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { users } from "../users.json";
 import { artworks } from "../artworks.json";
 
 const PortfolioPage = () => {
-  const user = users[0];
+  const { slug } = useParams();
+  const user = users.find(user => user.slug === slug);
 
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
@@ -28,83 +29,80 @@ const PortfolioPage = () => {
         >
           Contact Me
         </a>
-        <Link
-          className="text-gray-200 text-sm hover:underline"
-          style={{ textUnderlineOffset: "3px" }}
-        >
-          Follow
-        </Link>
       </header>
-      <div className="container mx-auto">
-        <section
-          id="main"
-          className="flex items-center justify-around gap-10 py-20"
-        >
-          <div style={{ flexBasis: "50%" }}>
-            <h1 className="dark:text-white font-bold text-4xl mb-4">
-              Welcome to my Portfolio!
-            </h1>
-            <p className="dark:text-gray-300 text-sm">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s Lorem Ipsum is simply dummy text of the
-              printing and typesetting industry. Lorem Ipsum has been the
-              industry's standard dummy text ever since the 1500s
-            </p>
-          </div>
-          <div className="relative" style={{ flexBasis: "30%" }}>
-            <div
-              className={`absolute -top-8 -left-8 w-24 h-24 rounded-lg shadow-lg bg-gradient-to-br from-${primary.light} to-${primary.dark}`}
-            ></div>
-            <img
-              className="rounded-lg shadow-xl z-10 relative"
-              src={user.avatar}
-              alt={`${user.name} avatar`}
-            />
-            <div
-              className={`absolute -bottom-8 -right-8 w-24 h-24 rounded-lg shadow-lg bg-gradient-to-br from-${secondary.light} to-${secondary.dark}`}
-            ></div>
-          </div>
-        </section>
+      <section
+        id="main"
+        className="flex items-center justify-around gap-10 pb-20 min-h-screen container mx-auto"
+      >
+        <div fstyle={{ flexBasis: "50%" }}>
+          <h1 className="dark:text-white font-bold text-4xl mb-4">
+            {user.portfolioSettings.heading}
+          </h1>
+          <p className="dark:text-gray-300 text-sm">
+            {user.portfolioSettings.biography}
+          </p>
+        </div>
+        <div className="relative" style={{ flexBasis: "15em" }}>
+          <div
+            className={`absolute -top-8 -left-8 w-24 h-24 rounded-lg shadow-lg bg-gradient-to-br from-${primary.light} to-${primary.dark}`}
+          ></div>
+          <img
+            className="rounded-lg shadow-xl z-10 relative"
+            src={user.avatar}
+            alt={`${user.name} avatar`}
+          />
+          <div
+            className={`absolute -bottom-8 -right-8 w-24 h-24 rounded-lg shadow-lg bg-gradient-to-br from-${secondary.light} to-${secondary.dark}`}
+          ></div>
+        </div>
+      </section>
 
-        <section className="py-20" id="artworks">
+      <section
+        className="py-20 bg-gradient-to-b from-gray-800 to-gray-900"
+        id="artworks"
+      >
+        <div className="container mx-auto">
           <h1 className="dark:text-white text-2xl font-semibold text-center mb-14">
             My Artworks
           </h1>
           <div className="flex flex-wrap items-center justify-around gap-x-10 gap-y-10">
-            {artworks.slice(0, 5).map((artwork) => (
-              <div
-                key={artwork.id}
-                className={`bg-gradient-to-br hover:from-${primary.main} hover:to-${secondary.main} transition-all rounded-lg p-10 cursor-pointer hover:shadow-xl`}
-              >
-                <img
-                  style={{ maxWidth: "20em" }}
-                  className="mb-5 shadow-xl"
-                  src={artwork.image}
-                  alt={artwork.name}
-                />
-                <div className="pl-3">
-                  <h2 className="dark:text-white text-lg font-semibold mb-1">
-                    {artwork.name}
-                  </h2>
-                  <p className="dark:text-gray-300 text-sm">
-                    {artwork.description}
-                  </p>
-                </div>
-              </div>
-            ))}
+            {user.portfolioSettings.artworkIds.map(id => {
+              const artwork = artworks.find(artwork => artwork.id === id);
+              return (
+                <Link
+                  to={`/artwork/${artwork.id}`}
+                  key={artwork.id}
+                  className={`bg-gradient-to-br from-transparent to-transparent hover:from-${primary.main} hover:to-${secondary.main} transition-all rounded-lg p-7 cursor-pointer hover:shadow-xl`}
+                >
+                  <img
+                    style={{ maxWidth: "20em" }}
+                    className="mb-5 shadow-xl mx-auto"
+                    src={artwork.image}
+                    alt={artwork.name}
+                  />
+                  <div className="pl-3">
+                    <h2 className="dark:text-white text-lg font-semibold mb-1">
+                      {artwork.name}
+                    </h2>
+                    <p className="dark:text-gray-300 text-sm mb-3">
+                      {artwork.description}
+                    </p>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
 
       <section
         id="contact"
         className={`pt-20 pb-32 bg-gradient-to-br from-${primary.main} to-${secondary.main}`}
       >
-        <h1 className="dark:text-white text-3xl font-semibold text-center mb-14">
+        <h1 className="dark:text-white text-2xl font-semibold text-center mb-14">
           Contact Me
         </h1>
-        <div className=" bg-gray-800 bg-opacity-80 rounded-lg p-16 mx-auto max-w-3xl shadow-xl">
+        <div className=" bg-gray-900 bg-opacity-80 rounded-lg p-14 mx-auto max-w-3xl shadow-xl">
           <form
             className="grid gap-x-10 gap-y-7 mb-5"
             style={{ gridTemplateColumns: "auto 1fr" }}
@@ -131,9 +129,9 @@ const PortfolioPage = () => {
           </div>
         </div>
       </section>
-      <footer className="py-20 bg-gray-800">
+      <footer className="py-20 bg-gray-900">
         <h4 className="text-center dark:text-gray-300 font-semibold text-xs">
-          Page created with Artsu.me
+          Page created with <Link to="/">Artsu.me</Link>
         </h4>
       </footer>
     </main>

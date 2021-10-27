@@ -3,6 +3,9 @@
     {
       "id": 20001,
       "name": "Andy Warhol",
+      "featured": false,
+
+      "slug": "andy",
       "email": "awharhol@hotmail.com",
       "password": "password",
       "avatar": "https://upload.wikimedia.org/wikipedia/commons/4/42/Andy_Warhol_1975.jpg",
@@ -21,6 +24,9 @@
     {
       "id": 20002,
       "name": "Vincent van Gogh",
+      "featured": false,
+
+      "slug": "vincent",
       "email": "vvg@gmail.com",
       "password": "password",
       "avatar": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project.jpg/800px-Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project.jpg",
@@ -38,7 +44,9 @@
     },
     {
       "id": 20003,
-      "name": "Leanardo da Vinci",
+      "name": "Leonardo da Vinci",
+      "featured": true,
+      "slug": "leonardo",
       "email": "davinci@yahoo.com",
       "password": "password",
       "avatar": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Francesco_Melzi_-_Portrait_of_Leonardo.png/800px-Francesco_Melzi_-_Portrait_of_Leonardo.png",

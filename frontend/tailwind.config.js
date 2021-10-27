@@ -6,6 +6,7 @@ module.exports = {
   darkMode: "class",
   theme: {
     colors: {
+      transparent: "transparent",
       ...colors,
       sky: colors.lightBlue,
     },

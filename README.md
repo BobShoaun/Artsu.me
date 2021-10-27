@@ -3,6 +3,7 @@
 # Team Members:
 - Ng Bob Shoaun (1006568992)
 - Jessica Hypatia Boritz (1006163189)
+- Ran Shi (1004793495)
 - -- add yourself --
 
 # User instructions

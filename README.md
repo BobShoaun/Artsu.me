@@ -1,9 +1,9 @@
 # team18
 
 # Team Members:
-Ng Bob Shoaun (1006568992)
-Jessica Hypatia Boritz (1006163189)
--- add yourself --
+- Ng Bob Shoaun (1006568992)
+- Jessica Hypatia Boritz (1006163189)
+- -- add yourself --
 
 # User instructions
 
@@ -23,9 +23,11 @@ Jessica Hypatia Boritz (1006163189)
 4. click login to complete process, if username or password is invalid, you will be prompted to try again
 5. You wil be directed back to main page as a logged in user.
 
-# Main Page
+## Main Page
 1. Browse from a list of artists
 
 
 
 # Admin instructions
+
+# Main Page

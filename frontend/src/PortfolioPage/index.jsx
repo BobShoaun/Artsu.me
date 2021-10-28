@@ -11,7 +11,7 @@ const PortfolioPage = () => {
 
   return (
     <main className="dark:bg-gray-900">
-      <header className="z-20 py-5 shadow-lg backdrop-filter backdrop-blur-sm sticky top-0">
+      <header className="z-20 py-5 shadow-lg bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm sticky top-0">
         <div className="container mx-auto flex item-center gap-10">
           <a href="#main" className="dark:text-white text-lg font-semibold">
             {user.name}
@@ -36,7 +36,7 @@ const PortfolioPage = () => {
         id="main"
         className="flex items-center justify-around gap-10 pb-20 min-h-screen container mx-auto"
       >
-        <div fstyle={{ flexBasis: "50%" }}>
+        <div>
           <h1 className="dark:text-white font-bold text-4xl mb-4">
             {user.portfolioSettings.heading}
           </h1>

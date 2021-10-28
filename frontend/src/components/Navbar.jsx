@@ -5,7 +5,7 @@ const Navbar = () => {
     <nav className=" bg-gray-800 bg-opacity-50 z-20 py-5 shadow-lg backdrop-filter backdrop-blur-sm sticky top-0">
       <ul className="flex items-center gap-10 container mx-auto">
         <li>
-          <Link className="dark:text-white text-2xl font-semibold">
+          <Link to="/" className="dark:text-white text-2xl font-semibold">
             artsu.me
           </Link>
         </li>

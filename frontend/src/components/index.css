@@ -12,7 +12,7 @@
     opacity: 0;
   }
   to {
-    opacity: 0.9;
+    opacity: 0.8;
   }
 }
 
@@ -26,4 +26,21 @@
   animation: appear 0.2s ease;
   animation-delay: 0.8s;
   animation-fill-mode: both;
+}
+
+.moving-gradient {
+  background-size: 150% 150%;
+  animation: moving-gradient 10s ease infinite;
+}
+
+@keyframes moving-gradient {
+  0% {
+    background-position: 0%;
+  }
+  50% {
+    background-position: 50%;
+  }
+  100% {
+    background-position: 0%;
+  }
 }

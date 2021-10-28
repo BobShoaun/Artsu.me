@@ -66,7 +66,7 @@ const LoginPage = () => {
         <input ref={passwordRef} className="px-2 py-1 mb-8" type="password" />
         <button
           onClick={login}
-          className="text-white tracking-wider py-2.5 mb-5 text-sm rounded-sm shadow-lg font-semibold bg-gradient-to-r from-rose-500 to-teal-500 block w-full"
+          className="text-white tracking-wider py-2.5 mb-5 text-sm rounded-sm shadow-lg font-semibold bg-gradient-to-r from-rose-400 to-teal-500 hover:to-teal-400 hover:from-rose-400 transition block w-full"
         >
           LOGIN
         </button>

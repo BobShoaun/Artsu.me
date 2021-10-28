@@ -87,7 +87,7 @@ const RegisterPage = () => {
         />
         <button
           onClick={register}
-          className="text-white tracking-wider py-2.5 mb-5 text-sm rounded-sm shadow-lg font-semibold bg-gradient-to-r from-rose-500 to-teal-500 block w-full"
+          className="text-white tracking-wider py-2.5 mb-5 text-sm rounded-sm shadow-lg font-semibold bg-gradient-to-r from-rose-400 to-teal-500 hover:to-teal-400 hover:from-rose-400 block w-full"
         >
           REGISTER
         </button>

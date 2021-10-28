@@ -10,6 +10,7 @@ import ArtworkPage from "./ArtworkPage";
 import ProfilePage from "./ProfilePage";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
+import SearchPage from "./SearchPage";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
             <Route path="/profile/:username" component={ProfilePage} />
+            <Route path="/search" component={SearchPage} />
             <Route path="/" component={MainPage} />
           </Switch>
         </Router>

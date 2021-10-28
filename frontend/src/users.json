@@ -4,10 +4,10 @@
       "id": 20001,
       "name": "Andy Warhol",
       "featured": false,
-
       "slug": "andy",
       "email": "awharhol@hotmail.com",
-      "password": "password",
+      "username": "andyw",
+      "password": "andyw123",
       "avatar": "https://upload.wikimedia.org/wikipedia/commons/4/42/Andy_Warhol_1975.jpg",
       "portfolioSettings": {
         "heading": "Pioneer of pop art",
@@ -25,10 +25,10 @@
       "id": 20002,
       "name": "Vincent van Gogh",
       "featured": false,
-
       "slug": "vincent",
       "email": "vvg@gmail.com",
-      "password": "password",
+      "username": "vincentvg",
+      "password": "vince123",
       "avatar": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project.jpg/800px-Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project.jpg",
       "portfolioSettings": {
         "heading": "Starry Night",
@@ -48,7 +48,29 @@
       "featured": true,
       "slug": "leonardo",
       "email": "davinci@yahoo.com",
-      "password": "password",
+      "username": "leonardo",
+      "password": "leo123",
+      "avatar": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Francesco_Melzi_-_Portrait_of_Leonardo.png/800px-Francesco_Melzi_-_Portrait_of_Leonardo.png",
+      "portfolioSettings": {
+        "heading": "The works of da Vinci",
+        "biography": "A da vinci painting broke the record for the most expensive painting ever sold",
+        "artworkIds": [10011, 10012, 10013, 10014, 10015],
+        "themeColor": {
+          "primary": "black",
+          "secondary": "white",
+          "highlight": "red"
+        },
+        "layoutId": 3
+      }
+    },
+    {
+      "id": 20004,
+      "name": "The Best User",
+      "featured": true,
+      "slug": "the-best-user",
+      "email": "davinci@yahoo.com",
+      "username": "user",
+      "password": "user",
       "avatar": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Francesco_Melzi_-_Portrait_of_Leonardo.png/800px-Francesco_Melzi_-_Portrait_of_Leonardo.png",
       "portfolioSettings": {
         "heading": "The works of da Vinci",

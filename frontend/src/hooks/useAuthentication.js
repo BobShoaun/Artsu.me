@@ -6,15 +6,15 @@ import {
 
 export const useAuthentication = () => {
   const dispatch = useDispatch();
-  const jwt = useSelector(state => state.authentication.jwt);
+  const { jwt, user } = useSelector(state => state.authentication);
 
   const login = (username, password) => {
-    dispatch(authLogin(username, password));
+    dispatch(authLogin({ username, password }));
   };
 
   const logout = () => {
     dispatch(authLogout());
   };
 
-  return [jwt, login, logout];
+  return [jwt, user, login, logout];
 };

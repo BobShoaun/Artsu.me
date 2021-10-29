@@ -1,12 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useAuthentication } from "../hooks/useAuthentication";
 
 const Navbar = () => {
-  const [jwt] = useAuthentication();
+  const history = useHistory();
+  const [jwt, user, , _logout] = useAuthentication();
+
+  const logout = () => {
+    _logout();
+    history.push("/");
+  };
 
   return (
     <nav className=" bg-gray-800 bg-opacity-50 z-20 py-5 shadow-lg backdrop-filter backdrop-blur-sm sticky top-0">
-      <ul className="flex items-center gap-10 container mx-auto">
+      <ul className="flex items-center gap-8 container mx-auto">
         <li>
           <Link to="/" className="dark:text-white text-2xl font-semibold">
             artsu.me
@@ -20,7 +26,27 @@ const Navbar = () => {
           />
         </li>
         {jwt ? (
-          <li className="ml-auto text-white">Logged in</li>
+          <li className="dropdown-wrapper ml-auto relative text-white text-sm flex items-center gap-5">
+            <p className="font-semibold">{user.username}</p>
+            <img
+              className="rounded-full w-10"
+              src={user.avatar}
+              alt={`${user.name} avatar`}
+            />
+            <div
+              className="dropdown opacity-0 absolute py-1 right-0 bg-gray-900 rounded-sm"
+              style={{ top: "120%" }}
+            >
+              <ul>
+                <li className="py-2 px-5 hover:bg-gray-800 transition">
+                  <Link to={`/profile/${user.username}`}>Profile</Link>
+                </li>
+                <li className="py-2 px-5 hover:bg-gray-800 transition">
+                  <button onClick={logout}>Logout</button>
+                </li>
+              </ul>
+            </div>
+          </li>
         ) : (
           <>
             <li className="ml-auto">

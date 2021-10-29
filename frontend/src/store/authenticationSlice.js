@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { users } from "../users.json";
 
 const initialState = {
   jwt: "",
@@ -11,10 +12,13 @@ export const authenticationSlice = createSlice({
   reducers: {
     login: (state, { payload }) => {
       const { username, password } = payload;
+      console.log(payload);
+      state.user = users.find(user => user.username === username);
       state.jwt = "iamajwttoken";
     },
     logout: state => {
       state.jwt = "";
+      state.user = {};
     },
   },
 });

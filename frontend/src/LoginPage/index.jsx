@@ -9,7 +9,7 @@ const LoginPage = () => {
   const history = useHistory();
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
-  const [jwt, _login] = useAuthentication();
+  const [jwt, , _login] = useAuthentication();
 
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");

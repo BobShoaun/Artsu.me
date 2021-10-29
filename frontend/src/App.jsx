@@ -10,6 +10,7 @@ import ArtworkPage from "./ArtworkPage";
 import ProfilePage from "./ProfilePage";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
+import SearchPage from "./SearchPage";
 
 const App = () => {
   return (
@@ -17,15 +18,16 @@ const App = () => {
       <main className="dark">
         <Router>
           <Switch>
-            <Route path="/portfolio/:slug" component={PortfolioPage} />
             <Route
               path="/portfolio/edit/:slug"
               component={PortfolioEditorPage}
             />
+            <Route path="/portfolio/:slug" component={PortfolioPage} />
             <Route path="/artwork/:id" component={ArtworkPage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
             <Route path="/profile/:username" component={ProfilePage} />
+            <Route path="/search" component={SearchPage} />
             <Route path="/" component={MainPage} />
           </Switch>
         </Router>

@@ -5,17 +5,19 @@ import { artworks } from "../artworks.json";
 import { tags } from "../tags.json"
 
 const SearchPage = () => {
+  console.log(artworks.length)
 
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
-  const { search } = window.location;
-  const query = new URLSearchParams(search).get('s');
-  console.log(query)
+
   return (
     <main className="dark:bg-gray-900">
       <Navbar />
+      <p1 className="dark:text-white text-2l text-center mb-14">
+        Displaying {artworks.length} results
+      </p1>
       
-      <div className="container mx-auto mb-20 flex py-10 gap-8">
+      <div className="container mx-auto mb-20 flex py-20 gap-8">
         <aside style={{ flexBasis: "12em" }}>
           <h3 className="dark:text-gray-200 mb-3 font-semibold">Tags:</h3>
           <div className="flex flex-wrap gap-3">
@@ -32,11 +34,6 @@ const SearchPage = () => {
       
       <div className="flex flex-wrap items-center justify-around gap-x-10 gap-y-10">
         
-        <div className="dark:text-white text-right text-2l mt-5"
-              style={{ width: "100%"}}>
-          Displaying {artworks.length} results
-        </div>
-        
         {artworks.map(artwork => {
           return (
             <Link
@@ -46,7 +43,7 @@ const SearchPage = () => {
             >
               <img
                 style={{maxWidth: "20em"}}
-                className="mb-5 shadow-xl"
+                className="mb-5 shadow-xl mx-auto"
                 src={artwork.image}
                 alt={artwork.name}
               />
@@ -58,6 +55,9 @@ const SearchPage = () => {
                   {artwork.description}
                 </p>
               </div>
+
+
+
             </Link>
           );
         })}

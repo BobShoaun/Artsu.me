@@ -1,6 +1,7 @@
 import { Link, useHistory } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { users } from "../users.json";
+import { useAuthentication } from "../hooks/useAuthentication";
 
 import ArtsumeModal from "../components/ArtsumeModal";
 
@@ -8,9 +9,16 @@ const LoginPage = () => {
   const history = useHistory();
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
+  const [jwt, , _login] = useAuthentication();
 
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+
+  useEffect(() => {
+    // redirect to main page if logged in
+    if (!jwt) return;
+    history.push("/");
+  });
 
   const login = e => {
     e.preventDefault();
@@ -34,6 +42,7 @@ const LoginPage = () => {
     }
 
     // authenticate
+    _login(username, password);
     history.push("/");
   };
 

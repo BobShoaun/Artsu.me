@@ -44,3 +44,18 @@
     background-position: 0%;
   }
 }
+
+.dropdown-wrapper {
+  cursor: pointer;
+}
+
+.dropdown {
+  transform: translateY(-50%);
+  transition: all 0.2s ease-in-out;
+  z-index: -10;
+}
+
+.dropdown-wrapper:hover .dropdown {
+  opacity: 0.7;
+  transform: translateY(0);
+}

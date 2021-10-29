@@ -1,18 +1,41 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { users } from "../users.json";
-
 import { Link } from "react-router-dom";
-
 import { tags } from "../tags.json";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { setIsPublic } from "../store/generalSlice";
+import { useScrollToTop } from "../hooks/useScrollToTop";
 
 const MainPage = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setIsPublic({ isPublic: false }));
+  }, []);
+
+  useScrollToTop();
+
   return (
     <main className="dark:bg-gray-900">
       <Navbar />
-      <div className="container mx-auto mb-20 flex py-20 gap-8">
-        <aside style={{ flexBasis: "12em" }}>
-          <h3 className="dark:text-gray-200 mb-3 font-semibold">Tags:</h3>
+      <div className="relative">
+        <div className="absolute inset-0 container flex">
+          <div className="my-auto pl-5 bg-opacity-10 backdrop-filter backdrop-blur-sm p-5">
+            <h1 className="text-white text-5xl font-bold">Discover</h1>
+            <p className="text-white text-xl">talented artists</p>
+          </div>
+        </div>
+        <img
+          className="max-h-72 object-cover w-full"
+          src="https://www.juegostudio.com/wp-content/uploads/2016/11/lowPoly-art-img-5.jpg"
+          alt="low poly lion"
+        />
+      </div>
+      <div className="container mx-auto py-20">
+        <aside className="flex items-center mb-10 mx-10">
+          <h3 className="dark:text-gray-200 font-semibold mr-5">Tags:</h3>
           <div className="flex flex-wrap gap-3">
             {tags.map(tag => (
               <p
@@ -60,6 +83,20 @@ const MainPage = () => {
             </Link>
           ))}
         </section>
+      </div>
+      <div className="relative">
+        <div className="absolute inset-0 container flex">
+          <div className="m-auto">
+            <h1 className="text-white text-4xl font-bold p-5 -bg-gray-900 bg-opacity-10 backdrop-filter backdrop-blur-sm">
+              Make your Artsume today
+            </h1>
+          </div>
+        </div>
+        <img
+          className="max-h-72 object-cover w-full"
+          src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/1b23c832616941.568cab27a6aad.jpg"
+          alt="low poly lighthouse"
+        />
       </div>
 
       <Footer />

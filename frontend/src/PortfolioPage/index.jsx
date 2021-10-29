@@ -2,20 +2,35 @@ import { Link, useParams } from "react-router-dom";
 import { users } from "../users.json";
 import { artworks } from "../artworks.json";
 
+import { useSelector } from "react-redux";
+import { useScrollToTop } from "../hooks/useScrollToTop";
+
 const PortfolioPage = () => {
   const { slug } = useParams();
+  const { isPublic } = useSelector(state => state.general);
+
   const user = users.find(user => user.slug === slug);
 
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
-  const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
+  const secondary = { main: "teal-600", light: "teal-500", dark: "teal-800" };
+
+  useScrollToTop();
 
   return (
-    <main className="dark:bg-gray-900">
+    <main className="dark:bg-gray-900 scroll-smooth">
       <header className="z-20 py-5 shadow-lg bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm sticky top-0">
         <div className="container mx-auto flex item-center gap-10">
           <a href="#main" className="dark:text-white text-lg font-semibold">
             {user.name}
           </a>
+          {!isPublic && (
+            <Link
+              to="/"
+              className="text-gray-200 text-sm underline self-center"
+            >
+              back to browse
+            </Link>
+          )}
           <a
             href="#artworks"
             className="ml-auto text-gray-200 text-sm hover:underline"

@@ -11,7 +11,7 @@ const PortfolioPage = () => {
   const user = users.find(user => user.slug === slug);
 
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
-  const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
+  const secondary = { main: "teal-600", light: "teal-500", dark: "teal-800" };
 
   return (
     <main className="dark:bg-gray-900">
@@ -21,7 +21,10 @@ const PortfolioPage = () => {
             {user.name}
           </a>
           {!isPublic && (
-            <Link to="/" className="text-gray-200 text-sm underline">
+            <Link
+              to="/"
+              className="text-gray-200 text-sm underline self-center"
+            >
               back to browse
             </Link>
           )}

@@ -85,7 +85,7 @@ const MainPage = () => {
         <div className="absolute inset-0 container flex">
           <div className="m-auto">
             <h1 className="text-white text-4xl font-bold p-5 -bg-gray-900 bg-opacity-10 backdrop-filter backdrop-blur-sm">
-              Start your journey today
+              Make your Artsume today
             </h1>
           </div>
         </div>

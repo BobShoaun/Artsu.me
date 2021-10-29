@@ -6,6 +6,7 @@ import { tags } from "../tags.json";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { setIsPublic } from "../store/generalSlice";
+import { useScrollToTop } from "../hooks/useScrollToTop";
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,8 @@ const MainPage = () => {
   useEffect(() => {
     dispatch(setIsPublic({ isPublic: false }));
   }, []);
+
+  useScrollToTop();
 
   return (
     <main className="dark:bg-gray-900">

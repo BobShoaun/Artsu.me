@@ -17,74 +17,88 @@ const ProfilePage = () => {
     return (
         <main className="dark:bg-gray-900">
             <Navbar />
-            <div className="container mx-auto mb-20 flex py-20 gap-8">
+            <div className="container mx-auto flex mb-20 py-20 gap-8 text-center">
                 <aside style={{ flexBasis: "12em" }}>
-                    <div className="flex flex-wrap gap-3">
+                    <div className="gap-3">
                         <img
                             style={{ maxWidth: "12em" }}
-                            className="shadow-lg rounded-full"
+                            className="mx-auto shadow-lg rounded-lg"
                             src={user.avatar}
                             alt={`${user.name} avatar`}
                         />
                     </div>
-                    <h3 className="dark:text-gray-200 mb-3 font-semibold content-center">{user.name}</h3>
+                    <h3 className="dark:text-gray-200 mt-3 mb-6 font-semibold content-center text-center">{user.name}</h3>
+                    <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm text-center">Upload New Avatar</button>
+
+
                 </aside>
                 <section className="dark:bg-gray">
                     <ul className="items-centre gap-10 container mx-auto">
-                        <ul className="flex items-center gap-10 container mx-auto">
+                        <ul className="flex items-center gap-10 mx-auto mb-6">
                             <li color="white">
-                                <h3 className="dark:text-gray-200 mb-3 font-semibold">email: </h3>
+                                <h3 className="dark:text-gray-200 font-semibold text-right">name: </h3>
                             </li>
                             <li className="ml-auto">
                                 <input
                                     className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
                                     type="text"
-                                    aria-valuetext={user.email}
+                                    value={user.name}
                                     style={{ borderBottomWidth: "1px" }}
                                 />
                             </li>
                         </ul>
-                        <ul className="flex items-center gap-10 container mx-auto">
-                            <li>
-                                <h3 className="dark:text-gray-200 mb-3 font-semibold">password:</h3>
-                            </li>
-                            <li className="ml-auto">
-                                <input
-                                    className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
-                                    type="text"
-                                    style={{ borderBottomWidth: "1px" }}
-                                />
-                            </li>
-                        </ul>
-                        <ul className="flex items-center gap-10 container mx-auto">
-                            <li>
-                                <h3 className="dark:text-gray-200 mb-3 font-semibold">new password:</h3>
-                            </li>
-                            <li className="ml-auto">
-                                <input
-                                    className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
-                                    type="text"
-                                    style={{ borderBottomWidth: "1px" }}
-                                />
-                            </li>
-                        </ul>
-                        <ul className="flex items-center gap-10 container mx-auto">
-                            <li>
-                                <h3 className="dark:text-gray-200 mb-3 font-semibold">confirm password:</h3>
-                            </li>
-                            <li className="ml-auto">
-                                <input
-                                    className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
-                                    type="text"
-                                    style={{ borderBottomWidth: "1px" }}
-                                />
-                            </li>
-                        </ul>
-                        <ul className="flex items-center gap-10 container mx-auto">
+                        <ul className="flex items-center gap-10 mx-auto mb-6">
                             <li color="white">
+                                <h3 className="dark:text-gray-200 font-semibold text-right">username: </h3>
+                            </li>
+                            <li className="ml-auto">
+                                <input
+                                    className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
+                                    type="text"
+                                    value={user.email}
+                                    style={{ borderBottomWidth: "1px" }}
+                                />
+                            </li>
+                        </ul>
+                        <ul className="flex items-center gap-10 mx-auto mb-6">
+                            <li>
+                                <h3 className="dark:text-gray-200 font-semibold text-right">password:</h3>
+                            </li>
+                            <li className="ml-auto">
+                                <input
+                                    className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
+                                    type="text"
+                                    style={{ borderBottomWidth: "1px" }}
+                                />
+                            </li>
+                        </ul>
+                        <ul className="flex items-center gap-10 mx-auto mb-6">
+                            <li>
+                                <h3 className="dark:text-gray-200 font-semibold text-right">new password:</h3>
+                            </li>
+                            <li className="ml-auto">
+                                <input
+                                    className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
+                                    type="text"
+                                    style={{ borderBottomWidth: "1px" }}
+                                />
+                            </li>
+                        </ul>
+                        <ul className="flex items-center gap-10 mx-auto mb-10">
+                            <li>
+                                <h3 className="dark:text-gray-200 font-semibold text-right">confirm password:</h3>
+                            </li>
+                            <li className="ml-auto">
+                                <input
+                                    className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
+                                    type="text"
+                                    style={{ borderBottomWidth: "1px" }}
+                                />
+                            </li>
+                        </ul>
+                        <div className="text-right">
                                 <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">Submit</button>
-                            </li>
-                        </ul>
+                        </div>
                     </ul>
                 </section>
             </div>
@@ -92,7 +106,7 @@ const ProfilePage = () => {
                 className="py-20 bg-gradient-to-b from-gray-800 to-gray-900"
                 id="artworks"
             >
-                <div className="container mx-auto">
+                <div className="container mx-auto mb-10">
                     <h1 className="dark:text-white text-2xl font-semibold text-center mb-14">
                         My Artworks
                     </h1>
@@ -121,15 +135,10 @@ const ProfilePage = () => {
                         })}
                     </div>
                 </div>
-                <div className="container mx-auto">
-                    <ul className="flex items-center gap-10 container mx-auto">
-                        <li>
-                            <h3 className="dark:text-gray-200 mb-3 font-semibold">Add Artwork:</h3>
-                        </li>
-                        <li color="white">
-                            <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">Upload</button>
-                        </li>
-                    </ul>
+                <div className="flex container mx-auto">
+                    <div className="m-auto">
+                            <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">Upload New Artwork</button>
+                    </div>
                 </div>
             </section>
             <Footer />

@@ -24,6 +24,11 @@ const RegisterPage = () => {
     setPasswordError("");
     setConfirmPasswordError("");
 
+    if (username.length === 0) {
+      setUsernameError("invalid username");
+      return;
+    }
+
     if (users.find(user => user.username === username.toLocaleLowerCase())) {
       setUsernameError("username already taken");
       return;

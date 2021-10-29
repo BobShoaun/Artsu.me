@@ -25,13 +25,13 @@ const App = () => {
             <Route path="/artwork/:id" component={ArtworkPage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
-            <Route path="/profile/:slug" component={ProfilePage} />
+            <Route path="/profile/:username" component={ProfilePage} />
             <Route path="/" component={MainPage} />
           </Switch>
         </Router>
       </main>
-    </Provider>)
-
+    </Provider>
+  );
 };
 
 export default App;

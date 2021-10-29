@@ -2,8 +2,12 @@ import { Link, useParams } from "react-router-dom";
 import { users } from "../users.json";
 import { artworks } from "../artworks.json";
 
+import { useSelector } from "react-redux";
+
 const PortfolioPage = () => {
   const { slug } = useParams();
+  const { isPublic } = useSelector(state => state.general);
+
   const user = users.find(user => user.slug === slug);
 
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
@@ -16,6 +20,11 @@ const PortfolioPage = () => {
           <a href="#main" className="dark:text-white text-lg font-semibold">
             {user.name}
           </a>
+          {!isPublic && (
+            <Link to="/" className="text-gray-200 text-sm underline">
+              back to browse
+            </Link>
+          )}
           <a
             href="#artworks"
             className="ml-auto text-gray-200 text-sm hover:underline"

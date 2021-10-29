@@ -1,12 +1,19 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { users } from "../users.json";
-
 import { Link } from "react-router-dom";
-
 import { tags } from "../tags.json";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { setIsPublic } from "../store/generalSlice";
 
 const MainPage = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setIsPublic({ isPublic: false }));
+  }, []);
+
   return (
     <main className="dark:bg-gray-900">
       <Navbar />

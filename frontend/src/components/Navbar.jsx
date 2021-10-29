@@ -34,7 +34,7 @@ const Navbar = () => {
               alt={`${user.name} avatar`}
             />
             <div
-              className="dropdown opacity-0 absolute py-1 right-0 bg-gray-900 rounded-sm"
+              className="dropdown opacity-0 backdrop-blur-sm backdrop-filter absolute py-1 right-0 bg-gray-900 rounded-sm"
               style={{ top: "120%" }}
             >
               <ul>

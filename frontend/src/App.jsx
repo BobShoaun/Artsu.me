@@ -7,6 +7,7 @@ import MainPage from "./MainPage";
 import PortfolioPage from "./PortfolioPage";
 import PortfolioEditorPage from "./PortfolioEditorPage";
 import ArtworkPage from "./ArtworkPage";
+import ProfilePage from "./ProfilePage";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 
@@ -24,12 +25,13 @@ const App = () => {
             <Route path="/artwork/:id" component={ArtworkPage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
+            <Route path="/profile/:slug" component={ProfilePage} />
             <Route path="/" component={MainPage} />
           </Switch>
         </Router>
       </main>
-    </Provider>
-  );
+    </Provider>)
+
 };
 
 export default App;

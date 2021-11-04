@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import { users } from "../users.json";
 import { artworks } from "../artworks.json";
@@ -6,10 +7,14 @@ import { useSelector } from "react-redux";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 
 const PortfolioPage = () => {
-  const { slug } = useParams();
+  const { username } = useParams();
   const { isPublic } = useSelector(state => state.general);
 
-  const user = users.find(user => user.slug === slug);
+  const contactNameRef = useRef();
+  const contactEmailRef = useRef();
+  const contactMessageRef = useRef();
+
+  const user = users.find(user => user.username === username);
 
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-600", light: "teal-500", dark: "teal-800" };
@@ -124,27 +129,31 @@ const PortfolioPage = () => {
             className="grid gap-x-10 gap-y-7 mb-5"
             style={{ gridTemplateColumns: "auto 1fr" }}
           >
-            <label className="dark:text-gray-200 text-sm text-right">
+            <label className="dark:text-gray-200 text-sm text-right mt-2">
               Name:
             </label>
-            <input className="px-2 py-1" type="text" />
-            <label className="dark:text-gray-200 text-sm text-right">
+            <input ref={contactNameRef} className="px-2 py-1" type="text" />
+            <label className="dark:text-gray-200 text-sm text-right mt-2">
               Email:
             </label>
-            <input className="px-2 py-1" type="text" />
-            <label className="dark:text-gray-200 text-sm text-right">
+            <input ref={contactEmailRef} className="px-2 py-1" type="email" />
+            <label className="dark:text-gray-200 text-sm text-right mt-2">
               Message:
             </label>
             <textarea
+              ref={contactMessageRef}
               className="px-2 py-1"
-              name=""
-              id=""
               cols="30"
               rows="5"
             ></textarea>
           </form>
           <div className="text-right">
             <button
+              onClick={() =>
+                alert(
+                  `Submitting message: ${contactMessageRef.current.value} from name: ${contactNameRef.current.value}, email: ${contactEmailRef.current.value}`
+                )
+              }
               className={`dark:text-gray-200 bg-${primary.main} hover:bg-${primary.dark} py-1 px-3`}
             >
               Submit

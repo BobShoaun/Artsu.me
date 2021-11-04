@@ -40,7 +40,7 @@ const MainPage = () => {
             {tags.map(tag => (
               <p
                 key={tag.id}
-                className={`text-gray-700 cursor-pointer font-semibold text-sm bg-${tag.color} rounded-sm px-2 py-1`}
+                className={`text-gray-700 -text-white cursor-pointer font-semibold text-sm  bg-${tag.color} rounded-sm px-2 py-1`}
               >
                 #{tag.label}
               </p>
@@ -50,7 +50,7 @@ const MainPage = () => {
         <section className="flex-1 grid md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-7">
           {users.map(user => (
             <Link
-              to={`/portfolio/${user.slug}`}
+              to={`/portfolio/${user.username}`}
               key={user.id}
               className={`mx-auto ${
                 user.featured

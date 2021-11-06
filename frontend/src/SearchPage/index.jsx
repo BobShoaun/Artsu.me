@@ -5,8 +5,12 @@ import { artworks } from "../artworks.json";
 import { tags } from "../tags.json"
 
 const SearchPage = () => {
-  var href = location.href;
-  console.log(href.match(/([^\/]*)\/*$/)[1]);
+  const target = window.location.pathname.split('search').pop().replace('/', '')
+  console.log(target)
+  let artworksFiltered = artworks
+  if (target !== "/") {
+    artworksFiltered = artworks.filter(artwork => artwork.name.toLowerCase().includes(target.toLowerCase()))
+  }
 
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
@@ -29,14 +33,14 @@ const SearchPage = () => {
           </div>
         </aside>
       
-      <div className="flex flex-wrap">
-        <div className="ml-20">
-          <p1 className="dark:text-white text-2l text-center mb-8 float-right">
-            Displaying {artworks.length} results
+      <div>
+        <div className="ml-10 w-full mb-8">
+          <p1 className="dark:text-white text-2l w-100% float-left mr-10">
+            Displaying {artworksFiltered.length} results
           </p1>
         </div>
         <div className="flex flex-wrap items-center justify-around gap-x-10 gap-y-10">
-          {artworks.map(artwork => {
+          {artworksFiltered.map(artwork => {
             return (
               <Link
                 to={`/artwork/${artwork.id}`}

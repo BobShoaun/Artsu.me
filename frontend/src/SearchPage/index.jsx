@@ -12,6 +12,11 @@ const SearchPage = () => {
     artworksFiltered = artworks.filter(artwork => artwork.name.toLowerCase().includes(target.toLowerCase()))
   }
 
+  let msg = "results";
+  if (artworksFiltered.length<=1) {
+    msg = 'result';
+  }
+
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
 
@@ -22,24 +27,24 @@ const SearchPage = () => {
         <aside style={{ flexBasis: "12em" }}>
           <h3 className="dark:text-gray-200 mb-3 font-semibold">Tags:</h3>
           <div className="flex flex-wrap gap-3">
-            {tags.map(tag => (
-              <p
+            {tags.map(tag => {
+              return (<p
                 key={tag.id}
                 className={`text-gray-700 cursor-pointer font-semibold text-sm bg-${tag.color} rounded-sm px-2 py-1`}
               >
                 #{tag.label}
-              </p>
-            ))}
+              </p>);
+            })}
           </div>
         </aside>
       
       <div>
-        <div className="ml-10 w-full mb-8">
+        <div className="ml-20 w-full mb-10">
           <p1 className="dark:text-white text-2l w-100% float-left mr-10">
-            Displaying {artworksFiltered.length} results
+            Displaying {artworksFiltered.length} {msg}
           </p1>
         </div>
-        <div className="flex flex-wrap items-center justify-around gap-x-10 gap-y-10">
+        <div className="flex flex-wrap justify-around gap-x-5 gap-y-5">
           {artworksFiltered.map(artwork => {
             return (
               <Link
@@ -49,15 +54,15 @@ const SearchPage = () => {
               >
                 <img
                   style={{maxWidth: "20em"}}
-                  className="mb-5 shadow-xl mx-auto"
+                  className="mb-5 shadow-xl mx-10 mt-5"
                   src={artwork.image}
                   alt={artwork.name}
                 />
                 <div className="pl-3">
-                  <h2 className="dark:text-white text-lg font-semibold mb-1">
+                  <h2 className="dark:text-white text-lg font-semibold mb-1 ml-10">
                     {artwork.name}
                   </h2>
-                  <p className="dark:text-gray-300 text-sm mb-3">
+                  <p className="dark:text-gray-300 text-sm mb-3 ml-10">
                     {artwork.description}
                   </p>
                 </div>

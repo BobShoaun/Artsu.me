@@ -1,16 +1,28 @@
 import { Link, useParams } from "react-router-dom";
 import { users } from "../users.json";
 import Footer from "../components/Footer";
-import layout from './static/layout.png'
+import { useState } from "react";
 
 const PortfolioEditorPageStyles = () => {
 
   const { slug } = useParams(); // reading from database
   const user = users.find(user => user.slug === slug);
-  console.log(user)
   const themeColor = user.portfolioSettings.themeColor
-  const layoutId = user.layoutId
-  console.log(themeColor)
+  let layoutId = user.portfolioSettings.layoutId
+
+  const [layout, setlayout] = useState(layoutId)
+
+  function importLayouts(f) {
+    let layouts = {};
+    f.keys().map(key => layouts[key.replace("./", "")] = f(key));
+    return layouts
+  }
+
+  const layouts = importLayouts(require.context('./static/', false, /\.png$/))
+
+  function layoutOnClick(index) {
+    setlayout(index+1)
+  }
 
   return (
     <main className="bg-gray-700">
@@ -30,9 +42,8 @@ const PortfolioEditorPageStyles = () => {
       <section className="dark:text-white my-10 ml-10" id="chooseColor">
         1. Choose colors
         <div className="container mx-auto flex item-center gap-20 py-10">
-          
-        {Object.keys(themeColor).map((key, index) => {
-              return (
+          {Object.keys(themeColor).map((key, index) => {
+            return (
               <div>
                 <input className="h-20 w-20 border-0 cursor-pointer" type="color" id={key} defaultValue={themeColor[key]}
                 onChange={e => themeColor[key]=e.target.value}/>
@@ -40,24 +51,47 @@ const PortfolioEditorPageStyles = () => {
                 <div className="dark:text-white text-xs text-center">{key}</div>
               </div>)
             }
-            )}
+          )}
             
-            </div>
+        </div>
+        </section>
+        <section className="dark:text-white my-10 ml-10" id="chooseLayout">
         2. Choose Layout
         <div className="container mx-auto flex item-center gap-20 py-10">
-          <div>
-            <img className="w-60" src={layout}></img>
-            <br/><div className="dark:text-white text-xs text-center">Traditional</div>
+          {
+            Object.keys(layouts).map( (key, index) => {
+              return (
+                <a className={`${layout===index+1
+                  ? "bg-gray-500"
+                  : "hover:bg-gray-600"
+                  }`} onClick={() => layoutOnClick(index)}>
+                  <img style={{maxWidth: "10em"}} className="my-10 mx-10 items-center cursor-pointer" src={layouts[key].default} alt='layout'/>
+                  <div className="dark:text-white text-xs text-center my-5">
+                    {key.replace(".png", "")}
+                  </div>
+                </a>
+              )
+            })
+          }
+        </div>
+        </section>
+        <section className="my-5" id="buttons">
+          <div className="text-left inline-block">
+            <Link className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
+            to={`/portfolio/edit/content/${user.slug}`}
+            >
+              Previous
+            </Link>
           </div>
-        </div>
-        <div class="text-right">
-          <Link className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
-          to={`/portfolio/${user.slug}`}
-          >
-            Update Settings
-          </Link>
-        </div>
-      </section>
+          <div class=" float-right inline-block">
+            <Link className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
+            to={`/portfolio/${user.slug}`}
+            >
+              Update Settings
+            </Link>
+          </div>
+        </section>
+      
       <Footer />
     </main>
   );

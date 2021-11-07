@@ -18,16 +18,11 @@ const ArtworkPage = () => {
     artworkTags.push(tags.find(tag => tag.id === tagid));
   });
 
-  const otherArts = user.portfolioSettings.artworkIds
-    .filter(ID => ID !== id)
-    .sort((a, b) => 0.5 - Math.random()); // grab artworks, remove currently displayed one, and roughly shuffle them (shuffle apporach found online)
-  const otherArtsArray = [];
-  for (let i = 1; i <= 4; i++) {
-    if (otherArts.length >= i)
-      otherArtsArray.push(
-        artworks.find(artwork => artwork.id === otherArts[i])
-      );
-  }
+  const otherArtworks = user.portfolioSettings.artworkIds
+    .filter(id => id !== artwork.id)
+    .map(id => artworks.find(artwork => artwork.id === id))
+    .sort(() => 0.5 - Math.random());
+  // grab artworks, remove currently displayed one, and roughly shuffle them (shuffle apporach found online)
 
   const [fullscreen, setFullscreen] = useState(false);
 
@@ -103,7 +98,7 @@ const ArtworkPage = () => {
             More from {user.username}:
           </h3>
           <div className="mx-auto grid place-items-center gap-8">
-            {otherArtsArray.map(artwork => (
+            {otherArtworks.map(artwork => (
               <Link
                 key={artwork.id}
                 to={`/artwork/${artwork.id}`}

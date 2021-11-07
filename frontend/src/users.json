@@ -73,7 +73,7 @@
       "id": 20004,
       "name": "The Best User",
       "featured": false,
-      "email": "davinci@yahoo.com",
+      "email": "bestuser@gmail.com",
       "username": "user",
       "password": "user",
       "avatar": "https://www.larvalabs.com/cryptopunks/cryptopunk2140.png?customColor=638596",
@@ -82,7 +82,7 @@
       "portfolioSettings": {
         "heading": "Why I am the best",
         "biography": "I am the very best because I am the very best because I...",
-        "artworkIds": [10011, 10012, 10013, 10014, 10015],
+        "artworkIds": [10016, 10017, 10018, 10019],
         "themeColor": {
           "primary": "#FFFFFF",
           "secondary": "#000000",

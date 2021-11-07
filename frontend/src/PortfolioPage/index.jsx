@@ -113,7 +113,7 @@ const PortfolioPage = () => {
                     src={artwork.image}
                     alt={artwork.name}
                   />
-                  <div className="pl-3">
+                  <div className="text-center">
                     <h2 className="dark:text-white text-lg font-semibold mb-1">
                       {artwork.name}
                     </h2>

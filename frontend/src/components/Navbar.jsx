@@ -58,7 +58,7 @@ const Navbar = () => {
           {/* <li className="ml-auto "> */}
           <Search
             size={18}
-            className="searchbox-icon text-gray-200 opacity-50 absolute right-2 top-1"
+            className="searchbox-icon text-gray-200 opacity-50 absolute right-2 top-1 transition"
           />
         </li>
         {jwt ? (

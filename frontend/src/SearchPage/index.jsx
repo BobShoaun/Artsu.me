@@ -5,11 +5,18 @@ import { artworks } from "../artworks.json";
 import { tags } from "../tags.json"
 
 const SearchPage = () => {
-  const target = window.location.pathname.split('search').pop().replace('/', '')
-  console.log(target)
+  const target = window.location.pathname.split('search').pop().replace('/', '').replace('%20', ' ').toLowerCase()
+
   let artworksFiltered = artworks
-  if (target !== "/") {
-    artworksFiltered = artworks.filter(artwork => artwork.name.toLowerCase().includes(target.toLowerCase().replace("%20", " ")))
+  if (target[0]==="&") {
+
+    //search for tag
+    let tagFiltered = tags.filter(tag => tag.label.toLowerCase()===target.substr(1))
+    let tag = tagFiltered.map(tag => tag.id)[0]
+    artworksFiltered = artworks.filter(artwork => artwork.tagids.includes(tag))
+  }
+  else if (target !== "/") {
+    artworksFiltered = artworks.filter(artwork => artwork.name.toLowerCase().includes(target))
   }
 
   let msg = "results";
@@ -25,12 +32,14 @@ const SearchPage = () => {
           <h3 className="dark:text-gray-200 mb-3 font-semibold">Tags:</h3>
           <div className="flex flex-wrap gap-3">
             {tags.map(tag => {
-              return (<p
+              return (
+              <Link to={`/search/&${tag.label}`}><p
                 key={tag.id}
                 className={`text-gray-700 cursor-pointer font-semibold text-sm bg-${tag.color} rounded-sm px-2 py-1`}
               >
                 #{tag.label}
-              </p>);
+              </p>
+              </Link>);
             })}
           </div>
         </aside>

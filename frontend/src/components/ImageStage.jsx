@@ -5,7 +5,7 @@ const ImageStage = ({ src, alt, onClose }) => {
   const [zoomedIn, setZoomedIn] = useState(false);
 
   return (
-    <main className="bg-gray-900 p-5 z-30 min-w-screen min-h-screen flex">
+    <main className="bg-gray-900 z-30 min-w-screen min-h-screen flex">
       <X
         onClick={onClose}
         size={30}
@@ -14,18 +14,18 @@ const ImageStage = ({ src, alt, onClose }) => {
         className="fixed right-5 top-5 text-white cursor-pointer"
       />
       <img
-        className={`m-auto shadow-2xl ${
+        className={`m-auto shadow-2xl p-4 ${
           zoomedIn ? "cursor-zoom-out" : "cursor-zoom-in"
         }`}
         style={
           zoomedIn
             ? {
-                minHeight: "90vh",
-                minWidth: "90vw",
+                minWidth: "95vw",
+                // minHeight: "95vh",
               }
             : {
-                maxHeight: "90vh",
-                maxWidth: "90vw",
+                maxHeight: "95vh",
+                maxWidth: "95vw",
               }
         }
         onClick={() => setZoomedIn(zoomed => !zoomed)}

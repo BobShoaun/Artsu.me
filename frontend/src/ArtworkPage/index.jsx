@@ -7,6 +7,7 @@ import { tags } from "../tags.json";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import ImageStage from "../components/ImageStage";
 import { useState } from "react";
+import { Maximize } from "react-feather";
 
 const ArtworkPage = () => {
   const { id } = useParams();
@@ -28,14 +29,14 @@ const ArtworkPage = () => {
       );
   }
 
-  const [zoomedIn, setZoomedIn] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
 
   useScrollToTop();
 
-  if (zoomedIn)
+  if (fullscreen)
     return (
       <ImageStage
-        onClose={() => setZoomedIn(false)}
+        onClose={() => setFullscreen(false)}
         src={artwork.image}
         alt={artwork.name}
       />
@@ -47,7 +48,7 @@ const ArtworkPage = () => {
       <div className="container pt-20 py-32 mx-auto flex gap-14">
         <main>
           <img
-            onClick={() => setZoomedIn(true)}
+            onClick={() => setFullscreen(true)}
             className="mx-auto shadow-xl cursor-zoom-in mb-8"
             style={{ maxHeight: "70vh" }}
             src={artwork.image}
@@ -55,7 +56,12 @@ const ArtworkPage = () => {
           />
 
           <div className="relative">
-            <button className="text-white absolute right-0">Fullscreen</button>
+            <button
+              onClick={() => setFullscreen(true)}
+              className="text-gray-800 text-xs py-1 px-3 font-semibold rounded-sm absolute right-0 flex gap-1 items-center bg-gray-300"
+            >
+              Fullscreen <Maximize size={13} strokeWidth={3} />
+            </button>
 
             <h1 className="text-white text-center text-2xl font-bold mb-1">
               {artwork.name}
@@ -66,7 +72,7 @@ const ArtworkPage = () => {
           </div>
 
           <section className="flex gap-8">
-            <Link to={`/portfolio/${user.username}`} className="flex-none">
+            <Link to={`/portfolio/${user.username}`} className="flex-none mt-5">
               <img
                 className="shadow-xl w-24 h-24 object-cover rounded-sm mb-3 mx-auto"
                 src={user.avatar}
@@ -75,16 +81,18 @@ const ArtworkPage = () => {
               <p className="text-sm text-white text-center">by {user.name}</p>
             </Link>
             <div>
-              <div className="flex flex-wrap gap-3 mb-5">
-                {artworkTags.map(tag => (
-                  <p
-                    key={tag.id}
-                    className={`text-gray-900 cursor-pointer font-semibold text-xs bg-${tag.color} rounded-sm px-2 py-1`}
-                  >
-                    #{tag.label}
-                  </p>
-                ))}
-              </div>
+              {artworkTags.length > 0 && (
+                <div className="flex flex-wrap gap-3 mb-5">
+                  {artworkTags.map(tag => (
+                    <p
+                      key={tag.id}
+                      className={`text-gray-900 cursor-pointer font-semibold text-xs bg-${tag.color} rounded-sm px-2 py-1`}
+                    >
+                      #{tag.label}
+                    </p>
+                  ))}
+                </div>
+              )}
               <p className="text-gray-200 text-sm">{artwork.description}</p>
             </div>
           </section>

@@ -28,7 +28,7 @@ const SearchPage = () => {
       length = usersFiltered.length
       
       return (
-        <div className="flex flex-wrap justify-around gap-x-5 gap-y-5">
+        <div className="flex flex-wrap gap-x-10 gap-y-10">
         {usersFiltered.map(user => {
           return (
           <Link
@@ -61,7 +61,7 @@ const SearchPage = () => {
             Displaying {length} {msg}
           </p1>
         </div>
-        <div className="flex flex-wrap justify-around gap-x-5 gap-y-5">
+        <div className="flex flex-wrap justify-around gap-x-10 gap-y-10">
           {artworksFiltered.map(artwork => {
             return(
             <Link

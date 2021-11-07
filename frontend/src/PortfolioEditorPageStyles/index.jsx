@@ -1,15 +1,16 @@
 import { Link, useParams } from "react-router-dom";
 import { users } from "../users.json";
 import Footer from "../components/Footer";
+import { useState } from "react";
 
 const PortfolioEditorPageStyles = () => {
 
   const { slug } = useParams(); // reading from database
   const user = users.find(user => user.slug === slug);
-  console.log(user)
   const themeColor = user.portfolioSettings.themeColor
-  const layoutId = user.portfolioSettings.layoutId
-  console.log(layoutId)
+  let layoutId = user.portfolioSettings.layoutId
+
+  const [layout, setlayout] = useState(layoutId)
 
   function importLayouts(f) {
     let layouts = {};
@@ -18,7 +19,10 @@ const PortfolioEditorPageStyles = () => {
   }
 
   const layouts = importLayouts(require.context('./static/', false, /\.png$/))
-  console.log("layouts: ", layouts)
+
+  function layoutOnClick(index) {
+    setlayout(index+1)
+  }
 
   return (
     <main className="bg-gray-700">
@@ -57,10 +61,10 @@ const PortfolioEditorPageStyles = () => {
           {
             Object.keys(layouts).map( (key, index) => {
               return (
-                <a className={`${layoutId===index
+                <a className={`${layout===index+1
                   ? "bg-gray-500"
                   : "hover:bg-gray-600"
-                  }`}>
+                  }`} onClick={() => layoutOnClick(index)}>
                   <img style={{maxWidth: "10em"}} className="my-10 mx-10 items-center cursor-pointer" src={layouts[key].default} alt='layout'/>
                   <div className="dark:text-white text-xs text-center my-5">
                     {key.replace(".png", "")}

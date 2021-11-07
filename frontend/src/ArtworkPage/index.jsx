@@ -44,7 +44,7 @@ const ArtworkPage = () => {
   return (
     <main className="bg-gray-900 min-h-screen">
       <Navbar />
-      <div className="container pt-20 py-32 mx-auto flex gap-12">
+      <div className="container pt-20 py-32 mx-auto flex gap-14">
         <main>
           <img
             onClick={() => setZoomedIn(true)}
@@ -53,9 +53,18 @@ const ArtworkPage = () => {
             src={artwork.image}
             alt={artwork.name}
           />
-          <h1 className="text-white text-center text-2xl font-bold mb-14">
-            {artwork.name}
-          </h1>
+
+          <div className="relative">
+            <button className="text-white absolute right-0">Fullscreen</button>
+
+            <h1 className="text-white text-center text-2xl font-bold mb-1">
+              {artwork.name}
+            </h1>
+            <p className="text-center text-gray-300 font mb-14">
+              {artwork.summary}
+            </p>
+          </div>
+
           <section className="flex gap-8">
             <Link to={`/portfolio/${user.username}`} className="flex-none">
               <img
@@ -69,15 +78,14 @@ const ArtworkPage = () => {
               <div className="flex flex-wrap gap-3 mb-5">
                 {artworkTags.map(tag => (
                   <p
+                    key={tag.id}
                     className={`text-gray-900 cursor-pointer font-semibold text-xs bg-${tag.color} rounded-sm px-2 py-1`}
                   >
                     #{tag.label}
                   </p>
                 ))}
               </div>
-              <p className="text-gray-200 text-sm">
-                {artwork.description_full}
-              </p>
+              <p className="text-gray-200 text-sm">{artwork.description}</p>
             </div>
           </section>
         </main>

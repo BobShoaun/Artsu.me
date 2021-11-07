@@ -9,6 +9,9 @@ import { useScrollToTop } from "../hooks/useScrollToTop";
 const PortfolioPage = () => {
   const { username } = useParams();
   const { isPublic } = useSelector(state => state.general);
+  const { jwt, user: loggedInUser } = useSelector(
+    state => state.authentication
+  );
 
   const contactNameRef = useRef();
   const contactEmailRef = useRef();
@@ -31,9 +34,17 @@ const PortfolioPage = () => {
           {!isPublic && (
             <Link
               to="/"
-              className="text-gray-200 text-sm underline self-center"
+              className="text-gray-200 text-sm hover:underline self-center"
             >
-              back to browse
+              Back to Browse
+            </Link>
+          )}
+          {jwt && loggedInUser.username === user.username && (
+            <Link
+              to={`/portfolio/edit/${user.username}`}
+              className="text-gray-200 text-sm hover:underline self-center"
+            >
+              Edit Portfolio
             </Link>
           )}
           <a
@@ -87,17 +98,17 @@ const PortfolioPage = () => {
           <h1 className="dark:text-white text-2xl font-semibold text-center mb-14">
             My Artworks
           </h1>
-          <div className="flex flex-wrap items-center justify-around gap-x-10 gap-y-10">
+          <div className="flex flex-wrap items-center justify-around gap-x-8 gap-y-8">
             {user.portfolioSettings.artworkIds.map(id => {
               const artwork = artworks.find(artwork => artwork.id === id);
               return (
                 <Link
                   to={`/artwork/${artwork.id}`}
                   key={artwork.id}
-                  className={`bg-gradient-to-br from-transparent to-transparent hover:from-${primary.main} hover:to-${secondary.main} transition-all rounded-lg p-7 cursor-pointer hover:shadow-xl`}
+                  className={`bg-gradient-to-br from-transparent to-transparent hover:from-${primary.main} hover:to-${secondary.main} transition-all rounded-lg p-5 cursor-pointer hover:shadow-xl`}
                 >
                   <img
-                    style={{ maxWidth: "20em" }}
+                    style={{ maxWidth: "15em" }}
                     className="mb-5 shadow-xl mx-auto"
                     src={artwork.image}
                     alt={artwork.name}
@@ -107,7 +118,7 @@ const PortfolioPage = () => {
                       {artwork.name}
                     </h2>
                     <p className="dark:text-gray-300 text-sm mb-3">
-                      {artwork.description}
+                      {artwork.summary}
                     </p>
                   </div>
                 </Link>

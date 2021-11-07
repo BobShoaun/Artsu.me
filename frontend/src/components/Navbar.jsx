@@ -47,7 +47,7 @@ const Navbar = () => {
         </li>
         {jwt ? (
           <li className="dropdown-wrapper ml-auto relative text-white text-sm flex items-center gap-5">
-            <p className="font-semibold">{user.username}</p>
+            <p className="font-semibold">{user.name}</p>
             <img
               className="rounded-full w-10"
               src={user.avatar}
@@ -62,6 +62,9 @@ const Navbar = () => {
                   <Link to={`/profile/${user.username}`}>Profile</Link>
                 </li>
                 <li className="py-2 px-5 hover:bg-gray-800 transition">
+                  <Link to={`/portfolio/${user.username}`}>Portfolio</Link>
+                </li>
+                <li className="py-2 px-5 hover:bg-gray-800 transition">
                   <button onClick={logout}>Logout</button>
                 </li>
               </ul>
@@ -72,7 +75,7 @@ const Navbar = () => {
             <li className="ml-auto">
               <Link
                 to="/register"
-                className=" text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm"
+                className=" text-gray-900 font-semibold bg-gradient-to-br from-fuchsia-500 to-fuchsia-700 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm"
                 style={{ textUnderlineOffset: "3px" }}
               >
                 Sign Up

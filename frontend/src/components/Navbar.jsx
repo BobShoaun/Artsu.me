@@ -27,12 +27,21 @@ const Navbar = () => {
           </Link>
         </li>
         <li className="ml-auto relative searchbox">
-          <input
-            className=""
-            type="text"
-            placeholder="search"
-            onChange={searchValueOnChange}
-          />
+          <form
+            action=""
+            onSubmit={e => {
+              e.preventDefault();
+              history.push("/search");
+            }}
+          >
+            <input
+              className=""
+              type="search"
+              placeholder="search"
+              onChange={searchValueOnChange}
+            />
+          </form>
+
           <div className="w-full text-center">
             {/* <input
               className="px-2 py-1 w-1/2 outline-none text-white bg-transparent border-opacity-50 
@@ -56,6 +65,7 @@ const Navbar = () => {
             </button>
           </div>
           {/* <li className="ml-auto "> */}
+
           <Search
             size={18}
             className="searchbox-icon text-gray-200 opacity-50 absolute right-2 top-1 transition"
@@ -69,10 +79,7 @@ const Navbar = () => {
               src={user.avatar}
               alt={`${user.name} avatar`}
             />
-            <div
-              className="dropdown opacity-0 backdrop-blur-sm backdrop-filter absolute py-1 right-0 bg-gray-900 rounded-sm"
-              style={{ top: "120%" }}
-            >
+            <div className="dropdown opacity-0 backdrop-blur-sm backdrop-filter absolute py-1 right-0 bg-gray-900 rounded-sm">
               <ul>
                 <li className="py-2 px-5 hover:bg-gray-800 transition">
                   <Link to={`/profile/${user.username}`}>Profile</Link>
@@ -91,8 +98,7 @@ const Navbar = () => {
             <li className="ml-auto">
               <Link
                 to="/register"
-                className=" text-gray-900 font-semibold bg-gradient-to-br from-fuchsia-500 to-fuchsia-700 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm"
-                style={{ textUnderlineOffset: "3px" }}
+                className="text-gray-900 font-semibold bg-gradient-to-br from-fuchsia-500 to-fuchsia-700 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm"
               >
                 Sign Up
               </Link>
@@ -100,8 +106,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/login"
-                className="text-gray-200 text-sm hover:underline font-semibold"
-                style={{ textUnderlineOffset: "3px" }}
+                className="underline-offset text-gray-200 text-sm hover:underline font-semibold"
               >
                 Login
               </Link>

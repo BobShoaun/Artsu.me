@@ -4,7 +4,6 @@ import { users } from "../users.json";
 
 import { Link, useParams } from "react-router-dom";
 
-import { tags } from "../tags.json";
 import { artworks } from "../artworks.json";
 
 const ProfilePage = () => {
@@ -53,7 +52,6 @@ const ProfilePage = () => {
                   className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
                   type="text"
                   value={user.username}
-                  style={{ borderBottomWidth: "1px" }}
                 />
               </li>
             </ul>
@@ -68,7 +66,6 @@ const ProfilePage = () => {
                   className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
                   type="text"
                   value={user.email}
-                  style={{ borderBottomWidth: "1px" }}
                 />
               </li>
             </ul>
@@ -82,7 +79,6 @@ const ProfilePage = () => {
                 <input
                   className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
                   type="text"
-                  style={{ borderBottomWidth: "1px" }}
                 />
               </li>
             </ul>

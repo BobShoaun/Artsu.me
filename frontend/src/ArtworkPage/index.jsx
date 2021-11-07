@@ -8,6 +8,7 @@ import { useScrollToTop } from "../hooks/useScrollToTop";
 import ImageStage from "../components/ImageStage";
 import { useState } from "react";
 import { Maximize } from "react-feather";
+import "./index.css";
 
 const ArtworkPage = () => {
   const { id } = useParams();
@@ -44,8 +45,7 @@ const ArtworkPage = () => {
         <main>
           <img
             onClick={() => setFullscreen(true)}
-            className="mx-auto shadow-xl cursor-zoom-in mb-8"
-            style={{ maxHeight: "70vh" }}
+            className="artwork mx-auto shadow-xl cursor-zoom-in mb-8"
             src={artwork.image}
             alt={artwork.name}
           />

@@ -6,6 +6,8 @@ import { artworks } from "../artworks.json";
 import { useSelector } from "react-redux";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 
+import "./index.css";
+
 const PortfolioPage = () => {
   const { username } = useParams();
   const { isPublic } = useSelector(state => state.general);
@@ -49,15 +51,13 @@ const PortfolioPage = () => {
           )}
           <a
             href="#artworks"
-            className="ml-auto text-gray-200 text-sm hover:underline"
-            style={{ textUnderlineOffset: "3px" }}
+            className="ml-auto text-gray-200 text-sm hover:underline underline-offset"
           >
             Artworks
           </a>
           <a
             href="#contact"
-            className="text-gray-200 text-sm hover:underline"
-            style={{ textUnderlineOffset: "3px" }}
+            className="text-gray-200 text-sm hover:underline underline-offset"
           >
             Contact Me
           </a>
@@ -75,7 +75,7 @@ const PortfolioPage = () => {
             {user.portfolioSettings.biography}
           </p>
         </div>
-        <div className="relative" style={{ flexBasis: "15em" }}>
+        <div className="relative avatar-wrapper">
           <div
             className={`absolute -top-8 -left-8 w-24 h-24 rounded-lg shadow-lg bg-gradient-to-br from-${primary.light} to-${primary.dark}`}
           ></div>
@@ -108,8 +108,7 @@ const PortfolioPage = () => {
                   className={`bg-gradient-to-br from-transparent to-transparent hover:from-${primary.main} hover:to-${secondary.main} transition-all rounded-lg p-5 cursor-pointer hover:shadow-xl`}
                 >
                   <img
-                    style={{ maxWidth: "15em" }}
-                    className="mb-5 shadow-xl mx-auto"
+                    className="artwork mb-5 shadow-xl mx-auto"
                     src={artwork.image}
                     alt={artwork.name}
                   />
@@ -136,10 +135,7 @@ const PortfolioPage = () => {
           Contact Me
         </h1>
         <div className=" bg-gray-900 bg-opacity-80 rounded-lg p-14 mx-auto max-w-3xl shadow-xl">
-          <form
-            className="grid gap-x-10 gap-y-7 mb-5"
-            style={{ gridTemplateColumns: "auto 1fr" }}
-          >
+          <form className="grid gap-x-10 gap-y-7 mb-5 contact-form">
             <label className="dark:text-gray-200 text-sm text-right mt-2">
               Name:
             </label>

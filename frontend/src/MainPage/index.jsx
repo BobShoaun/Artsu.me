@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { setIsPublic } from "../store/generalSlice";
 import { useScrollToTop } from "../hooks/useScrollToTop";
+import "./index.css";
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -58,17 +59,13 @@ const MainPage = () => {
               }  rounded-lg transition-all p-5 cursor-pointer`}
             >
               {user.featured && (
-                <h3
-                  className="text-white text-sm font-semibold underline mb-2"
-                  style={{ textUnderlineOffset: "2px" }}
-                >
+                <h3 className="underline-offset text-white text-sm font-semibold underline mb-2">
                   Featured
                 </h3>
               )}
               <div className="mb-2">
                 <img
-                  style={{ maxWidth: "12em" }}
-                  className="shadow-lg rounded-sm w-48 h-48 object-cover"
+                  className="avatar shadow-lg rounded-sm w-48 h-48 object-cover"
                   src={user.avatar}
                   alt={`${user.name} avatar`}
                 />

@@ -1,0 +1,11 @@
+.avatar-wrapper {
+  flex-basis: 15em;
+}
+
+.contact-form {
+  grid-template-columns: auto 1fr;
+}
+
+.artwork {
+  max-width: 15em;
+}

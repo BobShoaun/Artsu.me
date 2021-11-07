@@ -18,6 +18,7 @@ const ImageStage = ({ src, alt, onClose }) => {
           zoomedIn ? "cursor-zoom-out" : "cursor-zoom-in"
         }`}
         style={
+          // style needs to be inline due to conditional rendering
           zoomedIn
             ? {
                 minWidth: "95vw",

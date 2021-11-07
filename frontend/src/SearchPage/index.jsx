@@ -53,8 +53,7 @@ const SearchPage = () => {
                 className={"hover:bg-gray-800"}
               >
                 <img
-                  style={{maxWidth: "20em"}}
-                  className="mb-5 shadow-xl mx-10 mt-5"
+                  className="mb-5 max-w-xs shadow-xl mx-10 mt-5 max-w-20"
                   src={artwork.image}
                   alt={artwork.name}
                 />

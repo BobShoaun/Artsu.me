@@ -14,7 +14,7 @@ const ImageStage = ({ src, alt, onClose }) => {
         className="fixed right-5 top-5 text-white cursor-pointer"
       />
       <img
-        className={`m-auto shadow-xl ${
+        className={`m-auto shadow-2xl ${
           zoomedIn ? "cursor-zoom-out" : "cursor-zoom-in"
         }`}
         style={

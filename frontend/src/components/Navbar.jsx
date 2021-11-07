@@ -1,6 +1,8 @@
 import { Link, useHistory } from "react-router-dom";
 import { useAuthentication } from "../hooks/useAuthentication";
-import React, { useState } from 'react';
+import { useState } from "react";
+import { Search } from "react-feather";
+import "./index.css";
 
 const Navbar = () => {
   const history = useHistory();
@@ -12,9 +14,9 @@ const Navbar = () => {
     history.push("/");
   };
 
-  const searchValueOnChange = (e) => {
-    setSearch(e.target.value)
-  }
+  const searchValueOnChange = e => {
+    setSearch(e.target.value);
+  };
 
   return (
     <nav className=" bg-gray-800 bg-opacity-50 z-20 py-5 shadow-lg backdrop-filter backdrop-blur-sm sticky top-0">
@@ -24,26 +26,40 @@ const Navbar = () => {
             artsu.me
           </Link>
         </li>
-        <li className="ml-auto">
-          
+        <li className="ml-auto relative searchbox">
+          <input
+            className=""
+            type="text"
+            placeholder="search"
+            onChange={searchValueOnChange}
+          />
           <div className="w-full text-center">
-            <input
+            {/* <input
               className="px-2 py-1 w-1/2 outline-none text-white bg-transparent border-opacity-50 
               focus:border-opacity-100 border-gray-200"
               type="text"
               placeholder="search"
               style={{ borderBottomWidth: "1px" }}
               onChange={searchValueOnChange}
-            />
-            <button className="float-right whitespace-nowrap flex-nowrap mr-2 text-xs px-2 py-1 mt-1 bg-gray-500 rounded-full hover:bg-coolGray-400" 
-              type="submit">
-                <Link to={`/search/&art=${search}`}>search artwork</Link>
+            /> */}
+            <button
+              className="float-right whitespace-nowrap flex-nowrap mr-2 text-xs px-2 py-1 mt-1 bg-gray-500 rounded-full hover:bg-coolGray-400"
+              type="submit"
+            >
+              <Link to={`/search/&art=${search}`}>search artwork</Link>
             </button>
-            <button className="float-right whitespace-nowrap flex-nowrap mr-2 text-xs px-2 py-1 mt-1 bg-gray-500 rounded-full hover:bg-coolGray-400" 
-              type="submit">
-                <Link to={`/search/&usr=${search}`}>search artist</Link>
+            <button
+              className="float-right whitespace-nowrap flex-nowrap mr-2 text-xs px-2 py-1 mt-1 bg-gray-500 rounded-full hover:bg-coolGray-400"
+              type="submit"
+            >
+              <Link to={`/search/&usr=${search}`}>search artist</Link>
             </button>
           </div>
+          {/* <li className="ml-auto "> */}
+          <Search
+            size={18}
+            className="searchbox-icon text-gray-200 opacity-50 absolute right-2 top-1"
+          />
         </li>
         {jwt ? (
           <li className="dropdown-wrapper ml-auto relative text-white text-sm flex items-center gap-5">

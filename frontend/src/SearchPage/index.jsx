@@ -9,16 +9,13 @@ const SearchPage = () => {
   console.log(target)
   let artworksFiltered = artworks
   if (target !== "/") {
-    artworksFiltered = artworks.filter(artwork => artwork.name.toLowerCase().includes(target.toLowerCase()))
+    artworksFiltered = artworks.filter(artwork => artwork.name.toLowerCase().includes(target.toLowerCase().replace("%20", " ")))
   }
 
   let msg = "results";
   if (artworksFiltered.length<=1) {
     msg = 'result';
   }
-
-  const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
-  const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
 
   return (
     <main className="dark:bg-gray-900">

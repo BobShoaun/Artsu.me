@@ -31,7 +31,7 @@ const ProfilePage = () => {
             {user.name}
           </h3>
           <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm text-center">
-            Upload New Avatar
+            Remove User Avatar
           </button>
         </aside>
         <section className="dark:bg-gray">
@@ -43,12 +43,9 @@ const ProfilePage = () => {
                 </h3>
               </li>
               <li className="ml-auto">
-                <input
-                  className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
-                  type="text"
-                  value={user.username}
-                  style={{ borderBottomWidth: "1px" }}
-                />
+                <p className="dark:text-gray-200 text-right">
+                  {user.name}
+                </p>
               </li>
             </ul>
             <ul className="flex items-center gap-10 mx-auto mb-6">
@@ -58,59 +55,47 @@ const ProfilePage = () => {
                 </h3>
               </li>
               <li className="ml-auto">
-                <input
-                  className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
-                  type="text"
-                  value={user.email}
-                  style={{ borderBottomWidth: "1px" }}
-                />
+                <p className="dark:text-gray-200 text-right">
+                  {user.username}
+                </p>
               </li>
             </ul>
             <ul className="flex items-center gap-10 mx-auto mb-6">
-              <li>
+              <li color="white">
                 <h3 className="dark:text-gray-200 font-semibold text-right">
-                  password:
+                  heading:{" "}
                 </h3>
               </li>
               <li className="ml-auto">
-                <input
-                  className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
-                  type="text"
-                  style={{ borderBottomWidth: "1px" }}
-                />
+                <p className="dark:text-gray-200 text-right">
+                  {user.portfolioSettings.heading}
+                </p>
               </li>
             </ul>
             <ul className="flex items-center gap-10 mx-auto mb-6">
-              <li>
+              <li color="white">
                 <h3 className="dark:text-gray-200 font-semibold text-right">
-                  new password:
+                  biography:{" "}
                 </h3>
               </li>
               <li className="ml-auto">
-                <input
-                  className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
-                  type="text"
-                  style={{ borderBottomWidth: "1px" }}
-                />
-              </li>
-            </ul>
-            <ul className="flex items-center gap-10 mx-auto mb-10">
-              <li>
-                <h3 className="dark:text-gray-200 font-semibold text-right">
-                  confirm password:
-                </h3>
-              </li>
-              <li className="ml-auto">
-                <input
-                  className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
-                  type="text"
-                  style={{ borderBottomWidth: "1px" }}
-                />
+                <p className="dark:text-gray-200 text-right">
+                  {user.portfolioSettings.biography}
+                </p>
               </li>
             </ul>
             <div className="text-right">
+              <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm mr-2">
+                Remove Biography
+              </button>
+              <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm mr-2">
+                Remove Heading
+              </button>
+              <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm mr-2">
+                Temporary Ban User
+              </button>
               <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
-                Submit
+                Ban User
               </button>
             </div>
           </ul>
@@ -122,14 +107,14 @@ const ProfilePage = () => {
       >
         <div className="container mx-auto mb-10">
           <h1 className="dark:text-white text-2xl font-semibold text-center mb-14">
-            My Artworks
+            User Artworks
           </h1>
           <div className="flex flex-wrap items-center justify-around gap-x-10 gap-y-10">
             {user.portfolioSettings.artworkIds.map(id => {
               const artwork = artworks.find(artwork => artwork.id === id);
               return (
                 <Link
-                  to={`/artwork/${artwork.id}`}
+                  to={`/admin/artwork/${artwork.id}`}
                   key={artwork.id}
                   className={`bg-gradient-to-br from-transparent to-transparent hover:from-${primary.main} hover:to-${secondary.main} transition-all rounded-lg p-7 cursor-pointer hover:shadow-xl`}
                 >
@@ -147,13 +132,6 @@ const ProfilePage = () => {
                 </Link>
               );
             })}
-          </div>
-        </div>
-        <div className="flex container mx-auto">
-          <div className="m-auto">
-            <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
-              Upload New Artwork
-            </button>
           </div>
         </div>
       </section>

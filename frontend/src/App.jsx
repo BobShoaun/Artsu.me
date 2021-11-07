@@ -11,6 +11,9 @@ import ProfilePage from "./ProfilePage";
 import LoginPage from "./LoginPage";
 import RegisterPage from "./RegisterPage";
 import SearchPage from "./SearchPage";
+import AdminPanel from "./AdminPanel";
+import AdminProfileViewer from "./AdminProfileViewer";
+import AdminArtworkViewer from "./AdminArtworkViewer";
 
 const App = () => {
   return (
@@ -28,6 +31,9 @@ const App = () => {
             <Route path="/register" component={RegisterPage} />
             <Route path="/profile/:username" component={ProfilePage} />
             <Route path="/search" component={SearchPage} />
+            <Route path="/admin/artwork/:id" component={AdminArtworkViewer} />
+            <Route path="/admin/:username" component={AdminProfileViewer} />
+            <Route path="/admin" component={AdminPanel} />
             <Route path="/" component={MainPage} />
           </Switch>
         </Router>

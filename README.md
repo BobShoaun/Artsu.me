@@ -45,3 +45,7 @@
 # Admin instructions
 
 # Main Page
+
+# Art Page
+
+# Portfolio Settings

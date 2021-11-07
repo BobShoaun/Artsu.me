@@ -26,6 +26,19 @@
 
 ## Main Page
 1. Browse from a list of artists
+2. Type in the search box and press either of the search button, this navigates you to the search page
+
+## Search Page
+1. Press on the tags, the search page will display artworks with corresponding tag
+2. Type in search box and press search artist, the search page will display artists with matching name
+3. Type in search box and press search artwrok, the search page will display artworks with matching name
+
+## Portfolio Editor
+1. Edit Heading and about me section of portfolio in portfolio content editor page
+2. Press quit to exit portfolio editor page and return to portfolio page
+3. Press next to save current portfolio content and go to portfolio style editor page
+4. Edit colors and layout of portfolio in portfolio sytle editor page
+5. Press update setting to save current setting and go to portfolio page with updated setting
 
 
 

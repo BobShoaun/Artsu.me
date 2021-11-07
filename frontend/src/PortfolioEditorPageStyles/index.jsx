@@ -3,7 +3,7 @@ import { users } from "../users.json";
 import Footer from "../components/Footer";
 import layout from './static/layout.png'
 
-const PortfolioEditorPage = () => {
+const PortfolioEditorPageStyles = () => {
 
   const { slug } = useParams(); // reading from database
   const user = users.find(user => user.slug === slug);
@@ -50,15 +50,17 @@ const PortfolioEditorPage = () => {
             <br/><div className="dark:text-white text-xs text-center">Traditional</div>
           </div>
         </div>
+        <div class="text-right">
+          <Link className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
+          to={`/portfolio/${user.slug}`}
+          >
+            Update Settings
+          </Link>
+        </div>
       </section>
-      <div class="text-right">
-        <button className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5">
-          Continue
-        </button>
-      </div>
       <Footer />
     </main>
   );
 };
 
-export default PortfolioEditorPage;
+export default PortfolioEditorPageStyles;

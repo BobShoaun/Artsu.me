@@ -76,12 +76,21 @@ function selectArt(artid){
             );
           })}
         </div>
+      </section>
+      <section className="my-5" id="buttons">
         <div className="flex container mx-auto">
           <div className="m-auto">
             <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">Upload New Artwork</button>
           </div>
         </div>
-        <div className="text-right">
+        <div className="text-left inline-block">
+            <Link className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
+            to={`/portfolio/${user.slug}`}
+            >
+              Quit
+            </Link>
+        </div>
+        <div className="float-right inline-block">
           <Link className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
           to={`/portfolio/edit/styles/${user.slug}`}
           >

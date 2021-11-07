@@ -50,12 +50,14 @@ const PortfolioEditorPageStyles = () => {
             <br/><div className="dark:text-white text-xs text-center">Traditional</div>
           </div>
         </div>
+        <div class="text-right">
+          <Link className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
+          to={`/portfolio/${user.slug}`}
+          >
+            Update Settings
+          </Link>
+        </div>
       </section>
-      <div class="text-right">
-        <button className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5">
-          Continue
-        </button>
-      </div>
       <Footer />
     </main>
   );

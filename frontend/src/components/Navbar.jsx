@@ -26,18 +26,22 @@ const Navbar = () => {
         </li>
         <li className="ml-auto">
           
-          <div className="relative">
+          <div className="w-full text-center">
             <input
-              className="px-2 py-1 w-100% min-w-full outline-none text-white bg-transparent border-opacity-50 
-              focus:border-opacity-100 border-gray-200 pr-20"
+              className="px-2 py-1 w-1/2 outline-none text-white bg-transparent border-opacity-50 
+              focus:border-opacity-100 border-gray-200"
               type="text"
               placeholder="search"
               style={{ borderBottomWidth: "1px" }}
               onChange={searchValueOnChange}
             />
-            <button className="absolute w-20 py-1 bg-gray-500 rounded-full hover:bg-coolGray-400" 
+            <button className="float-right whitespace-nowrap flex-nowrap mr-2 text-xs px-2 py-1 mt-1 bg-gray-500 rounded-full hover:bg-coolGray-400" 
               type="submit">
-                <Link to={`/search/${search}`}>search</Link>
+                <Link to={`/search/&art=${search}`}>search artwork</Link>
+            </button>
+            <button className="float-right whitespace-nowrap flex-nowrap mr-2 text-xs px-2 py-1 mt-1 bg-gray-500 rounded-full hover:bg-coolGray-400" 
+              type="submit">
+                <Link to={`/search/&usr=${search}`}>search artist</Link>
             </button>
           </div>
         </li>

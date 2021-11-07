@@ -3,7 +3,7 @@ import { users } from "../users.json";
 import Footer from "../components/Footer";
 import layout from './static/layout.png'
 
-const PortfolioEditorPage = () => {
+const PortfolioEditorPageStyles = () => {
 
   const { slug } = useParams(); // reading from database
   const user = users.find(user => user.slug === slug);
@@ -61,4 +61,4 @@ const PortfolioEditorPage = () => {
   );
 };
 
-export default PortfolioEditorPage;
+export default PortfolioEditorPageStyles;

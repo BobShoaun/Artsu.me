@@ -5,7 +5,7 @@ import layout from './static/layout.png'
 
 const PortfolioEditorPage = () => {
 
-  const { slug } = useParams();
+  const { slug } = useParams(); // reading from database
   const user = users.find(user => user.slug === slug);
   console.log(user)
   const themeColor = user.portfolioSettings.themeColor
@@ -35,8 +35,7 @@ const PortfolioEditorPage = () => {
               return (
               <div>
                 <input className="h-20 w-20 border-0 cursor-pointer" type="color" id={key} defaultValue={themeColor[key]}
-                onChange={e => themeColor[key]=e.target.value}/> {//call to database
-                }
+                onChange={e => themeColor[key]=e.target.value}/>
                 <br/>
                 <div className="dark:text-white text-xs text-center">{key}</div>
               </div>)

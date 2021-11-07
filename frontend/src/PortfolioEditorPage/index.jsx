@@ -7,6 +7,10 @@ const PortfolioEditorPage = () => {
 
   const { slug } = useParams();
   const user = users.find(user => user.slug === slug);
+  console.log(user)
+  const themeColor = user.portfolioSettings.themeColor
+  const layoutId = user.layoutId
+  console.log(themeColor)
 
   return (
     <main className="bg-gray-700">
@@ -26,25 +30,18 @@ const PortfolioEditorPage = () => {
       <section className="dark:text-white my-10 ml-10" id="chooseColor">
         1. Choose colors
         <div className="container mx-auto flex item-center gap-20 py-10">
-          <div>
-            <div style={{display: "inline-block", width: "70px", height: "70px", background: "purple"}}></div>
-            <br/><div className="dark:text-white text-xs text-center">Primary</div>
-          </div>
-          <div>
-            <div style={{display: "inline-block", width: "70px", height: "70px", background: "darkred"}}></div>
-            <br/><div className="dark:text-white text-xs text-center">Secondary</div>
-          </div>
-          <div>
-            <div style={{display: "inline-block", width: "70px", height: "70px", background: "gold"}}></div>
-            <br/><div className="dark:text-white text-xs text-center">Highlight</div>
-          </div>
-          <div>
-            <div style={{display: "inline-block", width: "70px", height: "70px", background: "darkgray"}}></div>
-            <br/><div className="dark:text-white text-xs text-center">Background</div>
-          </div>
-        </div>
-      </section>
-      <section className="dark:text-white my-10 ml-10" id="chooseLayout">
+          
+        {Object.keys(themeColor).map((key, index) => {
+              return (<div>
+              <input className="h-20 w-20 border-0" type="color" value={themeColor[key]}
+                onChange={(e) => {themeColor[key]=e.target.value
+                console.log(themeColor)}}></input>
+              <br/><div className="dark:text-white text-xs text-center">{key}</div>
+            </div>)
+            }
+            )}
+            
+            </div>
         2. Choose Layout
         <div className="container mx-auto flex item-center gap-20 py-10">
           <div>

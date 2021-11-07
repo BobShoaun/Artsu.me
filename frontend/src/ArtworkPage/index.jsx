@@ -3,12 +3,17 @@ import Footer from "../components/Footer";
 import { Link, useParams } from "react-router-dom";
 import { users } from "../users.json";
 import { artworks } from "../artworks.json";
+import { tags } from "../tags.json";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 
 const ArtworkPage = () => {
   const { id } = useParams();
   const artwork = artworks.find(artwork => artwork.id === parseInt(id));
   const user = users.find(user => user.id === artwork.author_id);
+  const artworkTags = []
+  artwork.tagids.forEach(tagid => {
+    artworkTags.push(tags.find(tag => tag.id === tagid))
+  })
   
   const otherArts = user.portfolioSettings.artworkIds.filter(ID => ID !== id).sort((a, b) => 0.5 - Math.random()) // grab artworks, remove currently displayed one, and roughly shuffle them (shuffle apporach found online)
   const otherArtsArray = []
@@ -28,14 +33,22 @@ const ArtworkPage = () => {
           />
           <h1 className="place-self-center mb-5 text-white text-center text-5xl col-span-3">{artwork.name}</h1>
           <section className="flex gap-x-10 px-5">
-          <Link to={`/portfolio/${user.slug}`} className={"hover:bg-gray-800 flex-none w-40"}>
-            <img className="rounded-lg shadow-xl"
-              src={user.avatar}
-              alt={user.name}
-            />
-            <p className="text-xl text-white text-center">{user.name}</p>
-          </Link>
-          <p className="text-white">{artwork.description_full}</p>
+            <Link to={`/portfolio/${user.slug}`} className={"hover:bg-gray-800 flex-none w-40"}>
+              <img className="rounded-lg shadow-xl"
+                src={user.avatar}
+                alt={user.name}
+              />
+              <p className="text-xl text-white text-center">{user.name}</p>
+            </Link>
+          <div>
+            <p className="text-white">{artwork.description_full}</p>
+            <div className="flex flex-wrap gap-3 pt-5">
+              <p className="text-white text-2xl mr-5">Tags:</p>
+              {artworkTags.map(tag => (
+                <p className={`text-gray-700 cursor-pointer font-semibold text-sm bg-${tag.color} rounded-sm px-2 py-1`}>#{tag.label}</p>
+              ))}
+            </div>
+          </div>
         </section>
         <h1 className="text-3xl text-white text-center">More from the Artist:</h1>
         <div className="flex items-center justify-around gap-x-10 py-10">

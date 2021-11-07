@@ -32,12 +32,14 @@ const PortfolioEditorPage = () => {
         <div className="container mx-auto flex item-center gap-20 py-10">
           
         {Object.keys(themeColor).map((key, index) => {
-              return (<div>
-              <input className="h-20 w-20 border-0" type="color" value={themeColor[key]}
-                onChange={(e) => {themeColor[key]=e.target.value
-                console.log(themeColor)}}></input>
-              <br/><div className="dark:text-white text-xs text-center">{key}</div>
-            </div>)
+              return (
+              <div>
+                <input className="h-20 w-20 border-0 cursor-pointer" type="color" id={key} defaultValue={themeColor[key]}
+                onChange={e => themeColor[key]=e.target.value}/> {//call to database
+                }
+                <br/>
+                <div className="dark:text-white text-xs text-center">{key}</div>
+              </div>)
             }
             )}
             

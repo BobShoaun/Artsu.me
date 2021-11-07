@@ -8,8 +8,8 @@ const PortfolioEditorPageStyles = () => {
   const user = users.find(user => user.slug === slug);
   console.log(user)
   const themeColor = user.portfolioSettings.themeColor
-  const layoutId = user.layoutId
-  console.log(themeColor)
+  const layoutId = user.portfolioSettings.layoutId
+  console.log(layoutId)
 
   function importLayouts(f) {
     let layouts = {};
@@ -38,9 +38,8 @@ const PortfolioEditorPageStyles = () => {
       <section className="dark:text-white my-10 ml-10" id="chooseColor">
         1. Choose colors
         <div className="container mx-auto flex item-center gap-20 py-10">
-          
-        {Object.keys(themeColor).map((key, index) => {
-              return (
+          {Object.keys(themeColor).map((key, index) => {
+            return (
               <div>
                 <input className="h-20 w-20 border-0 cursor-pointer" type="color" id={key} defaultValue={themeColor[key]}
                 onChange={e => themeColor[key]=e.target.value}/>
@@ -48,15 +47,20 @@ const PortfolioEditorPageStyles = () => {
                 <div className="dark:text-white text-xs text-center">{key}</div>
               </div>)
             }
-            )}
+          )}
             
-            </div>
+        </div>
+        </section>
+        <section className="dark:text-white my-10 ml-10" id="chooseLayout">
         2. Choose Layout
         <div className="container mx-auto flex item-center gap-20 py-10">
           {
             Object.keys(layouts).map( (key, index) => {
               return (
-                <a className="hover:bg-gray-600">
+                <a className={`${layoutId===index
+                  ? "bg-gray-500"
+                  : "hover:bg-gray-600"
+                  }`}>
                   <img style={{maxWidth: "10em"}} className="my-10 mx-10 items-center cursor-pointer" src={layouts[key].default} alt='layout'/>
                   <div className="dark:text-white text-xs text-center my-5">
                     {key.replace(".png", "")}
@@ -66,14 +70,15 @@ const PortfolioEditorPageStyles = () => {
             })
           }
         </div>
-        <div class="text-right">
+        </section>
+        <div class="text-right my-5">
           <Link className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
           to={`/portfolio/${user.slug}`}
           >
             Update Settings
           </Link>
         </div>
-      </section>
+      
       <Footer />
     </main>
   );

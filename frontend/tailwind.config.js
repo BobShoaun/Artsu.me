@@ -14,6 +14,11 @@ module.exports = {
       fontFamily: {
         sans: ["Poppins"],
       },
+      cursor: {
+        crosshair: "crosshair",
+        "zoom-in": "zoom-in",
+        "zoom-out": "zoom-out",
+      },
     },
   },
   variants: {

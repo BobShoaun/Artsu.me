@@ -5,11 +5,13 @@ import { users } from "../users.json";
 import { artworks } from "../artworks.json";
 import { tags } from "../tags.json";
 import { useScrollToTop } from "../hooks/useScrollToTop";
+import ImageStage from "../components/ImageStage";
+import { useState } from "react";
 
 const ArtworkPage = () => {
   const { id } = useParams();
-  const artwork = artworks.find(artwork => artwork.id === parseInt(id));
-  const user = users.find(user => user.id === artwork.author_id);
+  const artwork = artworks.find(artwork => artwork.id === parseInt(id)); // NOTE: will be replaced by api call
+  const user = users.find(user => user.id === artwork.author_id); // NOTE: will be replaced by api call
   const artworkTags = [];
   artwork.tagids.forEach(tagid => {
     artworkTags.push(tags.find(tag => tag.id === tagid));
@@ -26,20 +28,32 @@ const ArtworkPage = () => {
       );
   }
 
+  const [zoomedIn, setZoomedIn] = useState(false);
+
   useScrollToTop();
+
+  if (zoomedIn)
+    return (
+      <ImageStage
+        onClose={() => setZoomedIn(false)}
+        src={artwork.image}
+        alt={artwork.name}
+      />
+    );
 
   return (
     <main className="bg-gray-900 min-h-screen">
       <Navbar />
-      <div className="container mx-auto px-5">
-        <img
-          className="pt-10 mb-5 max-w-xlg mx-auto"
-          src={artwork.image}
-          alt={artwork.name}
-        />
-        <h1 className="place-self-center mb-5 text-white text-center text-5xl col-span-3">
-          {artwork.name}
-        </h1>
+      <div className="container mx-auto">
+        <section className="py-20 mx-auto">
+          <img
+            onClick={() => setZoomedIn(true)}
+            className="mx-auto shadow-xl max-h-96 cursor-zoom-in"
+            src={artwork.image}
+            alt={artwork.name}
+          />
+          <h1 className="text-white text-center text-5xl">{artwork.name}</h1>
+        </section>
         <section className="flex gap-x-10 px-5 py-20">
           <Link
             to={`/portfolio/${user.slug}`}

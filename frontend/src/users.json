@@ -14,9 +14,9 @@
         "biography": "Andy Warhol is a one of the most famous Artists of the 20th Century.",
         "artworkIds": [10001, 10002, 10003, 10004, 10005],
         "themeColor": {
-          "primary": "pink",
-          "secondary": "purple",
-          "highlight": "red"
+          "primary": "#BE185D",
+          "secondary": "#6D28D9",
+          "highlight": "#B91C1C"
         },
         "layoutId": 1
       }
@@ -35,9 +35,9 @@
         "biography": "Vincent van Gogh is a one of the most iconic Artists of the 19th Century.",
         "artworkIds": [10006, 10007, 10008, 10009, 10010],
         "themeColor": {
-          "primary": "blue",
-          "secondary": "yellow",
-          "highlight": "white"
+          "primary": "#1D4ED8",
+          "secondary": "#FACC15",
+          "highlight": "#FFFFFF"
         },
         "layoutId": 2
       }
@@ -56,9 +56,9 @@
         "biography": "A da vinci painting broke the record for the most expensive painting ever sold",
         "artworkIds": [10011, 10012, 10013, 10014, 10015],
         "themeColor": {
-          "primary": "black",
-          "secondary": "white",
-          "highlight": "red"
+          "primary": "#000000",
+          "secondary": "#FFFFFF",
+          "highlight": "#B91C1C"
         },
         "layoutId": 3
       }
@@ -77,9 +77,9 @@
         "biography": "I am the very best because I am the very best because I...",
         "artworkIds": [10011, 10012, 10013, 10014, 10015],
         "themeColor": {
-          "primary": "black",
-          "secondary": "white",
-          "highlight": "red"
+          "primary": "#FFFFFF",
+          "secondary": "#000000",
+          "highlight": "#B91C1C"
         },
         "layoutId": 3
       }

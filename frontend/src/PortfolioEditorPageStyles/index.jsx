@@ -1,7 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import { users } from "../users.json";
 import Footer from "../components/Footer";
-import layout from './static/layout.png'
 
 const PortfolioEditorPageStyles = () => {
 
@@ -11,6 +10,15 @@ const PortfolioEditorPageStyles = () => {
   const themeColor = user.portfolioSettings.themeColor
   const layoutId = user.layoutId
   console.log(themeColor)
+
+  function importLayouts(f) {
+    let layouts = {};
+    f.keys().map(key => layouts[key.replace("./", "")] = f(key));
+    return layouts
+  }
+
+  const layouts = importLayouts(require.context('./static/', false, /\.png$/))
+  console.log("layouts: ", layouts)
 
   return (
     <main className="bg-gray-700">
@@ -45,10 +53,18 @@ const PortfolioEditorPageStyles = () => {
             </div>
         2. Choose Layout
         <div className="container mx-auto flex item-center gap-20 py-10">
-          <div>
-            <img className="w-60" src={layout}></img>
-            <br/><div className="dark:text-white text-xs text-center">Traditional</div>
-          </div>
+          {
+            Object.keys(layouts).map( (key, index) => {
+              return (
+                <a className="hover:bg-gray-600">
+                  <img style={{maxWidth: "10em"}} className="my-10 mx-10 items-center cursor-pointer" src={layouts[key].default} alt='layout'/>
+                  <div className="dark:text-white text-xs text-center my-5">
+                    {key.replace(".png", "")}
+                  </div>
+                </a>
+              )
+            })
+          }
         </div>
         <div class="text-right">
           <Link className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"

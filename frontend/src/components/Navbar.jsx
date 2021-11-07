@@ -1,14 +1,20 @@
 import { Link, useHistory } from "react-router-dom";
 import { useAuthentication } from "../hooks/useAuthentication";
+import React, { useState } from 'react';
 
 const Navbar = () => {
   const history = useHistory();
   const [jwt, user, , _logout] = useAuthentication();
+  const [search, setSearch] = useState("");
 
   const logout = () => {
     _logout();
     history.push("/");
   };
+
+  const searchValueOnChange = (e) => {
+    setSearch(e.target.value)
+  }
 
   return (
     <nav className=" bg-gray-800 bg-opacity-50 z-20 py-5 shadow-lg backdrop-filter backdrop-blur-sm sticky top-0">
@@ -19,11 +25,21 @@ const Navbar = () => {
           </Link>
         </li>
         <li className="ml-auto">
-          <input
-            className="px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200"
-            type="text"
-            style={{ borderBottomWidth: "1px" }}
-          />
+          
+          <div className="relative">
+            <input
+              className="px-2 py-1 w-100% min-w-full outline-none text-white bg-transparent border-opacity-50 
+              focus:border-opacity-100 border-gray-200 pr-20"
+              type="text"
+              placeholder="search"
+              style={{ borderBottomWidth: "1px" }}
+              onChange={searchValueOnChange}
+            />
+            <button className="absolute w-20 py-1 bg-gray-500 rounded-full hover:bg-coolGray-400" 
+              type="submit">
+                <Link to={`/search/${search}`}>search</Link>
+            </button>
+          </div>
         </li>
         {jwt ? (
           <li className="dropdown-wrapper ml-auto relative text-white text-sm flex items-center gap-5">

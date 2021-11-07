@@ -30,6 +30,7 @@ const App = () => {
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
             <Route path="/profile/:username" component={ProfilePage} />
+            <Route path="/search/:slug" component={SearchPage} />
             <Route path="/search" component={SearchPage} />
             <Route path="/admin/artwork/:id" component={AdminArtworkViewer} />
             <Route path="/admin/:username" component={AdminProfileViewer} />

@@ -16,14 +16,6 @@
 3. React-feather
    - Icon pack
 
-# Setup instructions
-
-The frontend of this project was scaffolded using Create React App.
-
-1. `cd frontend`
-2. `yarn install`
-3. `yarn start`
-
 # User instructions
 
 ## Sign up
@@ -54,6 +46,17 @@ The frontend of this project was scaffolded using Create React App.
 1. Press on the tags, the search page will display artworks with corresponding tag
 2. Type in search box and press search artist, the search page will display artists with matching name
 3. Type in search box and press search artwrok, the search page will display artworks with matching name
+
+## Artwork Page
+1. Click on the artwork or the fullscreen button to view a full sized version of the piece of artwork
+2. Click on the artist's picture or name to go to their portfolio
+3. Up to four of the artist's other pieces of art are displayed on the right side of the page, and can be clicked on to go to the artwork page for the respective image.
+4. Click on any of the tags displayed to go to the search page with that tag as a query.
+
+## Portfolio Page
+1. Click on the 'artworks' or 'contact me' button to be scrolled down to the respective section on the page.
+2. Click on any of the artworks displayed in the portfolio to go to the artwork page for the respective piece.
+3. A contact form is on the bottom of the page for users innterested in contacting an artist. Users can enter their name, email, and a message to be sent.
 
 ## Portfolio Editor
 

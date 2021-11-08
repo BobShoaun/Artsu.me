@@ -4,7 +4,7 @@ import { users } from "../users.json";
 
 import { Link, useParams } from "react-router-dom";
 
-import { tags } from "../tags.json";
+//replace with API call in phase 2
 import { artworks } from "../artworks.json";
 import {useAuthentication} from "../hooks/useAuthentication";
 
@@ -21,11 +21,10 @@ const ProfilePage = () => {
     <main className="dark:bg-gray-900">
       <Navbar />
       <div className="container mx-auto flex mb-20 py-20 gap-8 text-center">
-        <aside style={{ flexBasis: "12em" }}>
+        <aside className="profile-avatar-wrapper">
           <div className="gap-3">
             <img
-              style={{ maxWidth: "12em" }}
-              className="mx-auto shadow-lg rounded-lg"
+              className="profile-avatar mx-auto shadow-lg rounded-lg"
               src={user.avatar}
               alt={`${user.name} avatar`}
             />

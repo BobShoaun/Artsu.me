@@ -1,15 +1,20 @@
-import { Link, useHistory } from "react-router-dom";
+import {Link, useHistory, useParams} from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import { users } from "../users.json";
 import { useAuthentication } from "../hooks/useAuthentication";
 
 import ArtsumeModal from "../components/ArtsumeModal";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const UploadImagePage = () => {
     const history = useHistory();
     const fileRef = useRef(null);
     const titleRef = useRef(null);
     const descriptionRef = useRef(null);
+    const [, loggedInUser] = useAuthentication();
+    const { username } = useParams();
+    const user = users.find(user => user.username === username);
 
     const [fileError, setFileError] = useState("");
     const [titleError, setTitleError] = useState("");
@@ -42,6 +47,7 @@ const UploadImagePage = () => {
         }
     };
 
+    if (loggedInUser === user){
     return (
         <ArtsumeModal>
             <form className="">
@@ -84,6 +90,16 @@ const UploadImagePage = () => {
             </form>
         </ArtsumeModal>
     );
+    }
+    else{
+        return(
+            <main className="dark:bg-gray-900">
+                <Navbar />
+                <h1 className="dark:text-white text-2xl font-semibold text-center py-5 min-h-screen">403 Unauthorized</h1>
+                <Footer />
+            </main>
+        );
+    }
 };
 
 export default UploadImagePage;

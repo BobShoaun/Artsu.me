@@ -10,16 +10,20 @@ import {useDispatch} from "react-redux";
 import {useEffect} from "react";
 import {setIsPublic} from "../store/generalSlice";
 import {useScrollToTop} from "../hooks/useScrollToTop";
+import {useAuthentication} from "../hooks/useAuthentication";
+
 
 const AdminPanel = () => {
   const dispatch = useDispatch();
+  const [, user] = useAuthentication();
 
-  useEffect(() => {
+    useEffect(() => {
     dispatch(setIsPublic({ isPublic: false }));
   }, []);
 
   useScrollToTop();
 
+  if (user.isAdmin){
   return (
       <main className="dark:bg-gray-900">
         <Navbar />
@@ -96,6 +100,16 @@ const AdminPanel = () => {
         <Footer />
       </main>
   );
+  }
+  else{
+      return(
+          <main className="dark:bg-gray-900">
+              <Navbar />
+              <h1 className="dark:text-white text-2xl font-semibold text-center py-5 min-h-screen">403 Unauthorized</h1>
+              <Footer />
+          </main>
+      );
+  }
 };
 
 

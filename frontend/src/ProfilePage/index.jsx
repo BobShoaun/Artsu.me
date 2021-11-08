@@ -5,14 +5,17 @@ import { users } from "../users.json";
 import { Link, useParams } from "react-router-dom";
 
 import { artworks } from "../artworks.json";
+import {useAuthentication} from "../hooks/useAuthentication";
 
 const ProfilePage = () => {
   const { username } = useParams();
   const user = users.find(user => user.username === username);
+  const [, loggedInUser] = useAuthentication();
 
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
 
+  if (loggedInUser === user){
   return (
     <main className="dark:bg-gray-900">
       <Navbar />
@@ -168,6 +171,16 @@ const ProfilePage = () => {
       <Footer />
     </main>
   );
+  }
+  else{
+    return(
+        <main className="dark:bg-gray-900">
+          <Navbar />
+          <h1 className="dark:text-white text-2xl font-semibold text-center py-5 min-h-screen">403 Unauthorized</h1>
+          <Footer />
+        </main>
+    );
+  }
 };
 
 export default ProfilePage;

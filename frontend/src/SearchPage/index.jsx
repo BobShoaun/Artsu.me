@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import { artworks } from "../artworks.json";
 import { users } from "../users.json";
 import { tags } from "../tags.json";
-//API calls
+//API calls to get arwork, users and tags
 
 const SearchPage = () => {
   const target = window.location.pathname
@@ -14,32 +14,34 @@ const SearchPage = () => {
     .replace("%20", " ")
     .toLowerCase();
 
-  // API calls
   let artworksFiltered = artworks
   let usersFiltered = users
   let length = artworksFiltered.length
 
   function displaySearchResult() {
     if (target.substr(0, 5) === "&tag=") {
-      let tagFiltered = tags.filter(
+      let tagFiltered = tags.filter( // API calls to get the tag searched
         tag => tag.label.toLowerCase() === target.substr(5)
       );
       let tag = tagFiltered.map(tag => tag.id)[0];
-      artworksFiltered = artworks.filter(artwork =>
+      artworksFiltered = artworks.filter(artwork => // API calls to get artworks with specified tag
         artwork.tagids.includes(tag)
       );
       length = artworksFiltered.length;
     } else if (target.substr(0, 5) === "&art=") {
-      artworksFiltered = artworks.filter(artwork =>
+      artworksFiltered = artworks.filter(artwork => // API calls to get arts searched
         artwork.name.toLowerCase().includes(target.substr(5))
       );
       length = artworksFiltered.length;
     } else if (target.substr(0, 5) === "&usr=") {
-      usersFiltered = users.filter(user =>
+      usersFiltered = users.filter(user => // API calls to get users searched
         user.name.toLowerCase().includes(target.substr(5))
       );
       length = usersFiltered.length;
-
+      let msg = "results";
+      if (usersFiltered.length <= 1) {
+        msg = "result";
+      }
       return (
         <div>
         <div className="ml-20 w-full mb-10">
@@ -53,8 +55,8 @@ const SearchPage = () => {
               <Link
                 to={`/portfolio/${user.username}`}
                 key={user.id}
-                className="hover:bg-gray-800 rounded-lg transition-all p-5 cursor-pointer ml-5"
-              >
+                className="hover:bg-gray-800 rounded-lg transition-all p-5 
+                          cursor-pointer ml-5">
                 <div className="mb-2 p-3">
                   <img
                     className="artworkImg"
@@ -62,7 +64,8 @@ const SearchPage = () => {
                     alt={`${user.name} avatar`}
                   />
                 </div>
-                <h2 className="dark:text-white font-semibold text-lg ml-10 mb-5">
+                <h2 className="dark:text-white font-semibold text-lg ml-10 
+                              mb-5">
                   {user.name}
                 </h2>
                 <p className="dark:text-gray-200 text-sm ml-10">
@@ -75,7 +78,10 @@ const SearchPage = () => {
         </div>
       );
     }
-
+    let msg = "results";
+    if (artworksFiltered.length <= 1) {
+      msg = "result";
+    }
     return (
       <div>
         <div className="ml-20 w-full mb-10">
@@ -97,7 +103,8 @@ const SearchPage = () => {
                   alt={artwork.name}
                 />
                 <div className="pl-3">
-                  <h2 className="dark:text-white text-lg font-semibold mb-1 ml-10">
+                  <h2 className="dark:text-white text-lg font-semibold mb-1
+                                ml-10">
                     {artwork.name}
                   </h2>
                   <p className="dark:text-gray-300 text-sm m-5 ml-10">
@@ -112,10 +119,7 @@ const SearchPage = () => {
     );
   }
 
-  let msg = "results";
-  if (artworksFiltered.length <= 1) {
-    msg = "result";
-  }
+
 
   return (
     <main className="dark:bg-gray-900">
@@ -129,7 +133,8 @@ const SearchPage = () => {
                 <Link to={`/search/&tag=${tag.label}`}>
                   <p
                     key={tag.id}
-                    className={`text-gray-700 cursor-pointer font-semibold text-sm bg-${tag.color} rounded-sm px-2 py-2 my-5`}
+                    className={`text-gray-700 cursor-pointer font-semibold 
+                              text-sm bg-${tag.color} rounded-sm px-2 py-2 my-5`}
                   >
                     #{tag.label}
                   </p>
@@ -138,7 +143,6 @@ const SearchPage = () => {
             })}
           </div>
         </aside>
-
         {displaySearchResult()}
       </div>
       <Footer />

@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { setIsPublic } from "../store/generalSlice";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import "./index.css";
-// API calls
+// API calls to read users and tags
 
 const MainPage = () => {
   const dispatch = useDispatch();

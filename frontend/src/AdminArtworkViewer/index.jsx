@@ -25,7 +25,7 @@ const AdminArtworkViewer = () => {
 
   useScrollToTop();
 
-  //TODO phase2: create method here for API call to update artwork
+  //phase2: create method here for API call to update artwork
 
   if (adminUser.isAdmin) {
       return (

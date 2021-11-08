@@ -1,18 +1,17 @@
 import {Link, useHistory, useParams} from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
-import { users } from "../users.json";
+import { users } from "../users.json"; //phase2: add API call to get information
 import { useAuthentication } from "../hooks/useAuthentication";
-
 import ArtsumeModal from "../components/ArtsumeModal";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 const UploadAvatarPage = () => {
-    const history = useHistory();
     const fileRef = useRef(null);
     const { username } = useParams();
 
     const [fileError, setFileError] = useState("");
+    //phase2: add API call to get information
     const user = users.find(user => user.username === username);
     const [, loggedInUser] = useAuthentication();
 
@@ -22,12 +21,12 @@ const UploadAvatarPage = () => {
 
         setFileError("");
 
-        //add more file selector errors here once we figure out file types
         if (file.file === null) {
             setFileError("File must be selected");
             return;
         }
 
+        //phase2: extend method to call API to upload the image
     };
 
     if (loggedInUser === user){

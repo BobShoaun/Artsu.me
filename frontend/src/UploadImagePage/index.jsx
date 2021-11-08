@@ -1,6 +1,6 @@
 import {Link, useHistory, useParams} from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
-import { users } from "../users.json";
+import { users } from "../users.json"; //phase2: add API call to get information
 import { useAuthentication } from "../hooks/useAuthentication";
 
 import ArtsumeModal from "../components/ArtsumeModal";
@@ -8,13 +8,12 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 const UploadImagePage = () => {
-    const history = useHistory();
     const fileRef = useRef(null);
     const titleRef = useRef(null);
     const descriptionRef = useRef(null);
     const [, loggedInUser] = useAuthentication();
     const { username } = useParams();
-    const user = users.find(user => user.username === username);
+    const user = users.find(user => user.username === username); //phase2: add API call to get information
 
     const [fileError, setFileError] = useState("");
     const [titleError, setTitleError] = useState("");
@@ -45,6 +44,8 @@ const UploadImagePage = () => {
             setDescriptionError("Artwork must have a description");
             return;
         }
+
+        //phase2: extend method to call API to upload the image
     };
 
     if (loggedInUser === user){

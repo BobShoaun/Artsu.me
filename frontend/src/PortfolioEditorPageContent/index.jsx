@@ -104,9 +104,15 @@ const PortfolioEditorPageContent = () => {
         <section className="container mx-auto py-20" id="buttons">
           <div className="flex container mx-auto">
             <div className="m-auto">
-              <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
-                Upload New Artwork
-              </button>
+              <Link
+                      to={`/profile/${user.username}/upload`}
+                      key={user.id}
+                      className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
+              >
+                <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
+                  Upload New Artwork
+                </button>
+              </Link>
             </div>
           </div>
           <div className="text-left inline-block">

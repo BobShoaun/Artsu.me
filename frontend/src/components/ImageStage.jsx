@@ -18,7 +18,7 @@ const ImageStage = ({ src, alt, onClose }) => {
           zoomedIn ? "cursor-zoom-out" : "cursor-zoom-in"
         }`}
         style={
-          // style needs to be inline due to conditional rendering
+          // style needs to be inline due to conditional rendering https://piazza.com/class/ktcceatoldv4ir?cid=124
           zoomedIn
             ? {
                 minWidth: "95vw",

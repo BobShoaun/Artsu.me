@@ -92,7 +92,7 @@ const SearchPage = () => {
                   <h2 className="dark:text-white text-lg font-semibold mb-1 ml-10">
                     {artwork.name}
                   </h2>
-                  <p className="dark:text-gray-300 text-sm mb-3 ml-10">
+                  <p className="dark:text-gray-300 text-sm m-5">
                     {artwork.summary}
                   </p>
                 </div>

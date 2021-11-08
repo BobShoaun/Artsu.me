@@ -67,7 +67,7 @@ const Navbar = ({ showSearchButtons }) => {
           <li className="dropdown-wrapper ml-auto relative text-white text-sm flex items-center gap-5">
             <p className="font-semibold">{user.name}</p>
             <img
-              className="rounded-full w-10"
+              className="rounded-full w-10 h-10"
               src={user.avatar}
               alt={`${user.name} avatar`}
             />

@@ -2,6 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { users } from "../users.json";
 import Footer from "../components/Footer";
 import { useState } from "react";
+import "./index.css";
 
 const PortfolioEditorPageStyles = () => {
 
@@ -65,7 +66,7 @@ const PortfolioEditorPageStyles = () => {
                   ? "bg-gray-500"
                   : "hover:bg-gray-600"
                   }`} onClick={() => layoutOnClick(index)}>
-                  <img style={{maxWidth: "10em"}} className="my-10 mx-10 items-center cursor-pointer" src={layouts[key].default} alt='layout'/>
+                  <img src={layouts[key].default}/>
                   <div className="dark:text-white text-xs text-center my-5">
                     {key.replace(".png", "")}
                   </div>
@@ -85,7 +86,7 @@ const PortfolioEditorPageStyles = () => {
           </div>
           <div class=" float-right inline-block">
             <Link className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
-            to={`/portfolio/${user.slug}`}
+            to={`/portfolio/${user.slug}`} /* write to database */
             >
               Update Settings
             </Link>

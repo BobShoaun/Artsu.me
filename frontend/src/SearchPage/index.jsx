@@ -13,9 +13,10 @@ const SearchPage = () => {
     .replace("%20", " ")
     .toLowerCase();
 
-  let artworksFiltered = artworks;
-  let usersFiltered = users;
-  let length = artworksFiltered.length;
+  // read from database
+  let artworksFiltered = artworks
+  let usersFiltered = users
+  let length = artworksFiltered.length
 
   function displaySearchResult() {
     if (target.substr(0, 5) === "&tag=") {

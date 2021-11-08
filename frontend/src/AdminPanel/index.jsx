@@ -2,7 +2,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { users } from "../users.json";
 
-import { Link, useParams } from "react-router-dom";
+import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
 import {useEffect} from "react";
 import {setIsPublic} from "../store/generalSlice";

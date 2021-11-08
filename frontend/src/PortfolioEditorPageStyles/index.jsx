@@ -89,6 +89,7 @@ const PortfolioEditorPageStyles = () => {
                   <img
                     className="portfolio-style-layout-img"
                     src={layouts[key].default}
+                    alt="layout"
                   />
                   <div className="dark:text-white text-xs text-center my-5">
                     {key.replace(".png", "")}

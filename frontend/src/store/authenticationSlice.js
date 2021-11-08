@@ -11,8 +11,8 @@ export const authenticationSlice = createSlice({
   initialState,
   reducers: {
     login: (state, { payload }) => {
-      const { username, password } = payload;
-      console.log(payload);
+      const { username } = payload;
+      // console.log(payload);
       state.user = users.find(user => user.username === username);
       state.jwt = "iamajwttoken";
     },

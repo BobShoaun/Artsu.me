@@ -1,5 +1,5 @@
-import {Link, useHistory, useParams} from "react-router-dom";
-import { useRef, useState, useEffect } from "react";
+import {Link,  useParams} from "react-router-dom";
+import { useRef, useState } from "react";
 import { users } from "../users.json"; //phase2: add API call to get information
 import { useAuthentication } from "../hooks/useAuthentication";
 import ArtsumeModal from "../components/ArtsumeModal";

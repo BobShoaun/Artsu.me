@@ -12,7 +12,8 @@ const PortfolioEditorPageStyles = () => {
   const { username } = useParams();
   const user = users.find(user => user.username === username);
   const [, loggedInUser, , _logout] = useAuthentication();
-  const themeColor = user.portfolioSettings.themeColor;
+  let themeColor = user.portfolioSettings.themeColor;
+  console.log(themeColor)
   let layoutId = user.portfolioSettings.layoutId;
 
   const [layout, setlayout] = useState(layoutId);
@@ -63,7 +64,7 @@ const PortfolioEditorPageStyles = () => {
                     type="color"
                     id={key}
                     defaultValue={themeColor[key]}
-                    onChange={e => (themeColor[key] = e.target.value)}
+                    /*onChange={e => (themeColor[key] = e.target.value)}*/
                   />
                   <br />
                   <div className="dark:text-white text-xs text-center">

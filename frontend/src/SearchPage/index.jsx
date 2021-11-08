@@ -67,7 +67,7 @@ const SearchPage = () => {
                 >
                   <div className="mb-2 p-3">
                     <img
-                      className="search-page-artwork-img"
+                      className="mb-5 max-w-xs shadow-xl mx-10 mt-5 w-36"
                       src={user.avatar}
                       alt={`${user.name} avatar`}
                     />

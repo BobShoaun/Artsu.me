@@ -4,12 +4,15 @@ import { users } from "../users.json";
 import Footer from "../components/Footer";
 import { artworks } from "../artworks.json";
 import "./index.css"
+import {useAuthentication} from "../hooks/useAuthentication";
+import Navbar from "../components/Navbar";
 // API calls
 
 const PortfolioEditorPageContent = () => {
 
   const { username } = useParams();
   const user = users.find(user => user.username === username);
+  const [, loggedInUser] = useAuthentication();
   
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
@@ -22,7 +25,7 @@ const PortfolioEditorPageContent = () => {
       return;
   }
 
-
+  if (loggedInUser === user){
   return (
     <main className="bg-gray-700">
         
@@ -102,6 +105,16 @@ const PortfolioEditorPageContent = () => {
       <Footer />
     </main> /* API calls to save settings */
   );
+  }
+  else{
+      return(
+          <main className="dark:bg-gray-900">
+              <Navbar />
+              <h1 className="dark:text-white text-2xl font-semibold text-center py-5 min-h-screen">403 Unauthorized</h1>
+              <Footer />
+          </main>
+      );
+  }
 };
 
 export default PortfolioEditorPageContent;

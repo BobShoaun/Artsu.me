@@ -66,7 +66,7 @@ const PortfolioEditorPageStyles = () => {
                   ? "bg-gray-500"
                   : "hover:bg-gray-600"
                   }`} onClick={() => layoutOnClick(index)}>
-                  <img src={layouts[key].default}/>
+                  <img className="layoutImg" src={layouts[key].default}/>
                   <div className="dark:text-white text-xs text-center my-5">
                     {key.replace(".png", "")}
                   </div>

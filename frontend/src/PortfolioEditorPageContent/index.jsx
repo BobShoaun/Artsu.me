@@ -65,7 +65,7 @@ function selectArt(artid){
                 className={SelectedArt.includes(id) ? `bg-gradient-to-br from-${primary.main} to-${secondary.main} transition-all rounded-lg p-7` : "hover:bg-gray-800 rounded-lg p-7"}
               >
                 <img
-                  className="mb-5 shadow-xl mx-auto"
+                  className="artworkImg"
                   src={artwork.image}
                   alt={artwork.name}
                 />

@@ -1,14 +1,19 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link, useParams } from "react-router-dom";
+//replace with API call in phase 2
 import { users } from "../users.json";
+//replace with API call in phase 2
+
 import { artworks } from "../artworks.json";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import {useAuthentication} from "../hooks/useAuthentication";
 
 const AdminArtworkViewer = () => {
   const { id } = useParams();
+  //replace with API call in phase 2
   const artwork = artworks.find(artwork => artwork.id === parseInt(id));
+  //replace with API call in phase 2
   const user = users.find(user => user.id === artwork.author_id);
   const [, adminUser] = useAuthentication();
   
@@ -19,6 +24,8 @@ const AdminArtworkViewer = () => {
   }
 
   useScrollToTop();
+
+  //TODO phase2: create method here for API call to update artwork
 
   if (adminUser.isAdmin) {
       return (

@@ -59,7 +59,7 @@ const PortfolioEditorPageStyles = () => {
           <div className="container mx-auto flex item-center gap-20 py-10">
             {Object.keys(themeColor).map((key, index) => {
               return (
-                <div>
+                <div key={key}>
                   <input
                     className="h-20 w-20 border-0 cursor-pointer"
                     type="color"
@@ -81,7 +81,7 @@ const PortfolioEditorPageStyles = () => {
           <div className="container mx-auto flex item-center gap-20 py-10">
             {Object.keys(layouts).map((key, index) => {
               return (
-                <a
+                <a key={key}
                   className={`${
                     layout === index + 1 ? "bg-gray-500" : "hover:bg-gray-600"
                   }`}

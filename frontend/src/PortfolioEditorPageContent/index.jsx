@@ -62,7 +62,7 @@ const PortfolioEditorPageContent = () => {
               Heading:
             </label>
             <input
-              defalutValue={user.portfolioSettings.heading}
+              defaultValue={user.portfolioSettings.heading}
               className="px-2 py-1"
               type="text"
             />

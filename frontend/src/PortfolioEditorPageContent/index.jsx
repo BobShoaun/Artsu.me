@@ -1,5 +1,5 @@
-import { Link, useParams } from "react-router-dom";
-import { useRef, useState } from "react";
+import { Link, useParams, useHistory } from "react-router-dom";
+import { useState } from "react";
 import { users } from "../users.json";
 import Footer from "../components/Footer";
 import { artworks } from "../artworks.json";
@@ -9,9 +9,11 @@ import Navbar from "../components/Navbar";
 // API calls
 
 const PortfolioEditorPageContent = () => {
+  const history = useHistory();
+
   const { username } = useParams();
   const user = users.find(user => user.username === username); // NOTE: will get user from api
-  const [, loggedInUser] = useAuthentication();
+  const [, loggedInUser, , _logout] = useAuthentication();
 
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
@@ -19,6 +21,11 @@ const PortfolioEditorPageContent = () => {
   const [SelectedArt, setSelectedArt] = useState(
     user.portfolioSettings.artworkIds
   );
+
+  const logout = () => {
+    _logout();
+    history.push("/");
+  };
 
   function selectArt(artid) {
     if (SelectedArt.includes(artid)) {
@@ -42,9 +49,12 @@ const PortfolioEditorPageContent = () => {
             <a className="dark:text-white text-2xl ml-auto">
               Edit Portfolio - Content
             </a>
-            <a className="dark:text-white text-l font-semibold ml-auto">
+            <button
+              onClick={logout}
+              className="dark:text-white text-l font-semibold ml-auto"
+            >
               Logout
-            </a>
+            </button>
           </div>
         </header>
         <section className="dark:text-white container mx-auto py-20">
@@ -54,15 +64,15 @@ const PortfolioEditorPageContent = () => {
               Heading:
             </label>
             <input
-              value={user.portfolioSettings.heading}
+              defalutValue={user.portfolioSettings.heading}
               className="px-2 py-1"
               type="text"
             />
             <label className="dark:text-gray-200 text-sm text-right mt-2">
               About Me:
             </label>
-            <textarea
-              value={user.portfolioSettings.biography}
+            <textarea className="border"
+              defaultValue={user.portfolioSettings.biography}
               rows="4"
               cols="100"
             ></textarea>
@@ -73,7 +83,7 @@ const PortfolioEditorPageContent = () => {
           id="chooseLayout"
         >
           2. Choose Artworks to Display
-          <div className="flex flex-wrap items-center justify-around gap-x-10 gap-y-10">
+          <div className="flex flex-wrap items-center justify-around gap-x-10 gap-y-10 my-10">
             {user.portfolioSettings.artworkIds.map(id => {
               const artwork = artworks.find(artwork => artwork.id === id);
               return (
@@ -101,8 +111,7 @@ const PortfolioEditorPageContent = () => {
             })}
           </div>
         </section>
-        <section className="container mx-auto py-20" id="buttons">
-          <div className="flex container mx-auto">
+          <div className="flex container mx-auto my-10">
             <div className="m-auto">
               <Link
                       to={`/profile/${user.username}/upload`}
@@ -115,23 +124,24 @@ const PortfolioEditorPageContent = () => {
               </Link>
             </div>
           </div>
-          <div className="text-left inline-block">
-            <Link
-              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
-              to={`/portfolio/${user.username}`}
-            >
-              Quit
-            </Link>
-          </div>
-          <div className="float-right inline-block">
-            <Link
-              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
-              to={`/portfolio/edit/styles/${user.username}`}
-            >
-              Next
-            </Link>
-          </div>
-        </section>
+          <section className="my-5" id="buttons">
+            <div className="text-left inline-block">
+              <Link
+                className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
+                to={`/portfolio/${user.username}`}
+              >
+                Quit
+              </Link>
+            </div>
+            <div className="float-right inline-block">
+              <Link
+                className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
+                to={`/portfolio/edit/styles/${user.username}`}
+              >
+                Next
+              </Link>
+            </div>
+          </section>
         <Footer />
       </main> /* API calls to save settings */
     );

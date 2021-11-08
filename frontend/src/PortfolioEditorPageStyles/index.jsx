@@ -2,7 +2,7 @@ import { Link, useParams } from "react-router-dom";
 import { users } from "../users.json";
 import Footer from "../components/Footer";
 import { useState } from "react";
-import style from "./index.css";
+import "./index.css";
 
 const PortfolioEditorPageStyles = () => {
 
@@ -86,7 +86,7 @@ const PortfolioEditorPageStyles = () => {
           </div>
           <div class=" float-right inline-block">
             <Link className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
-            to={`/portfolio/${user.slug}`}
+            to={`/portfolio/${user.slug}`} /* write to database */
             >
               Update Settings
             </Link>

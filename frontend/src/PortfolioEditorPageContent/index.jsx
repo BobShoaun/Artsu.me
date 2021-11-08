@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import { users } from "../users.json";
 import Footer from "../components/Footer";
 import { artworks } from "../artworks.json";
-import style from "./index.css"
+import "./index.css"
 
 const PortfolioEditorPageContent = () => {
 

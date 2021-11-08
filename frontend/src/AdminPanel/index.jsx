@@ -48,7 +48,7 @@ const AdminPanel = () => {
                 </thead>
                 <tbody>
                     {users.map(user => (
-                        <tr>
+                        <tr key={user.id}>
                                 <td className="dark:text-white text-lg mr-3 w-64 text-center border-2 p-1">
                                     <Link
                                         to={`/admin/${user.username}`}

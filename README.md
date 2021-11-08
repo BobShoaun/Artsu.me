@@ -159,7 +159,10 @@ From this page users can:
    - Description
    - Artist
    - Tags
+   - Summary
 - From this page an admin perform the following actions:
    - Ban an artwork
    - Remove a description
+   - Remove a summary
+   - Remove tags
    - Remove tags from the artwork

@@ -17,7 +17,7 @@ const ProfilePage = () => {
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
 
-  //TODO phase2: create method here for API call to update artwork
+  //phase2: create method here for API call to update user information
 
 
   if (adminUser.isAdmin) {

@@ -28,6 +28,8 @@ const PortfolioPage = () => {
 
   useScrollToTop();
 
+  //phase2: create method here for API call to contact the owner of the profile
+
   return (
     <main className="dark:bg-gray-900 scroll-smooth">
       <header className="z-20 py-5 shadow-lg bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm sticky top-0">

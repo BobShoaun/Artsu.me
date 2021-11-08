@@ -53,7 +53,7 @@ const SearchPage = () => {
               <Link
                 to={`/portfolio/${user.username}`}
                 key={user.id}
-                className="hover:bg-gray-800 rounded-lg transition-all p-5 cursor-pointer"
+                className="hover:bg-gray-800 rounded-lg transition-all p-5 cursor-pointer ml-5"
               >
                 <div className="mb-2 p-3">
                   <img

@@ -30,9 +30,15 @@ const ProfilePage = () => {
           <h3 className="dark:text-gray-200 mt-3 mb-6 font-semibold content-center text-center">
             {user.name}
           </h3>
-          <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm text-center">
-            Upload New Avatar
-          </button>
+          <Link
+              to={`/profile/${user.username}/upload_avatar`}
+              key={user.id}
+              className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
+          >
+            <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm text-center">
+              Upload New Avatar
+            </button>
+          </Link>
         </aside>
         <section className="dark:bg-gray">
           <ul className="items-centre gap-10 container mx-auto">
@@ -151,9 +157,15 @@ const ProfilePage = () => {
         </div>
         <div className="flex container mx-auto">
           <div className="m-auto">
-            <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
-              Upload New Artwork
-            </button>
+            <Link
+                to={`/profile/${user.username}/upload`}
+                key={user.id}
+                className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
+            >
+              <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
+                Upload New Artwork
+              </button>
+            </Link>
           </div>
         </div>
       </section>

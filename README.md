@@ -4,7 +4,7 @@
 - Ng Bob Shoaun (1006568992)
 - Jessica Hypatia Boritz (1006163189)
 - Ran Shi (1004793495)
-- -- add yourself --
+- Louis Scheffer V (1005879284)
 
 # User instructions
 
@@ -43,6 +43,43 @@
 
 
 # Admin instructions
+
+## Main Admin Panel
+1. View from a list of usernames, real names, emails, user IDs, and their ban status.
+2. Click one a field to view the user profile.
+
+## Admin User Viewer
+1. View from a list of usernames, real names, emails, user IDs, and their ban status.
+2. Click one a field to view the user profile.
+3. From this page an admin view a user's:
+   - Name
+   - Username
+   - Heading
+   - Biography
+   - Avatar
+   - Ban status
+   - Artworks
+4. From this page an admin perform the following actions:
+   - Remove a user's Biography
+   - Remove a user's Heading
+   - Remove a user's Avatar
+   - Ban a User
+   - Temporary Ban a user
+   - Set a user to featured
+
+## Admin Artwork Viewer
+1. View from a list of usernames, real names, emails, user IDs, and their ban status.
+2. Click one a field to view the user profile.
+3. Scroll down and click on an artwork
+4. From this page an admin view an artwork's:
+   - Image
+   - Description
+   - Artist
+   - Tags
+5. From this page an admin perform the following actions:
+   - Ban an artwork
+   - Remove a description
+   - Remove tags from the artwork
 
 # Main Page
 

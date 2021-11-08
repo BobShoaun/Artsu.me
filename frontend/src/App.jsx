@@ -15,6 +15,8 @@ import SearchPage from "./SearchPage";
 import AdminPanel from "./AdminPanel";
 import AdminProfileViewer from "./AdminProfileViewer";
 import AdminArtworkViewer from "./AdminArtworkViewer";
+import UploadImagePage from "./UploadImagePage";
+import UploadAvatarPage from "./UploadAvatarPage";
 
 const App = () => {
   return (
@@ -28,6 +30,8 @@ const App = () => {
             <Route path="/artwork/:id" component={ArtworkPage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
+            <Route path="/profile/:username/upload_avatar" component={UploadAvatarPage} />
+            <Route path="/profile/:username/upload" component={UploadImagePage} />
             <Route path="/profile/:username" component={ProfilePage} />
             <Route path="/search/:slug" component={SearchPage} />
             <Route path="/search" component={SearchPage} />

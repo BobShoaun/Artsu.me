@@ -8,6 +8,9 @@
       "email": "awharhol@hotmail.com",
       "username": "andyw",
       "password": "andyw123",
+      "isAdmin": true,
+      "isBanned": false,
+      "bannedUntil": null,
       "avatar": "https://upload.wikimedia.org/wikipedia/commons/4/42/Andy_Warhol_1975.jpg",
       "portfolioSettings": {
         "heading": "Pioneer of pop art",
@@ -29,6 +32,9 @@
       "email": "vvg@gmail.com",
       "username": "vincentvg",
       "password": "vince123",
+      "isAdmin": true,
+      "isBanned": false,
+      "bannedUntil": null,
       "avatar": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project.jpg/800px-Vincent_van_Gogh_-_Self-Portrait_-_Google_Art_Project.jpg",
       "portfolioSettings": {
         "heading": "Starry Night",
@@ -50,6 +56,9 @@
       "email": "davinci@yahoo.com",
       "username": "leonardo",
       "password": "leo123",
+      "isAdmin": true,
+      "isBanned": false,
+      "bannedUntil": null,
       "avatar": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Francesco_Melzi_-_Portrait_of_Leonardo.png/800px-Francesco_Melzi_-_Portrait_of_Leonardo.png",
       "portfolioSettings": {
         "heading": "The works of da Vinci",
@@ -72,6 +81,8 @@
       "username": "user",
       "password": "user",
       "avatar": "https://www.larvalabs.com/cryptopunks/cryptopunk2140.png?customColor=638596",
+      "isAdmin": true,
+      "isBanned": false,
       "portfolioSettings": {
         "heading": "Why I am the best",
         "biography": "I am the very best because I am the very best because I...",
@@ -80,6 +91,29 @@
           "primary": "#FFFFFF",
           "secondary": "#000000",
           "highlight": "#B91C1C"
+        },
+        "layoutId": 3
+      }
+    },
+    {
+      "id": 20004,
+      "name": "Admin",
+      "featured": false,
+      "slug": "adminuser",
+      "email": "admin@artsu.me",
+      "username": "admin",
+      "password": "admin",
+      "avatar": "https://thumbs.dreamstime.com/b/admin-icon-trendy-design-style-isolated-white-background-vector-simple-modern-flat-symbol-web-site-mobile-logo-app-135742404.jpg",
+      "isAdmin": true,
+      "isBanned": false,
+      "portfolioSettings": {
+        "heading": "I am the admin",
+        "biography": "Don't make me ban you",
+        "artworkIds": [10011, 10012, 10013, 10014, 10015],
+        "themeColor": {
+          "primary": "black",
+          "secondary": "white",
+          "highlight": "red"
         },
         "layoutId": 3
       }

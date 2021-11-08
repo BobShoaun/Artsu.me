@@ -48,6 +48,7 @@ The frontend is scaffolded using Create React App
 
 1. Browse from a list of artists
 2. Type in the search box and press either of the search button, this navigates you to the search page
+3. Click on any of the tags displayed to go to the search page with that tag as a query.
 
 ## Search Page
 

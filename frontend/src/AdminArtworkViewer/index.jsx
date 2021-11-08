@@ -46,12 +46,19 @@ const AdminArtworkViewer = () => {
                           <p className="text-xl text-white text-center">{user.name}</p>
                       </Link>
                       <p className="text-white">{artwork.description_full}</p>
+                      <p className="text-center text-gray-300 font mb-14">
+                          {artwork.summary}
+                      </p>
 
                   </section>
                   <div className="text-right mb-10 mx-auto">
                       <button
                           className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm mr-2">
                           Ban Artwork
+                      </button>
+                      <button
+                          className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
+                          Remove Summary
                       </button>
                       <button
                           className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">

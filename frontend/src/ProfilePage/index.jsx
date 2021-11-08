@@ -36,7 +36,7 @@ const ProfilePage = () => {
               {user.name}
             </h3>
             <Link
-              to={`/profile/${user.username}/upload_avatar`}
+              to={`/profile/${user.username}/upload-avatar`}
               key={user.id}
               className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
             >

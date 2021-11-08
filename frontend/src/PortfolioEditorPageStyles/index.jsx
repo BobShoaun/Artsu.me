@@ -5,11 +5,11 @@ import { useState } from "react";
 import "./index.css";
 import {useAuthentication} from "../hooks/useAuthentication";
 import Navbar from "../components/Navbar";
-// API calls
+// API calls to get users
 
 const PortfolioEditorPageStyles = () => {
 
-  const { username } = useParams(); // API calls
+  const { username } = useParams();
   const user = users.find(user => user.username === username);
   const [, loggedInUser] = useAuthentication();
   const themeColor = user.portfolioSettings.themeColor

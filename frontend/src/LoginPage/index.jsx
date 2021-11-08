@@ -3,7 +3,7 @@ import { useRef, useState, useEffect } from "react";
 import { users } from "../users.json"; // NOTE: user will be from API
 import { useAuthentication } from "../hooks/useAuthentication";
 import ArtsumeModal from "../components/ArtsumeModal";
-// API calls
+// API calls to read users
 
 const LoginPage = () => {
   const history = useHistory();

@@ -79,6 +79,11 @@ const Navbar = ({ showSearchButtons }) => {
                 <li className="py-2 px-5 hover:bg-gray-800 transition">
                   <Link to={`/portfolio/${user.username}`}>Portfolio</Link>
                 </li>
+                {user.isAdmin && (
+                  <li className="py-2 px-5 hover:bg-gray-800 transition">
+                    <Link to={`/admin`}>Admin Panel</Link>
+                  </li>
+                )}
                 <li className="py-2 px-5 hover:bg-gray-800 transition">
                   <button onClick={logout}>Logout</button>
                 </li>

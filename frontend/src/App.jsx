@@ -25,21 +25,27 @@ const App = () => {
         <Router>
           <Switch>
             <Route
-              path="/portfolio/edit/styles/:slug"
+              path="/portfolio/edit/styles/:username"
               component={PortfolioEditorPageStyles}
             />
             <Route
-              path="/portfolio/edit/content/:slug"
+              path="/portfolio/edit/content/:username"
               component={PortfolioEditorPageContent}
             />
-            <Route path="/portfolio/:slug" component={PortfolioPage} />
+            <Route path="/portfolio/:username" component={PortfolioPage} />
             <Route path="/artwork/:id" component={ArtworkPage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
-            <Route path="/profile/:username/upload_avatar" component={UploadAvatarPage} />
-            <Route path="/profile/:username/upload" component={UploadImagePage} />
+            <Route
+              path="/profile/:username/upload_avatar"
+              component={UploadAvatarPage}
+            />
+            <Route
+              path="/profile/:username/upload"
+              component={UploadImagePage}
+            />
             <Route path="/profile/:username" component={ProfilePage} />
-            <Route path="/search/:slug" component={SearchPage} />
+            <Route path="/search/:username" component={SearchPage} />
             <Route path="/search" component={SearchPage} />
             <Route path="/admin/artwork/:id" component={AdminArtworkViewer} />
             <Route path="/admin/:username" component={AdminProfileViewer} />

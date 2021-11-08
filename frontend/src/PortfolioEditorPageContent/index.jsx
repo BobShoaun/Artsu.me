@@ -7,8 +7,8 @@ import "./index.css"
 
 const PortfolioEditorPageContent = () => {
 
-  const { slug } = useParams();
-  const user = users.find(user => user.slug === slug);
+  const { username } = useParams();
+  const user = users.find(user => user.username === username);
   
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
@@ -85,14 +85,14 @@ function selectArt(artid){
         </div>
         <div className="text-left inline-block">
             <Link className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
-            to={`/portfolio/${user.slug}`}
+            to={`/portfolio/${user.username}`}
             >
               Quit
             </Link>
         </div>
         <div className="float-right inline-block">
           <Link className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
-          to={`/portfolio/edit/styles/${user.slug}`}
+          to={`/portfolio/edit/styles/${user.username}`}
           >
             Next
           </Link>

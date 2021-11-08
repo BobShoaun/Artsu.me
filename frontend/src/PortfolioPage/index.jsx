@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import { users } from "../users.json";
 import { artworks } from "../artworks.json";
+//API calls
 
 import { useSelector } from "react-redux";
 import { useScrollToTop } from "../hooks/useScrollToTop";

@@ -2,7 +2,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import { users } from "../users.json";
 import { useAuthentication } from "../hooks/useAuthentication";
-
+// API calls
 import ArtsumeModal from "../components/ArtsumeModal";
 
 const RegisterPage = () => {

@@ -6,10 +6,11 @@ import { Link, useParams } from "react-router-dom";
 
 import { artworks } from "../artworks.json";
 import {useAuthentication} from "../hooks/useAuthentication";
+// API calls
 
 const ProfilePage = () => {
   const { username } = useParams();
-  const user = users.find(user => user.username === username);
+  const user = users.find(user => user.username === username); //API calls
   const [, loggedInUser] = useAuthentication();
 
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };

@@ -1,8 +1,10 @@
 import { Link, useHistory } from "react-router-dom";
 import { useAuthentication } from "../hooks/useAuthentication";
-import React, { useState } from 'react';
+import { useState } from "react";
+import { Search } from "react-feather";
+import "./index.css";
 
-const Navbar = () => {
+const Navbar = ({ showSearchButtons }) => {
   const history = useHistory();
   const [jwt, user, , _logout] = useAuthentication();
   const [search, setSearch] = useState("");
@@ -12,9 +14,9 @@ const Navbar = () => {
     history.push("/");
   };
 
-  const searchValueOnChange = (e) => {
-    setSearch(e.target.value)
-  }
+  const searchValueOnChange = e => {
+    setSearch(e.target.value);
+  };
 
   return (
     <nav className=" bg-gray-800 bg-opacity-50 z-20 py-5 shadow-lg backdrop-filter backdrop-blur-sm sticky top-0">
@@ -24,42 +26,58 @@ const Navbar = () => {
             artsu.me
           </Link>
         </li>
-        <li className="ml-auto">
-          
-          <div className="w-full text-center">
+        <li className="ml-auto relative searchbox">
+          <form
+            action=""
+            onSubmit={e => {
+              e.preventDefault();
+              history.push("/search");
+            }}
+          >
             <input
-              className="px-2 py-1 w-1/2 outline-none text-white bg-transparent border-opacity-50 
-              focus:border-opacity-100 border-gray-200"
-              type="text"
-              placeholder="search"
-              style={{ borderBottomWidth: "1px" }}
+              className=""
+              type="search"
+              placeholder="Search"
               onChange={searchValueOnChange}
             />
-            <button className="float-right whitespace-nowrap flex-nowrap mr-2 text-xs px-2 py-1 mt-1 bg-gray-500 rounded-full hover:bg-coolGray-400" 
-              type="submit">
+          </form>
+
+          {showSearchButtons && (
+            <div className="w-full text-center">
+              <button
+                className="float-right whitespace-nowrap flex-nowrap mr-2 text-xs px-2 py-1 mt-1 bg-gray-500 rounded-full hover:bg-coolGray-400"
+                type="submit"
+              >
                 <Link to={`/search/&art=${search}`}>search artwork</Link>
-            </button>
-            <button className="float-right whitespace-nowrap flex-nowrap mr-2 text-xs px-2 py-1 mt-1 bg-gray-500 rounded-full hover:bg-coolGray-400" 
-              type="submit">
+              </button>
+              <button
+                className="float-right whitespace-nowrap flex-nowrap mr-2 text-xs px-2 py-1 mt-1 bg-gray-500 rounded-full hover:bg-coolGray-400"
+                type="submit"
+              >
                 <Link to={`/search/&usr=${search}`}>search artist</Link>
-            </button>
-          </div>
+              </button>
+            </div>
+          )}
+          <Search
+            size={18}
+            className="searchbox-icon text-gray-200 opacity-50 absolute right-2 top-1 transition"
+          />
         </li>
         {jwt ? (
           <li className="dropdown-wrapper ml-auto relative text-white text-sm flex items-center gap-5">
-            <p className="font-semibold">{user.username}</p>
+            <p className="font-semibold">{user.name}</p>
             <img
               className="rounded-full w-10"
               src={user.avatar}
               alt={`${user.name} avatar`}
             />
-            <div
-              className="dropdown opacity-0 backdrop-blur-sm backdrop-filter absolute py-1 right-0 bg-gray-900 rounded-sm"
-              style={{ top: "120%" }}
-            >
+            <div className="dropdown opacity-0 backdrop-blur-sm backdrop-filter absolute py-1 right-0 bg-gray-900 rounded-sm">
               <ul>
                 <li className="py-2 px-5 hover:bg-gray-800 transition">
                   <Link to={`/profile/${user.username}`}>Profile</Link>
+                </li>
+                <li className="py-2 px-5 hover:bg-gray-800 transition">
+                  <Link to={`/portfolio/${user.username}`}>Portfolio</Link>
                 </li>
                 <li className="py-2 px-5 hover:bg-gray-800 transition">
                   <button onClick={logout}>Logout</button>
@@ -72,8 +90,7 @@ const Navbar = () => {
             <li className="ml-auto">
               <Link
                 to="/register"
-                className=" text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm"
-                style={{ textUnderlineOffset: "3px" }}
+                className="text-gray-900 font-semibold bg-gradient-to-br from-fuchsia-500 to-fuchsia-700 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm"
               >
                 Sign Up
               </Link>
@@ -81,8 +98,7 @@ const Navbar = () => {
             <li>
               <Link
                 to="/login"
-                className="text-gray-200 text-sm hover:underline font-semibold"
-                style={{ textUnderlineOffset: "3px" }}
+                className="underline-offset text-gray-200 text-sm hover:underline font-semibold"
               >
                 Login
               </Link>

@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { setIsPublic } from "../store/generalSlice";
 import { useScrollToTop } from "../hooks/useScrollToTop";
+import "./index.css";
 
 const MainPage = () => {
   const dispatch = useDispatch();
@@ -34,23 +35,22 @@ const MainPage = () => {
         />
       </div>
       <div className="container mx-auto py-20">
-        <aside className="flex items-center mb-10 mx-10">
-          <h3 className="dark:text-gray-200 font-semibold mr-5">Tags:</h3>
+        <aside className="mb-10 mx-10">
           <div className="flex flex-wrap gap-3">
             {tags.map(tag => (
               <p
                 key={tag.id}
-                className={`text-gray-700 cursor-pointer font-semibold text-sm bg-${tag.color} rounded-sm px-2 py-1`}
+                className={`text-gray-900 -text-white cursor-pointer font-semibold text-sm  bg-${tag.color} rounded-sm px-2 py-1`}
               >
                 #{tag.label}
               </p>
             ))}
           </div>
         </aside>
-        <section className="flex-1 grid md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-7">
+        <section className="flex-1 grid md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-y-8 gap-x-3">
           {users.map(user => (
             <Link
-              to={`/portfolio/${user.slug}`}
+              to={`/portfolio/${user.username}`}
               key={user.id}
               className={`mx-auto ${
                 user.featured
@@ -59,27 +59,25 @@ const MainPage = () => {
               }  rounded-lg transition-all p-5 cursor-pointer`}
             >
               {user.featured && (
-                <h3
-                  className="text-white text-sm font-semibold underline"
-                  style={{ textUnderlineOffset: "2px" }}
-                >
+                <h3 className="underline-offset text-white text-sm font-semibold underline mb-2">
                   Featured
                 </h3>
               )}
-              <div className="mb-2 p-3">
+              <div className="mb-2">
                 <img
-                  style={{ maxWidth: "12em" }}
-                  className="shadow-lg rounded-lg"
+                  className="avatar shadow-lg rounded-sm w-48 h-48 object-cover"
                   src={user.avatar}
                   alt={`${user.name} avatar`}
                 />
               </div>
-              <h2 className="dark:text-white font-semibold text-lg">
-                {user.name}
-              </h2>
-              <p className="dark:text-gray-200 text-sm">
-                {user.portfolioSettings.heading}
-              </p>
+              <div className="px-2">
+                <h2 className="dark:text-white font-semibold text-lg">
+                  {user.name}
+                </h2>
+                <p className="dark:text-gray-200 text-sm">
+                  {user.portfolioSettings.heading}
+                </p>
+              </div>
             </Link>
           ))}
         </section>

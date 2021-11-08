@@ -24,8 +24,14 @@ const App = () => {
       <main className="dark">
         <Router>
           <Switch>
-            <Route path="/portfolio/edit/styles/:slug" component={PortfolioEditorPageStyles}/>
-            <Route path="/portfolio/edit/content/:slug" component={PortfolioEditorPageContent}/>
+            <Route
+              path="/portfolio/edit/styles/:slug"
+              component={PortfolioEditorPageStyles}
+            />
+            <Route
+              path="/portfolio/edit/content/:slug"
+              component={PortfolioEditorPageContent}
+            />
             <Route path="/portfolio/:slug" component={PortfolioPage} />
             <Route path="/artwork/:id" component={ArtworkPage} />
             <Route path="/login" component={LoginPage} />

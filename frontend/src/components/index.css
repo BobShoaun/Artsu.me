@@ -45,6 +45,10 @@
   }
 }
 
+.artsume-heading {
+  font-size: 13rem !important;
+}
+
 .dropdown-wrapper {
   cursor: pointer;
 }
@@ -53,9 +57,14 @@
   transform: translateY(-50%);
   transition: all 0.2s ease-in-out;
   z-index: -10;
+  top: 120%;
 }
 
 .dropdown-wrapper:hover .dropdown {
   opacity: 0.7;
   transform: translateY(0);
+}
+
+.searchbox:focus-within > .searchbox-icon {
+  opacity: 1;
 }

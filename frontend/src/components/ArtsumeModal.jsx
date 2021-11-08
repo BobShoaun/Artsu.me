@@ -3,10 +3,7 @@ import "./index.css";
 const ArtsumeModal = ({ children }) => {
   return (
     <main className="moving-gradient bg-gradient-to-br from-rose-300 to-teal-500 min-h-screen flex relative overflow-hidden">
-      <h1
-        style={{ fontSize: "13rem" }}
-        className="text-white text-9xl font-bold opacity-40 absolute top-52 inset-0 z-0 text-center"
-      >
+      <h1 className="artsume-heading text-white font-bold opacity-40 absolute top-32 inset-0 z-0 text-center">
         artsu.me
       </h1>
 

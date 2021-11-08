@@ -38,14 +38,12 @@ const PortfolioEditorPageStyles = () => {
       <main className="bg-gray-700">
         <header className="z-20 py-5 shadow-lg bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm sticky top-0">
           <div className="container mx-auto flex item-center gap-10">
-            <a>
-              <Link to="/" className="dark:text-white text-2xl font-semibold">
-                artsu.me
-              </Link>
-            </a>
-            <a className="dark:text-white text-2xl ml-auto">
+            <Link to="/" className="dark:text-white text-2xl font-semibold">
+              artsu.me
+            </Link>
+            <h2 className="dark:text-white text-2xl ml-auto">
               Edit Portfolio - Styles
-            </a>
+            </h2>
             <button
               onClick={logout}
               className="dark:text-white text-l font-semibold ml-auto"
@@ -81,13 +79,17 @@ const PortfolioEditorPageStyles = () => {
           <div className="container mx-auto flex item-center gap-20 py-10">
             {Object.keys(layouts).map((key, index) => {
               return (
-                <a key={key}
+                <a
+                  key={key}
                   className={`${
                     layout === index + 1 ? "bg-gray-500" : "hover:bg-gray-600"
                   }`}
                   onClick={() => layoutOnClick(index)}
                 >
-                  <img className="portfolio-style-layout-img" src={layouts[key].default} />
+                  <img
+                    className="portfolio-style-layout-img"
+                    src={layouts[key].default}
+                  />
                   <div className="dark:text-white text-xs text-center my-5">
                     {key.replace(".png", "")}
                   </div>

@@ -41,14 +41,12 @@ const PortfolioEditorPageContent = () => {
       <main className="bg-gray-700">
         <header className="z-20 py-5 shadow-lg bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm sticky top-0">
           <div className="container mx-auto flex item-center gap-10">
-            <a>
-              <Link to="/" className="dark:text-white text-2xl font-semibold">
-                artsu.me
-              </Link>
-            </a>
-            <a className="dark:text-white text-2xl ml-auto">
+            <Link to="/" className="dark:text-white text-2xl font-semibold">
+              artsu.me
+            </Link>
+            <h2 className="dark:text-white text-2xl ml-auto">
               Edit Portfolio - Content
-            </a>
+            </h2>
             <button
               onClick={logout}
               className="dark:text-white text-l font-semibold ml-auto"
@@ -71,7 +69,8 @@ const PortfolioEditorPageContent = () => {
             <label className="dark:text-gray-200 text-sm text-right mt-2">
               About Me:
             </label>
-            <textarea className="border"
+            <textarea
+              className="border"
               defaultValue={user.portfolioSettings.biography}
               rows="4"
               cols="100"
@@ -111,37 +110,37 @@ const PortfolioEditorPageContent = () => {
             })}
           </div>
         </section>
-          <div className="flex container mx-auto my-10">
-            <div className="m-auto">
-              <Link
-                      to={`/profile/${user.username}/upload`}
-                      key={user.id}
-                      className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
-              >
-                <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
-                  Upload New Artwork
-                </button>
-              </Link>
-            </div>
+        <div className="flex container mx-auto my-10">
+          <div className="m-auto">
+            <Link
+              to={`/profile/${user.username}/upload`}
+              key={user.id}
+              className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
+            >
+              <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
+                Upload New Artwork
+              </button>
+            </Link>
           </div>
-          <section className="my-5" id="buttons">
-            <div className="text-left inline-block">
-              <Link
-                className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
-                to={`/portfolio/${user.username}`}
-              >
-                Quit
-              </Link>
-            </div>
-            <div className="float-right inline-block">
-              <Link
-                className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
-                to={`/portfolio/edit/styles/${user.username}`}
-              >
-                Next
-              </Link>
-            </div>
-          </section>
+        </div>
+        <section className="my-5" id="buttons">
+          <div className="text-left inline-block">
+            <Link
+              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
+              to={`/portfolio/${user.username}`}
+            >
+              Quit
+            </Link>
+          </div>
+          <div className="float-right inline-block">
+            <Link
+              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
+              to={`/portfolio/edit/styles/${user.username}`}
+            >
+              Next
+            </Link>
+          </div>
+        </section>
         <Footer />
       </main> /* API calls to save settings */
     );

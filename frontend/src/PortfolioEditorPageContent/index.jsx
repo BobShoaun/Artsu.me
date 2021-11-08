@@ -1,5 +1,5 @@
-import { Link, useParams } from "react-router-dom";
-import { useRef, useState } from "react";
+import { Link, useParams, useHistory } from "react-router-dom";
+import { useState } from "react";
 import { users } from "../users.json";
 import Footer from "../components/Footer";
 import { artworks } from "../artworks.json";
@@ -9,9 +9,11 @@ import Navbar from "../components/Navbar";
 // API calls
 
 const PortfolioEditorPageContent = () => {
+  const history = useHistory();
+
   const { username } = useParams();
   const user = users.find(user => user.username === username); // NOTE: will get user from api
-  const [, loggedInUser] = useAuthentication();
+  const [, loggedInUser, , _logout] = useAuthentication();
 
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
@@ -19,6 +21,11 @@ const PortfolioEditorPageContent = () => {
   const [SelectedArt, setSelectedArt] = useState(
     user.portfolioSettings.artworkIds
   );
+
+  const logout = () => {
+    _logout();
+    history.push("/");
+  };
 
   function selectArt(artid) {
     if (SelectedArt.includes(artid)) {
@@ -42,9 +49,12 @@ const PortfolioEditorPageContent = () => {
             <a className="dark:text-white text-2xl ml-auto">
               Edit Portfolio - Content
             </a>
-            <a className="dark:text-white text-l font-semibold ml-auto">
+            <button
+              onClick={logout}
+              className="dark:text-white text-l font-semibold ml-auto"
+            >
               Logout
-            </a>
+            </button>
           </div>
         </header>
         <section className="dark:text-white container mx-auto py-20">

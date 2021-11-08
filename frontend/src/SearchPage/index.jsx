@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { artworks } from "../artworks.json";
@@ -95,9 +95,9 @@ const SearchPage = () => {
     return (
       <div>
         <div className="ml-20 w-full mb-10">
-          <p1 className="dark:text-white text-2l w-100% float-left mr-10">
+          <p className="dark:text-white text-2l w-100% float-left mr-10">
             Displaying {length} {msg}
-          </p1>
+          </p>
         </div>
         <div className="flex flex-wrap justify-around gap-x-10 gap-y-10">
           {artworksFiltered.map(artwork => {

@@ -84,6 +84,19 @@ const ProfilePage = () => {
                 </p>
               </li>
             </ul>
+            <ul className="flex items-center gap-10 mx-auto mb-6">
+              <li color="white">
+                <h3 className="dark:text-gray-200 font-semibold text-right">
+                  Is user banned:{" "}
+                </h3>
+              </li>
+              <li className="ml-auto">
+                <p className="dark:text-gray-200 text-right">
+                  {user.isBanned.toString()}
+                </p>
+              </li>
+            </ul>
+
             <div className="text-right">
               <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm mr-2">
                 Remove Biography
@@ -94,8 +107,11 @@ const ProfilePage = () => {
               <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm mr-2">
                 Temporary Ban User
               </button>
-              <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
+              <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm mr-2">
                 Ban User
+              </button>
+              <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
+                Feature User
               </button>
             </div>
           </ul>

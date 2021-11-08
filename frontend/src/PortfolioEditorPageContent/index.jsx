@@ -73,7 +73,7 @@ const PortfolioEditorPageContent = () => {
           id="chooseLayout"
         >
           2. Choose Artworks to Display
-          <div className="flex flex-wrap items-center justify-around gap-x-10 gap-y-10">
+          <div className="flex flex-wrap items-center justify-around gap-x-10 gap-y-10 my-10">
             {user.portfolioSettings.artworkIds.map(id => {
               const artwork = artworks.find(artwork => artwork.id === id);
               return (
@@ -101,31 +101,31 @@ const PortfolioEditorPageContent = () => {
             })}
           </div>
         </section>
-        <section className="container mx-auto py-20" id="buttons">
-          <div className="flex container mx-auto">
+          <div className="flex container mx-auto my-10">
             <div className="m-auto">
               <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
                 Upload New Artwork
               </button>
             </div>
           </div>
-          <div className="text-left inline-block">
-            <Link
-              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
-              to={`/portfolio/${user.username}`}
-            >
-              Quit
-            </Link>
-          </div>
-          <div className="float-right inline-block">
-            <Link
-              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
-              to={`/portfolio/edit/styles/${user.username}`}
-            >
-              Next
-            </Link>
-          </div>
-        </section>
+          <section className="my-5" id="buttons">
+            <div className="text-left inline-block">
+              <Link
+                className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
+                to={`/portfolio/${user.username}`}
+              >
+                Quit
+              </Link>
+            </div>
+            <div className="float-right inline-block">
+              <Link
+                className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
+                to={`/portfolio/edit/styles/${user.username}`}
+              >
+                Next
+              </Link>
+            </div>
+          </section>
         <Footer />
       </main> /* API calls to save settings */
     );

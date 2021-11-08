@@ -13,10 +13,10 @@ import "./index.css";
 const ArtworkPage = () => {
   const { id } = useParams();
   const artwork = artworks.find(artwork => artwork.id === parseInt(id)); // NOTE: will be replaced by api call
-  const user = users.find(user => user.id === artwork.author_id); // NOTE: will be replaced by api call
+  const user = users.find(user => user.id === artwork.authorId); // NOTE: will be replaced by api call
   const artworkTags = [];
-  artwork.tagids.forEach(tagid => {
-    artworkTags.push(tags.find(tag => tag.id === tagid));
+  artwork.tagIds.forEach(tagId => {
+    artworkTags.push(tags.find(tag => tag.id === tagId));
   });
 
   const otherArtworks = user.portfolioSettings.artworkIds
@@ -45,7 +45,7 @@ const ArtworkPage = () => {
         <main>
           <img
             onClick={() => setFullscreen(true)}
-            className="artwork mx-auto shadow-xl cursor-zoom-in mb-8"
+            className="artwork-page-artwork mx-auto shadow-xl cursor-zoom-in mb-8"
             src={artwork.image}
             alt={artwork.name}
           />

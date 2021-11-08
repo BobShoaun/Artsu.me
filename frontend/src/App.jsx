@@ -37,7 +37,7 @@ const App = () => {
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
             <Route
-              path="/profile/:username/upload_avatar"
+              path="/profile/:username/upload-avatar"
               component={UploadAvatarPage}
             />
             <Route

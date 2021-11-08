@@ -14,7 +14,7 @@ const AdminArtworkViewer = () => {
   //replace with API call in phase 2
   const artwork = artworks.find(artwork => artwork.id === parseInt(id));
   //replace with API call in phase 2
-  const user = users.find(user => user.id === artwork.author_id);
+  const user = users.find(user => user.id === artwork.authorId);
   const [, adminUser] = useAuthentication();
   
   const otherArts = user.portfolioSettings.artworkIds.filter(ID => ID !== id).sort((a, b) => 0.5 - Math.random()) // grab artworks, remove currently displayed one, and roughly shuffle them (shuffle apporach found online)

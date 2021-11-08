@@ -79,7 +79,7 @@ const PortfolioEditorPageStyles = () => {
           <div className="container mx-auto flex item-center gap-20 py-10">
             {Object.keys(layouts).map((key, index) => {
               return (
-                <a
+                <div
                   key={key}
                   className={`${
                     layout === index + 1 ? "bg-gray-500" : "hover:bg-gray-600"
@@ -93,7 +93,7 @@ const PortfolioEditorPageStyles = () => {
                   <div className="dark:text-white text-xs text-center my-5">
                     {key.replace(".png", "")}
                   </div>
-                </a>
+                </div>
               );
             })}
           </div>

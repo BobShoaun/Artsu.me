@@ -4,6 +4,7 @@ import { users } from "../users.json";
 import Footer from "../components/Footer";
 import { artworks } from "../artworks.json";
 import "./index.css"
+// API calls
 
 const PortfolioEditorPageContent = () => {
 
@@ -13,13 +14,13 @@ const PortfolioEditorPageContent = () => {
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
 
-const [SelectedArt, setSelectedArt] = useState(user.portfolioSettings.artworkIds);
+  const [SelectedArt, setSelectedArt] = useState(user.portfolioSettings.artworkIds);
 
-function selectArt(artid){
-    if (SelectedArt.includes(artid)){setSelectedArt(SelectedArt.filter(id => artid !== id))}
-    else{setSelectedArt(SelectedArt.concat(artid))}
-    return;
-}
+  function selectArt(artid){
+      if (SelectedArt.includes(artid)){setSelectedArt(SelectedArt.filter(id => artid !== id))}
+      else{setSelectedArt(SelectedArt.concat(artid))}
+      return;
+  }
 
 
   return (
@@ -99,7 +100,7 @@ function selectArt(artid){
         </div>
       </section>
       <Footer />
-    </main>
+    </main> /* API calls to save settings */
   );
 };
 

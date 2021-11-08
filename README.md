@@ -96,7 +96,3 @@
    - Ban an artwork
    - Remove a description
    - Remove tags from the artwork
-
-## Art Page
-
-## Portfolio Settings

@@ -44,14 +44,13 @@ const SearchPage = () => {
           {usersFiltered.map(user => {
             return (
               <Link
-                to={`/portfolio/${user.slug}`}
+                to={`/portfolio/${user.username}`}
                 key={user.id}
                 className="hover:bg-gray-800 rounded-lg transition-all p-5 cursor-pointer"
               >
                 <div className="mb-2 p-3">
                   <img
-                    style={{ maxWidth: "12em" }}
-                    className="shadow-lg rounded-lg"
+                    className="artworkImg"
                     src={user.avatar}
                     alt={`${user.name} avatar`}
                   />
@@ -94,7 +93,7 @@ const SearchPage = () => {
                     {artwork.name}
                   </h2>
                   <p className="dark:text-gray-300 text-sm mb-3 ml-10">
-                    {artwork.description}
+                    {artwork.summary}
                   </p>
                 </div>
               </Link>
@@ -114,7 +113,7 @@ const SearchPage = () => {
     <main className="dark:bg-gray-900">
       <Navbar showSearchButtons />
       <div className="container mx-auto mb-20 flex py-20 gap-8">
-        <aside style={{ flexBasis: "12em" }}>
+        <aside className="tagAside">
           <h3 className="dark:text-gray-200 mb-3 font-semibold">Tags:</h3>
           <div className="flex flex-wrap gap-3">
             {tags.map(tag => {

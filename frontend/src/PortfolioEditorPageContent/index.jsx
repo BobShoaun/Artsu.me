@@ -97,7 +97,7 @@ const PortfolioEditorPageContent = () => {
                   }
                 >
                   <img
-                    className="artwork-img"
+                    className="portfolio-content-artwork-img"
                     src={artwork.image}
                     alt={artwork.name}
                   />

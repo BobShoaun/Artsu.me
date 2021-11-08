@@ -17,7 +17,7 @@ const AdminArtworkViewer = () => {
   //replace with API call in phase 2
   const artwork = artworks.find(artwork => artwork.id === parseInt(id));
   //replace with API call in phase 2
-  const user = users.find(user => user.id === artwork.author_id);
+  const user = users.find(user => user.id === artwork.authorId);
   const [, adminUser] = useAuthentication();
   const artworkTags = [];
   artwork.tagids.forEach(tagid => {

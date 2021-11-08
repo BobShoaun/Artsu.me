@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Search } from "react-feather";
 import "./index.css";
 
-const Navbar = () => {
+const Navbar = ({ showSearchButtons }) => {
   const history = useHistory();
   const [jwt, user, , _logout] = useAuthentication();
   const [search, setSearch] = useState("");
@@ -37,35 +37,27 @@ const Navbar = () => {
             <input
               className=""
               type="search"
-              placeholder="search"
+              placeholder="Search"
               onChange={searchValueOnChange}
             />
           </form>
 
-          <div className="w-full text-center">
-            {/* <input
-              className="px-2 py-1 w-1/2 outline-none text-white bg-transparent border-opacity-50 
-              focus:border-opacity-100 border-gray-200"
-              type="text"
-              placeholder="search"
-              style={{ borderBottomWidth: "1px" }}
-              onChange={searchValueOnChange}
-            /> */}
-            <button
-              className="float-right whitespace-nowrap flex-nowrap mr-2 text-xs px-2 py-1 mt-1 bg-gray-500 rounded-full hover:bg-coolGray-400"
-              type="submit"
-            >
-              <Link to={`/search/&art=${search}`}>search artwork</Link>
-            </button>
-            <button
-              className="float-right whitespace-nowrap flex-nowrap mr-2 text-xs px-2 py-1 mt-1 bg-gray-500 rounded-full hover:bg-coolGray-400"
-              type="submit"
-            >
-              <Link to={`/search/&usr=${search}`}>search artist</Link>
-            </button>
-          </div>
-          {/* <li className="ml-auto "> */}
-
+          {showSearchButtons && (
+            <div className="w-full text-center">
+              <button
+                className="float-right whitespace-nowrap flex-nowrap mr-2 text-xs px-2 py-1 mt-1 bg-gray-500 rounded-full hover:bg-coolGray-400"
+                type="submit"
+              >
+                <Link to={`/search/&art=${search}`}>search artwork</Link>
+              </button>
+              <button
+                className="float-right whitespace-nowrap flex-nowrap mr-2 text-xs px-2 py-1 mt-1 bg-gray-500 rounded-full hover:bg-coolGray-400"
+                type="submit"
+              >
+                <Link to={`/search/&usr=${search}`}>search artist</Link>
+              </button>
+            </div>
+          )}
           <Search
             size={18}
             className="searchbox-icon text-gray-200 opacity-50 absolute right-2 top-1 transition"

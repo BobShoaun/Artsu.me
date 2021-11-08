@@ -43,7 +43,7 @@ const PortfolioPage = () => {
           )}
           {jwt && loggedInUser.username === user.username && (
             <Link
-              to={`/portfolio/edit/${user.username}`}
+              to={`/portfolio/edit/content/${user.username}`}
               className="text-gray-200 text-sm hover:underline self-center"
             >
               Edit Portfolio

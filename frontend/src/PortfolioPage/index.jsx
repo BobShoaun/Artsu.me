@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { Link, useParams } from "react-router-dom";
 import { users } from "../users.json";
 import { artworks } from "../artworks.json";
-//API calls
+//NOTE: replace with API calls
 
 import { useSelector } from "react-redux";
 import { useScrollToTop } from "../hooks/useScrollToTop";
@@ -21,6 +21,7 @@ const PortfolioPage = () => {
   const contactMessageRef = useRef();
 
   const user = users.find(user => user.username === username);
+  // will get user from backend
 
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-600", light: "teal-500", dark: "teal-800" };
@@ -135,7 +136,7 @@ const PortfolioPage = () => {
         <h1 className="dark:text-white text-2xl font-semibold text-center mb-10">
           Contact Me
         </h1>
-        <div className=" bg-gray-900 bg-opacity-80 rounded-lg p-14 mx-auto max-w-3xl shadow-xl">
+        <div className="bg-gray-900 bg-opacity-80 rounded-lg p-14 mx-auto max-w-3xl shadow-xl">
           <form className="grid gap-x-10 gap-y-7 mb-5 contact-form">
             <label className="dark:text-gray-200 text-sm text-right mt-2">
               Name:

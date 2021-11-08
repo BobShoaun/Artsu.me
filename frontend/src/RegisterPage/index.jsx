@@ -1,8 +1,8 @@
 import { Link, useHistory } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
-import { users } from "../users.json";
+import { users } from "../users.json"; // will get from api
 import { useAuthentication } from "../hooks/useAuthentication";
-// API calls
+
 import ArtsumeModal from "../components/ArtsumeModal";
 
 const RegisterPage = () => {
@@ -28,6 +28,8 @@ const RegisterPage = () => {
     const password = passwordRef.current.value;
     const confirmPassword = confirmPasswordRef.current.value;
 
+    // NOTE most of these checking will be in backend
+
     setUsernameError("");
     setPasswordError("");
     setConfirmPasswordError("");
@@ -52,7 +54,7 @@ const RegisterPage = () => {
       return;
     }
 
-    // register and authenticate
+    // NOTE: register and authenticate in backend
     _login("user", password);
     history.push("/");
   };

@@ -1,6 +1,6 @@
 import { Link, useHistory } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
-import { users } from "../users.json";
+import { users } from "../users.json"; // NOTE: user will be from API
 import { useAuthentication } from "../hooks/useAuthentication";
 
 import ArtsumeModal from "../components/ArtsumeModal";
@@ -30,7 +30,7 @@ const LoginPage = () => {
 
     const user = users.find(
       user => user.username === username.toLocaleLowerCase()
-    );
+    ); // NOTE: users will be found from api
     if (!user) {
       setUsernameError("invalid username");
       return;
@@ -41,7 +41,7 @@ const LoginPage = () => {
       return;
     }
 
-    // authenticate
+    // NOTE: authenticate user in backend
     _login(username, password);
     history.push("/");
   };

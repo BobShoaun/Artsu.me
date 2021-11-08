@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import { artworks } from "../artworks.json";
 import { users } from "../users.json";
 import { tags } from "../tags.json";
+//API calls
 
 const SearchPage = () => {
   const target = window.location.pathname
@@ -13,7 +14,7 @@ const SearchPage = () => {
     .replace("%20", " ")
     .toLowerCase();
 
-  // read from database
+  // API calls
   let artworksFiltered = artworks
   let usersFiltered = users
   let length = artworksFiltered.length
@@ -40,6 +41,12 @@ const SearchPage = () => {
       length = usersFiltered.length;
 
       return (
+        <div>
+        <div className="ml-20 w-full mb-10">
+          <p1 className="dark:text-white text-2l w-100% float-left mr-10">
+            Displaying {length} {msg}
+          </p1>
+        </div>
         <div className="flex flex-wrap gap-x-10 gap-y-10">
           {usersFiltered.map(user => {
             return (
@@ -55,15 +62,16 @@ const SearchPage = () => {
                     alt={`${user.name} avatar`}
                   />
                 </div>
-                <h2 className="dark:text-white font-semibold text-lg">
+                <h2 className="dark:text-white font-semibold text-lg ml-10 mb-5">
                   {user.name}
                 </h2>
-                <p className="dark:text-gray-200 text-sm">
+                <p className="dark:text-gray-200 text-sm ml-10">
                   {user.portfolioSettings.heading}
                 </p>
               </Link>
             );
           })}
+        </div>
         </div>
       );
     }
@@ -92,7 +100,7 @@ const SearchPage = () => {
                   <h2 className="dark:text-white text-lg font-semibold mb-1 ml-10">
                     {artwork.name}
                   </h2>
-                  <p className="dark:text-gray-300 text-sm m-5">
+                  <p className="dark:text-gray-300 text-sm m-5 ml-10">
                     {artwork.summary}
                   </p>
                 </div>

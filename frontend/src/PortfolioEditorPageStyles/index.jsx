@@ -3,10 +3,11 @@ import { users } from "../users.json";
 import Footer from "../components/Footer";
 import { useState } from "react";
 import "./index.css";
+// API calls
 
 const PortfolioEditorPageStyles = () => {
 
-  const { username } = useParams(); // reading from database
+  const { username } = useParams(); // API calls
   const user = users.find(user => user.username === username);
   const themeColor = user.portfolioSettings.themeColor
   let layoutId = user.portfolioSettings.layoutId
@@ -86,7 +87,7 @@ const PortfolioEditorPageStyles = () => {
           </div>
           <div class=" float-right inline-block">
             <Link className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
-            to={`/portfolio/${user.username}`} /* write to database */
+            to={`/portfolio/${user.username}`} /* API calls to save settings */
             >
               Update Settings
             </Link>

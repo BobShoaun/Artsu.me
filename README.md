@@ -16,6 +16,14 @@
 3. React-feather
    - Icon pack
 
+# Setup instructions
+
+The frontend of this project was scaffolded using Create React App.
+
+1. `cd frontend`
+2. `yarn install`
+3. `yarn start`
+
 # User instructions
 
 ## Sign up

@@ -38,12 +38,14 @@ const MainPage = () => {
         <aside className="mb-10 mx-10">
           <div className="flex flex-wrap gap-3">
             {tags.map(tag => (
+              <Link to={`/search/&tag=${tag.label}`}>
               <p
                 key={tag.id}
                 className={`text-gray-900 -text-white cursor-pointer font-semibold text-sm  bg-${tag.color} rounded-sm px-2 py-1`}
               >
                 #{tag.label}
               </p>
+              </Link>
             ))}
           </div>
         </aside>

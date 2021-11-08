@@ -6,8 +6,8 @@ import "./index.css";
 
 const PortfolioEditorPageStyles = () => {
 
-  const { slug } = useParams(); // reading from database
-  const user = users.find(user => user.slug === slug);
+  const { username } = useParams(); // reading from database
+  const user = users.find(user => user.username === username);
   const themeColor = user.portfolioSettings.themeColor
   let layoutId = user.portfolioSettings.layoutId
 
@@ -79,14 +79,14 @@ const PortfolioEditorPageStyles = () => {
         <section className="my-5" id="buttons">
           <div className="text-left inline-block">
             <Link className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
-            to={`/portfolio/edit/content/${user.slug}`}
+            to={`/portfolio/edit/content/${user.username}`}
             >
               Previous
             </Link>
           </div>
           <div class=" float-right inline-block">
             <Link className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
-            to={`/portfolio/${user.slug}`} /* write to database */
+            to={`/portfolio/${user.username}`} /* write to database */
             >
               Update Settings
             </Link>

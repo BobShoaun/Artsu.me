@@ -63,21 +63,62 @@
 1. Edit Heading and about me section of portfolio in portfolio content editor page
 2. Press quit to exit portfolio editor page and return to portfolio page
 3. Press next to save current portfolio content and go to portfolio style editor page
-4. Edit colors and layout of portfolio in portfolio sytle editor page
+4. Edit colors and layout of portfolio in portfolio style editor page
 5. Press update setting to save current setting and go to portfolio page with updated setting
+
+## Profile Page
+### Access
+1. When Logged in as a user, click on your avatar and select profile.
+
+### Features
+From this page users can:
+- view their artworks
+- view their email
+- access the upload artwork tool
+- access the upload avatar tool
+- change their password
+- change their email
+- change their name
+
+## UploadAvatarPage
+### Access
+1. When Logged in as a user, click on your avatar and select profile.
+2. Click Upload New Avatar.
+
+### Features
+From this page users can:
+- Upload an image to be their new avatar.
+
+## UploadImagePage
+### Access
+1. When Logged in as a user, click on your avatar and select profile.
+2. Click Upload New Artwork.
+
+### Features
+From this page users can:
+- Upload an image to be their new avatar.
+  - Users must provide a summary, description, and title of the artwork to upload. 
 
 # Admin instructions
 
 ## Main Admin Panel
 
-1. View from a list of usernames, real names, emails, user IDs, and their ban status.
-2. Click one a field to view the user profile.
+### Access
+1. When Logged in as an admin, click on your avatar and select admin panel.
+
+### Features
+- View from a list of usernames, real names, emails, user IDs, and their ban status.
+  - Click on a field to view the user profile.
 
 ## Admin User Viewer
 
-1. View from a list of usernames, real names, emails, user IDs, and their ban status.
-2. Click one a field to view the user profile.
-3. From this page an admin view a user's:
+### Access
+1. When Logged in as an admin, click on your avatar and select admin panel.
+2. View from a list of usernames, real names, emails, user IDs, and their ban status.
+3. Click on a field to view the user profile.
+
+### Features
+- From this page an admin view a user's:
    - Name
    - Username
    - Heading
@@ -85,7 +126,7 @@
    - Avatar
    - Ban status
    - Artworks
-4. From this page an admin perform the following actions:
+- From this page an admin perform the following actions:
    - Remove a user's Biography
    - Remove a user's Heading
    - Remove a user's Avatar
@@ -95,15 +136,19 @@
 
 ## Admin Artwork Viewer
 
-1. View from a list of usernames, real names, emails, user IDs, and their ban status.
-2. Click one a field to view the user profile.
-3. Scroll down and click on an artwork
-4. From this page an admin view an artwork's:
+### Access
+1. When Logged in as an admin, click on your avatar and select admin panel.
+2. View from a list of usernames, real names, emails, user IDs, and their ban status.
+3. Click one a field to view the user profile. 
+4. Click on an artwork from the user.
+
+### Features
+- From this page an admin view an artwork's:
    - Image
    - Description
    - Artist
    - Tags
-5. From this page an admin perform the following actions:
+- From this page an admin perform the following actions:
    - Ban an artwork
    - Remove a description
    - Remove tags from the artwork

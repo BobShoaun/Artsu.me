@@ -59,7 +59,7 @@ const SearchPage = () => {
                           cursor-pointer ml-5">
                 <div className="mb-2 p-3">
                   <img
-                    className="artwork-img"
+                    className="search-page-artwork-img"
                     src={user.avatar}
                     alt={`${user.name} avatar`}
                   />
@@ -125,7 +125,7 @@ const SearchPage = () => {
     <main className="dark:bg-gray-900">
       <Navbar showSearchButtons />
       <div className="container mx-auto mb-20 flex py-20 gap-8">
-        <aside className="tag-aside">
+        <aside className="search-tag-aside">
           <h3 className="dark:text-gray-200 mb-3 font-semibold">Tags:</h3>
           <div className=" flex-shrink-0 flex-wrap gap-3">
             {tags.map(tag => {

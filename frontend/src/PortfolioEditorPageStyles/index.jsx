@@ -87,7 +87,7 @@ const PortfolioEditorPageStyles = () => {
                   }`}
                   onClick={() => layoutOnClick(index)}
                 >
-                  <img className="layout-img" src={layouts[key].default} />
+                  <img className="portfolio-style-layout-img" src={layouts[key].default} />
                   <div className="dark:text-white text-xs text-center my-5">
                     {key.replace(".png", "")}
                   </div>

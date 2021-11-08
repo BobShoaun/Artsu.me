@@ -147,8 +147,7 @@ const ProfilePage = () => {
                           className={`bg-gradient-to-br from-transparent to-transparent hover:from-${primary.main} hover:to-${secondary.main} transition-all rounded-lg p-7 cursor-pointer hover:shadow-xl`}
                       >
                         <img
-                            style={{maxWidth: "10em"}}
-                            className="mb-5 shadow-xl mx-auto"
+                            className="artwork mb-5 shadow-xl mx-auto"
                             src={artwork.image}
                             alt={artwork.name}
                         />

@@ -54,15 +54,15 @@ const PortfolioEditorPageContent = () => {
               Heading:
             </label>
             <input
-              value={user.portfolioSettings.heading}
+              defalutValue={user.portfolioSettings.heading}
               className="px-2 py-1"
               type="text"
             />
             <label className="dark:text-gray-200 text-sm text-right mt-2">
               About Me:
             </label>
-            <textarea
-              value={user.portfolioSettings.biography}
+            <textarea className="border"
+              defaultValue={user.portfolioSettings.biography}
               rows="4"
               cols="100"
             ></textarea>

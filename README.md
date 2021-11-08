@@ -48,6 +48,8 @@ The frontend is scaffolded using Create React App
 
 1. Browse from a list of artists
 2. Type in the search box and press either of the search button, this navigates you to the search page
+3. Click on any of the tags displayed to go to the search page with that tag as a query.
+4. When logged in, hover over your name or avatar to view a dropdown menu allowing you to go to your profile page, your portfolio, page, or log out.
 
 ## Search Page
 
@@ -67,6 +69,7 @@ The frontend is scaffolded using Create React App
 1. Click on the 'artworks' or 'contact me' button to be scrolled down to the respective section on the page.
 2. Click on any of the artworks displayed in the portfolio to go to the artwork page for the respective piece.
 3. A contact form is on the bottom of the page for users innterested in contacting an artist. Users can enter their name, email, and a message to be sent.
+4. If you are on your own portfolio page, an "edit portfolio" button will appear on the top menu, which when clicked allows you to go to the portfolio editor.
 
 ## Portfolio Editor
 

@@ -52,9 +52,9 @@ const SearchPage = () => {
       return (
         <div>
           <div className="ml-20 w-full mb-10">
-            <p1 className="dark:text-white text-2l w-100% float-left mr-10">
+            <p className="dark:text-white float-left mr-10">
               Displaying {length} {msg}
-            </p1>
+            </p>
           </div>
           <div className="flex flex-wrap gap-x-10 gap-y-10">
             {usersFiltered.map(user => {
@@ -67,7 +67,7 @@ const SearchPage = () => {
                 >
                   <div className="mb-2 p-3">
                     <img
-                      className="artworkImg"
+                      className="search-page-artwork-img"
                       src={user.avatar}
                       alt={`${user.name} avatar`}
                     />
@@ -135,7 +135,7 @@ const SearchPage = () => {
     <main className="dark:bg-gray-900">
       <Navbar showSearchButtons />
       <div className="container mx-auto mb-20 flex py-20 gap-8">
-        <aside className="tagAside">
+        <aside className="search-tag-aside">
           <h3 className="dark:text-gray-200 mb-3 font-semibold">Tags:</h3>
           <div className=" flex-shrink-0 flex-wrap gap-3">
             {tags.map(tag => {

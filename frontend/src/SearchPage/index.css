@@ -1,9 +1,9 @@
-.artworkImg {
+.search-page-artwork-img {
     --tw-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
     border-radius: 0.5rem/* 8px */;
     width: 12em;
 }
-.tagAside {
+.search-tag-aside {
     flex-basis: 10rem;
 }

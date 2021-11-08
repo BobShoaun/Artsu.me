@@ -82,12 +82,18 @@ const UploadImagePage = () => {
                 )}
                 <textarea className="px-2 py-1 mb-8" ref={descriptionRef} rows="5">
                 </textarea>
-                <button
-                    onClick={upload}
-                    className="text-white tracking-wider py-2.5 mb-5 text-sm rounded-sm shadow-lg font-semibold bg-gradient-to-r from-rose-400 to-teal-500 hover:to-teal-400 hover:from-rose-400 block w-full"
+                <Link
+                    to={`/profile/${user.username}`}
+                    key={user.id}
+                    className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
                 >
-                    UPLOAD
-                </button>
+                    <button
+                        onClick={upload}
+                        className="text-white tracking-wider py-2.5 mb-5 text-sm rounded-sm shadow-lg font-semibold bg-gradient-to-r from-rose-400 to-teal-500 hover:to-teal-400 hover:from-rose-400 block w-full"
+                    >
+                        UPLOAD
+                    </button>
+                </Link>
             </form>
         </ArtsumeModal>
     );

@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { users } from "../users.json";
 import Footer from "../components/Footer";
 import { artworks } from "../artworks.json";
+import style from "./index.css"
 
 const PortfolioEditorPageContent = () => {
 
@@ -64,7 +65,6 @@ function selectArt(artid){
                 className={SelectedArt.includes(id) ? `bg-gradient-to-br from-${primary.main} to-${secondary.main} transition-all rounded-lg p-7` : "hover:bg-gray-800 rounded-lg p-7"}
               >
                 <img
-                  style={{ maxWidth: "10em" }}
                   className="mb-5 shadow-xl mx-auto"
                   src={artwork.image}
                   alt={artwork.name}

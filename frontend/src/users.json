@@ -94,6 +94,29 @@
         },
         "layoutId": 3
       }
+    },
+    {
+      "id": 20004,
+      "name": "Admin",
+      "featured": false,
+      "slug": "adminuser",
+      "email": "admin@artsu.me",
+      "username": "admin",
+      "password": "admin",
+      "avatar": "https://thumbs.dreamstime.com/b/admin-icon-trendy-design-style-isolated-white-background-vector-simple-modern-flat-symbol-web-site-mobile-logo-app-135742404.jpg",
+      "isAdmin": true,
+      "isBanned": false,
+      "portfolioSettings": {
+        "heading": "I am the admin",
+        "biography": "Don't make me ban you",
+        "artworkIds": [10011, 10012, 10013, 10014, 10015],
+        "themeColor": {
+          "primary": "black",
+          "secondary": "white",
+          "highlight": "red"
+        },
+        "layoutId": 3
+      }
     }
   ]
 }

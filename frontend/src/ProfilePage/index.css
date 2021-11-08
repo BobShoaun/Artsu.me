@@ -1,6 +1,6 @@
 .profile-avatar-wrapper{
-    flex-basis: 12em
+    flex-basis: 12em;
 }
 .profile-avatar{
-    max-width: 12em
+    max-width: 12em !important;
 }

@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { users } from "../users.json";
+import "./index.css"
 
 import { Link, useParams } from "react-router-dom";
 

@@ -1,6 +1,6 @@
-import { User } from "../models";
+import { User } from "../models/index.js";
 
-export const getUser = async (id) => {
-  console.log(id);
-  return id;
+export const getUsers = async () => {
+  const users = await User.find({});
+  return users;
 };

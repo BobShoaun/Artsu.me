@@ -8,7 +8,7 @@ const artworkSchema = new mongoose.Schema(
     summary: { type: String, required: true, minlength: 1 },
     description: { type: String, required: true},
     image: String,
-    userId: { type: Schema.ObjectId, required: true, ref: "users", unique: true, immutable: true },
+    userId: { type: Schema.ObjectId, required: true, ref: "users", immutable: true },
     likes: [{ type: Schema.ObjectId, required: true, ref: "users"}], // array of userIds
     tagIds: [{ type: Schema.ObjectId, required: true, ref: "tags"}],
     isBanned: {type: Boolean, default: false},

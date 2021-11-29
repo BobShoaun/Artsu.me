@@ -1,7 +1,10 @@
 import mongoose from "mongoose";
 
+<<<<<<< HEAD
 const { Schema } = mongoose;
 
+=======
+>>>>>>> f8757bf (Create artwork.model.js)
 const artworkSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, minlength: 1 },

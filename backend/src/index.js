@@ -1,10 +1,9 @@
 import express from "express";
 import cors from "cors";
 import { port } from "./config.js";
-// import session from "express-session";
 
-import userRoutes from "./routes/user.route.js";
 import "./mongodb.js";
+import userRoutes from "./routes/user.route.js";
 
 const app = express();
 
@@ -17,5 +16,7 @@ app.use("/users", userRoutes);
 app.get("/", (req, res) => {
   res.send("Hello from artsu.me");
 });
+
+app.get("*", (req, res) => res.sendStatus(404));
 
 app.listen(port, () => console.log("Server listening on port: ", port));

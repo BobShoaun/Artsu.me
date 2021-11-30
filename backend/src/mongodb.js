@@ -2,10 +2,7 @@ import mongoose from "mongoose";
 import { mongoURI } from "./config.js";
 
 try {
-  mongoose.connect(mongoURI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 } catch (e) {
   console.error("could not connect to mongodb");
 }

@@ -10,6 +10,9 @@ import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
+/**
+ * Get all users, with query and pagination
+ */
 router.get("/", checkDatabaseConn, async (req, res) => {
   const query = req.query.query;
   const limit = parseInt(req.query.limit);
@@ -64,6 +67,9 @@ router.patch("/:userId", checkDatabaseConn, authenticate, validateJsonPatch, asy
   }
 });
 
+/**
+ * Delete a user with userId
+ */
 router.delete("/:userId", checkDatabaseConn, authenticate, async (req, res) => {
   const id = req.params.userId;
   if (!ObjectId.isValid(id)) return res.sendStatus(404);
@@ -78,6 +84,9 @@ router.delete("/:userId", checkDatabaseConn, authenticate, async (req, res) => {
   }
 });
 
+/**
+ * Register a new user
+ */
 router.post("/register", checkDatabaseConn, async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
@@ -99,6 +108,9 @@ router.post("/register", checkDatabaseConn, async (req, res) => {
   }
 });
 
+/**
+ * Login a user, returns JWT token
+ */
 router.post("/login", checkDatabaseConn, async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;

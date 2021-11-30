@@ -36,8 +36,7 @@ router.get("/", checkDatabaseConn, async (req, res) => {
 });
 
 /**
- * Supports JSON patch format
- * Operations: replace
+ * Update fields on user with userId
  */
 router.patch("/:userId", checkDatabaseConn, authenticate, validateJsonPatch, async (req, res) => {
   const id = req.params.userId;

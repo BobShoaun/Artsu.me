@@ -5,7 +5,16 @@ const { Schema } = mongoose;
 const user = new Schema(
   {
     name: { type: String, required: true, minlength: 1 },
-    username: { type: String, required: true, unique: true, minlength: 1 },
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      minlength: 1,
+      validate: {
+        validator: value => !/\s/g.test(value),
+        message: ({ value }) => `${value} contains whitespaces`,
+      },
+    },
     password: { type: String, required: true, minlength: 1 },
     avatar: String,
     followers: { type: [Schema.ObjectId], required: true, default: [] },

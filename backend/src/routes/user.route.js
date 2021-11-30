@@ -4,13 +4,13 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { accessTokenSecret } from "../config.js";
 import { authenticate, validateJsonPatch } from "../middlewares/user.middleware.js";
-import { checkMongoConn } from "../middlewares/mongo.middleware.js";
+import { checkDatabaseConn } from "../middlewares/mongo.middleware.js";
 import { isMongoError } from "../helpers/mongo.helper.js";
 import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
-router.get("/", checkMongoConn, async (req, res) => {
+router.get("/", checkDatabaseConn, async (req, res) => {
   const query = req.query.query;
   const limit = parseInt(req.query.limit);
   const offset = parseInt(req.query.offset);
@@ -36,12 +36,14 @@ router.get("/", checkMongoConn, async (req, res) => {
  * Supports JSON patch format
  * Operations: replace
  */
-router.patch("/:userId", checkMongoConn, authenticate, validateJsonPatch, async (req, res) => {
+router.patch("/:userId", checkDatabaseConn, authenticate, validateJsonPatch, async (req, res) => {
   const id = req.params.userId;
   if (!ObjectId.isValid(id)) return res.sendStatus(404);
   try {
     const user = await User.findById(id);
     if (!user) return res.sendStatus(404);
+
+    if (id !== req.user._id && !req.user.isAdmin) return res.sendStatus(403); // can only edit yourself, unless admin
 
     for (const action of req.body) {
       // only replace is possible (for now)
@@ -62,7 +64,21 @@ router.patch("/:userId", checkMongoConn, authenticate, validateJsonPatch, async 
   }
 });
 
-router.post("/register", checkMongoConn, async (req, res) => {
+router.delete("/:userId", checkDatabaseConn, authenticate, async (req, res) => {
+  const id = req.params.userId;
+  if (!ObjectId.isValid(id)) return res.sendStatus(404);
+  try {
+    if (!req.user.isAdmin) return res.sendStatus(403);
+    const user = await User.findByIdAndDelete(id);
+    if (!user) return res.sendStatus(404);
+    res.send(user);
+  } catch (e) {
+    if (isMongoError(e)) return res.sendStatus(500);
+    res.sendStatus(400);
+  }
+});
+
+router.post("/register", checkDatabaseConn, async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const name = req.body.name;
@@ -74,13 +90,16 @@ router.post("/register", checkMongoConn, async (req, res) => {
     res.status(201).send(user);
   } catch (e) {
     // check if duplicate key error
-    if (e.code === 11000) return res.status(409).type("plain").send("Confict: Username Taken");
+    if (e.code === 11000) return res.status(409).type("plain").send("Conflict: Username Taken");
+    // check if username whitespace error
+    if (e.errors.username.name === "ValidatorError")
+      return res.status(400).type("plain").send(`Bad Request: ${e.errors.username.message}`);
     if (isMongoError(e)) return res.sendStatus(500);
     res.sendStatus(400);
   }
 });
 
-router.post("/login", checkMongoConn, async (req, res) => {
+router.post("/login", checkDatabaseConn, async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   if (!username || !password) return res.sendStatus(400);

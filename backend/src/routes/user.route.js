@@ -5,16 +5,30 @@ import jwt from "jsonwebtoken";
 import { accessTokenSecret } from "../config.js";
 import { authenticate, validateJsonPatch } from "../middlewares/user.middleware.js";
 import { checkMongoConn } from "../middlewares/mongo.middleware.js";
+import { isMongoError } from "../helpers/mongo.helper.js";
 import { ObjectId } from "mongodb";
 
 const router = express.Router();
 
 router.get("/", checkMongoConn, async (req, res) => {
+  const query = req.query.query;
+  const limit = parseInt(req.query.limit);
+  const offset = parseInt(req.query.offset);
+
   try {
-    const users = await User.find();
+    const users = await (query
+      ? User.aggregate([{ $search: { index: "fuzzy", text: { query, path: { wildcard: "*" } } } }])
+      : User.find()
+    )
+      .skip(offset > 0 ? offset : 0)
+      .limit(limit > 0 ? limit : 0);
+
+    for (const user of users) delete user.password; // mainly for aggregate query not removing password
+
     res.send(users);
   } catch (e) {
-    res.status;
+    if (isMongoError(e)) return res.sendStatus(500);
+    res.sendStatus(400);
   }
 });
 
@@ -42,8 +56,9 @@ router.patch("/:userId", checkMongoConn, authenticate, validateJsonPatch, async 
     }
     await user.save();
     res.send(user);
-  } catch {
-    res.sendStatus(500);
+  } catch (e) {
+    if (isMongoError(e)) return res.sendStatus(500);
+    res.sendStatus(400);
   }
 });
 
@@ -60,7 +75,8 @@ router.post("/register", checkMongoConn, async (req, res) => {
   } catch (e) {
     // check if duplicate key error
     if (e.code === 11000) return res.status(409).type("plain").send("Confict: Username Taken");
-    res.sendStatus(500);
+    if (isMongoError(e)) return res.sendStatus(500);
+    res.sendStatus(400);
   }
 });
 
@@ -87,7 +103,8 @@ router.post("/login", checkMongoConn, async (req, res) => {
     );
     res.send({ user, accessToken });
   } catch {
-    res.sendStatus(500);
+    if (isMongoError(e)) return res.sendStatus(500);
+    res.sendStatus(400);
   }
 });
 

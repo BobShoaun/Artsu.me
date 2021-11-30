@@ -11,7 +11,7 @@ export const authenticate = async (req, res, next) => {
     req.user = user;
     next();
   } catch {
-    res.sendStatus(403);
+    res.sendStatus(403); // forbidden
   }
 };
 
@@ -31,7 +31,7 @@ export const validateJsonPatch = async (req, res, next) => {
       case "copy":
       case "move":
       case "test":
-        return res.sendStatus(501);
+        return res.sendStatus(501); // not implemented
       default:
         return res.sendStatus(400);
     }

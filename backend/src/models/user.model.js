@@ -11,7 +11,14 @@ const userSchema = new mongoose.Schema(
     isAdmin: { type: Boolean, default: false },
     isBanned: { type: Boolean, default: false },
   },
-  { versionKey: false }
+  {
+    versionKey: false,
+    toJSON: {
+      transform: (doc, ret) => {
+        delete ret.password; // never send over password
+      },
+    },
+  }
 );
 
 export default userSchema;

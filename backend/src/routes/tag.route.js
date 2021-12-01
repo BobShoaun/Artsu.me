@@ -1,0 +1,85 @@
+import express from "express";
+import { Tag } from "../models/index.js";
+import { authenticate } from "../middlewares/user.middleware.js";
+import { validateJsonPatch, validateIdParam } from "../middlewares/general.middleware.js";
+import { checkDatabaseConn, mongoHandler } from "../middlewares/mongo.middleware.js";
+import { executeJsonPatch } from "../helpers/general.helper.js";
+
+const router = express.Router();
+
+router.use(checkDatabaseConn);
+router.param("tagId", validateIdParam);
+
+/**
+ * Get all tags, with query and pagination
+ */
+router.get("/tags", async (req, res, next) => {
+  const query = req.query.query;
+  const limit = parseInt(req.query.limit);
+  const offset = parseInt(req.query.offset);
+
+  try {
+    const tags = await (query
+      ? Tag.aggregate([{ $search: { index: "fuzzy", text: { query, path: { wildcard: "*" } } } }])
+      : Tag.find()
+    )
+      .skip(offset > 0 ? offset : 0)
+      .limit(limit > 0 ? limit : 0);
+    res.send(tags);
+  } 
+  catch (e) {next(e);}
+});
+
+/**
+ * Add a tag
+ */
+ router.post("/tags", authenticate, async (req, res, next) => {
+    if (!req.user.isAdmin) return res.sendStatus(403); // Admin-only route
+    const label = req.body.label;
+    const color = req.body.color;
+    if (!label || !color) return res.sendStatus(400);
+    
+    try {
+      const tag = new Tag({label, color});
+      await tag.save();
+      res.status(201).send(tag);
+    } 
+    catch (e) {next(e);}
+  });
+
+/**
+ * Update a tag
+ */
+router.patch("/tags/:tagId", authenticate, validateJsonPatch, async (req, res, next) => {
+    if (!req.user.isAdmin) return res.sendStatus(403); // Admin-only route
+    const { tagId } = req.params;
+    
+    try {
+      const tag = await Tag.findById(tagId);
+      if (!tag) return res.sendStatus(404);
+      executeJsonPatch(req, res, tag, []);
+      if (res.headersSent) return; // res already sent in executeJsonPatch
+      await tag.save();
+      res.send(tag);
+    } 
+    catch (e) {next(e);}
+  });
+
+/**
+ * Delete a tag with tagID
+ */
+router.delete("/tags/:tagId", authenticate, async (req, res, next) => {
+  if (!req.user.isAdmin) return res.sendStatus(403); // Admin-only route
+  const { tagId } = req.params;
+  
+  try {
+    const tag = await Tag.findByIdAndDelete(tagId);
+    if (!tag) return res.sendStatus(404);
+    res.send(tag);
+  } 
+  catch (e) {next(e);}
+});
+
+router.use(mongoHandler);
+
+export default router;

@@ -27,12 +27,7 @@ export const validateJsonPatch = (req, res, next) => {
   next();
 };
 
-export const validateIdParams =
-  (...args) =>
-  (req, res, next) => {
-    for (const arg of args) {
-      const id = req.params[arg];
-      if (!ObjectId.isValid(id)) return res.sendStatus(400);
-    }
-    next();
-  };
+export const validateIdParam = (req, res, next, id) => {
+  if (!ObjectId.isValid(id)) return res.sendStatus(400);
+  next();
+};

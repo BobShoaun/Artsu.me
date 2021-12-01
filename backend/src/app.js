@@ -16,6 +16,6 @@ app.use(userRoutes);
 app.use(portfolioRoutes);
 
 app.get("/", (req, res) => res.send("Hello from artsu.me"));
-app.get("*", (req, res) => res.sendStatus(404));
+app.all("*", (req, res) => res.sendStatus(404));
 
 export default app;

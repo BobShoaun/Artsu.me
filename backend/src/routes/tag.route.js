@@ -57,7 +57,7 @@ router.patch("/tags/:tagId", authenticate, validateJsonPatch, async (req, res, n
     try {
       const tag = await Tag.findById(tagId);
       if (!tag) return res.sendStatus(404);
-      executeJsonPatch(req, res, tag, []);
+      executeJsonPatch(req, res, tag, ["/_id", "/createdAt", "/updatedAt"]);
       if (res.headersSent) return; // res already sent in executeJsonPatch
       await tag.save();
       res.send(tag);
@@ -74,7 +74,9 @@ router.delete("/tags/:tagId", authenticate, async (req, res, next) => {
   
   try {
     const tag = await Tag.findByIdAndDelete(tagId);
-    if (!tag) return res.sendStatus(404);
+    if (!tag) return res.sendStatus(404); // If tag is not found, return and 404.
+    // otherwise, we must remove the tag from every artwork that has it.
+
     res.send(tag);
   } 
   catch (e) {next(e);}

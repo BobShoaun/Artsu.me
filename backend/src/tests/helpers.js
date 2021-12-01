@@ -8,13 +8,13 @@ export const setupTestDatabase = databaseName => {
     await mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
   });
 
+  afterAll(async () => {
+    await mongoose.connection.close();
+  });
+
   beforeEach(async () => {
     await User.deleteMany();
     await Portfolio.deleteMany();
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
   });
 };
 

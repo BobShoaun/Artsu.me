@@ -8,9 +8,9 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest",
-    "test:auth": "jest -- authentication.test.js",
+    "test:auth": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest -- authentication.test.js",
     "test:user": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest -- user.test.js",
-    "test:portfolio": "jest -- portfolio.test.js"
+    "test:portfolio": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest -- portfolio.test.js"
   },
   "author": "",
   "license": "MIT",

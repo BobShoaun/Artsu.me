@@ -19,27 +19,3 @@ export const authenticate = async (req, res, next) => {
     res.sendStatus(403); // forbidden
   }
 };
-
-/**
- * Supports JSON patch format
- * Operations: replace
- */
-export const validateJsonPatch = async (req, res, next) => {
-  const actions = req.body;
-  if (!Array.isArray(actions)) return res.sendStatus(400);
-  for (const action of actions) {
-    switch (action.op) {
-      case "replace":
-        continue;
-      case "add":
-      case "remove":
-      case "copy":
-      case "move":
-      case "test":
-        return res.sendStatus(501); // not implemented
-      default:
-        return res.sendStatus(400);
-    }
-  }
-  next();
-};

@@ -7,7 +7,10 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest",
+    "test:auth": "jest -- authentication.test.js",
+    "test:user": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest -- user.test.js",
+    "test:portfolio": "jest -- portfolio.test.js"
   },
   "author": "",
   "license": "MIT",
@@ -20,6 +23,9 @@
     "mongoose": "^6.0.13"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "cross-env": "^7.0.3",
+    "jest": "^27.4.2",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.1.6"
   }
 }

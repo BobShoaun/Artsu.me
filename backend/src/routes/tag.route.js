@@ -14,17 +14,8 @@ router.param("tagId", validateIdParam);
  * Get all tags, with query and pagination
  */
 router.get("/tags", async (req, res, next) => {
-  const query = req.query.query;
-  const limit = parseInt(req.query.limit);
-  const offset = parseInt(req.query.offset);
-
   try {
-    const tags = await (query
-      ? Tag.aggregate([{ $search: { index: "fuzzy", text: { query, path: { wildcard: "*" } } } }])
-      : Tag.find()
-    )
-      .skip(offset > 0 ? offset : 0)
-      .limit(limit > 0 ? limit : 0);
+    const tags = await (Tag.find())
     res.send(tags);
   } 
   catch (e) {next(e);}

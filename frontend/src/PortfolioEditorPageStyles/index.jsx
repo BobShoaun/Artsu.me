@@ -13,7 +13,6 @@ const PortfolioEditorPageStyles = () => {
   const user = users.find(user => user.username === username);
   const [, loggedInUser, , _logout] = useAuthentication();
   let themeColor = user.portfolioSettings.themeColor;
-  console.log(themeColor)
   let layoutId = user.portfolioSettings.layoutId;
 
   const [layout, setlayout] = useState(layoutId);
@@ -109,7 +108,7 @@ const PortfolioEditorPageStyles = () => {
               Previous
             </Link>
           </div>
-          <div class=" float-right inline-block">
+          <div className=" float-right inline-block">
             <Link
               className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
               to={`/portfolio/${user.username}`} /* API calls to save settings */

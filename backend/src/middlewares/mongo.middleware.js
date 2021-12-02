@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { ObjectId } from "mongodb";
 
 /**
  * Check if database connection is healthy
@@ -6,6 +7,11 @@ import mongoose from "mongoose";
  */
 export const checkDatabaseConn = (req, res, next) => {
   if (mongoose.connection.readyState !== 1) return res.sendStatus(500);
+  next();
+};
+
+export const validateIdParam = (req, res, next, id) => {
+  if (!ObjectId.isValid(id)) return res.sendStatus(400);
   next();
 };
 

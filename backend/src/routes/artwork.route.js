@@ -1,12 +1,12 @@
 import express from "express";
 import { Artwork } from "../models/index.js";
 import { authenticate } from "../middlewares/user.middleware.js";
+import { validateJsonPatch, executeJsonPatch } from "../middlewares/general.middleware.js";
 import {
+  checkDatabaseConn,
+  mongoHandler,
   validateIdParam,
-  validateJsonPatch,
-  executeJsonPatch,
-} from "../middlewares/general.middleware.js";
-import { checkDatabaseConn, mongoHandler } from "../middlewares/mongo.middleware.js";
+} from "../middlewares/mongo.middleware.js";
 
 const router = express.Router();
 

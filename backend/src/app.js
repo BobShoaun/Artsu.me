@@ -12,7 +12,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors()); // only for development
 
 app.use(authenticationRoutes);
 app.use(userRoutes);

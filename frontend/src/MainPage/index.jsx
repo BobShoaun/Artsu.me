@@ -15,6 +15,7 @@ const MainPage = () => {
 
   useEffect(() => {
     dispatch(setIsPublic({ isPublic: false }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useScrollToTop();

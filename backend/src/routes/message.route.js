@@ -3,8 +3,6 @@ import { Message, User } from "../models/index.js";
 import { authenticate } from "../middlewares/user.middleware.js";
 import { validateJsonPatch, validateIdParam } from "../middlewares/general.middleware.js";
 import { checkDatabaseConn, mongoHandler } from "../middlewares/mongo.middleware.js";
-import { executeJsonPatch } from "../helpers/general.helper.js";
-import { Mongoose } from "mongoose";
 
 const router = express.Router();
 
@@ -15,11 +13,11 @@ router.param("userId", validateIdParam);
 /**
  * Get all messages sent by a user
  */
-router.get("/users/:userId/messages/sent", async (req, res, next) => {
+router.get("/users/:userId/messages/sent", authenticate, async (req, res, next) => {
     const { userId } = req.params;
     if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403); // can only check yours, unless admin
     try {
-        const sentMessages = await(Message.find({senderId: {userID} }))
+        const sentMessages = await(Message.find({senderId: {userId} }))
         res.send(sentMessages);
     } 
     catch (e) {next(e);}
@@ -28,11 +26,11 @@ router.get("/users/:userId/messages/sent", async (req, res, next) => {
 /**
  * Get all messages received by a user
  */
- router.get("/users/:userId/messages/received", async (req, res, next) => {
+ router.get("/users/:userId/messages/received", authenticate, async (req, res, next) => {
     const { userId } = req.params;
     if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403); // can only check yours, unless admin
     try {
-        const sentMessages = await(Message.find({receiverId: {userID} }))
+        const sentMessages = await(Message.find({receiverId: {userId} }))
         res.send(sentMessages);
     } 
     catch (e) {next(e);}
@@ -41,12 +39,12 @@ router.get("/users/:userId/messages/sent", async (req, res, next) => {
 /**
  * Get a specific message
  */
- router.get("/users/:userId/messages/:messageId", async (req, res, next) => {
+ router.get("/users/:userId/messages/:messageId", authenticate, async (req, res, next) => {
     const { userId } = req.params;
     const { messageId } = req.params;
     if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403); // can only check yours, unless admin
     try {
-        if (!Mongoose.isValidObjectId(messageId)) res.sendStatus(400); // If Id is valid
+        if (!MessageId.isValidObjectId(messageId)) res.sendStatus(400); // If Id is valid
         const specificMessage = await(Message.findById(messageId)) // message in question
         if (!specificMessage) return res.sendStatus(404); // If message does not exist
         if(specificMessage.senderId === userId ||specificMessage.receiverId === userId || req.user.isAdmin) {res.send(specifcMessage);} // check if user is sender, receiver, or admin (valid targets) 
@@ -62,19 +60,20 @@ router.get("/users/:userId/messages/sent", async (req, res, next) => {
     const { userId } = req.params;
     if (userId !== req.user._id) return res.sendStatus(403); // can only send messages at yourself. No admin override!
     
+    const senderId = userId;
     const receiverId = req.body.receiverId;
     const subject = req.body.subject;
     const body  = req.body.body;
 
-    if (!Mongoose.isValidObjectId(receiverId) || !subject || !body ) res.sendStatus(400); // ensure all are valid
+    if (!subject || !body ) res.sendStatus(400); // ensure all are valid
 
     const receiver = await User.findById(receiverId); // ensure receiver exists
     if (!receiver) return res.sendStatus(404);
 
     try {
-      const message = new Message({userId, receiverId, subject, body});
-      await message.save();
-      res.status(201).send(message);
+      const newMessage = new Message({senderId, receiverId, subject, body});
+      await newMessage.save();
+      res.status(201).send(newMessage);
     } 
     catch (e) {next(e);}
   });
@@ -87,7 +86,6 @@ router.patch("/users/:userId/messages/:messageId/remove", authenticate, async (r
     const { messageId } = req.params;
 
     if (userId !== req.user._id) return res.sendStatus(403); // can only remove messages at yourself. No admin override!
-    if (!Mongoose.isValidObjectId(messageId)) res.sendStatus(400); // If Id is valid
     const specificMessage = await(Message.findById(messageId)) // message in question
     if (!specificMessage) return res.sendStatus(404); // If message does not exist
     if(!specificMessage.receiverId === userId) return res.sendStatus(403); // only receiver can delete message.

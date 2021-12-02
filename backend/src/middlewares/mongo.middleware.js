@@ -1,4 +1,6 @@
 import mongoose from "mongoose";
+import { ObjectId } from "mongodb";
+import { isMongoError } from "../helpers/mongo.helper.js";
 
 /**
  * Check if database connection is healthy
@@ -9,7 +11,13 @@ export const checkDatabaseConn = (req, res, next) => {
   next();
 };
 
+export const validateIdParam = (req, res, next, id) => {
+  if (!ObjectId.isValid(id)) return res.sendStatus(400);
+  next();
+};
+
 export const mongoHandler = (err, req, res, next) => {
   if (isMongoError(err)) return res.sendStatus(500);
+  // res.status(400).send(err);
   res.sendStatus(400);
 };

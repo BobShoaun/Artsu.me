@@ -1,9 +1,12 @@
 import express from "express";
 import { User } from "../models/index.js";
 import { authenticate, usernameHandler } from "../middlewares/user.middleware.js";
-import { validateJsonPatch, validateIdParam } from "../middlewares/general.middleware.js";
-import { checkDatabaseConn, mongoHandler } from "../middlewares/mongo.middleware.js";
-import { executeJsonPatch } from "../helpers/general.helper.js";
+import { validateJsonPatch, executeJsonPatch } from "../middlewares/general.middleware.js";
+import {
+  checkDatabaseConn,
+  mongoHandler,
+  validateIdParam,
+} from "../middlewares/mongo.middleware.js";
 
 const router = express.Router();
 
@@ -50,9 +53,17 @@ router.patch(
 
       const forbiddenPaths = ["/_id", "/createdAt", "/updatedAt", "/password"];
       if (!req.user.isAdmin) forbiddenPaths.push("/isAdmin", "/isFeatured", "/isBanned");
-      executeJsonPatch(req, res, user, forbiddenPaths);
-      if (res.headersSent) return; // res already sent in executeJsonPatch
-
+      req.forbiddenPaths = forbiddenPaths;
+      req.patchDoc = user;
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  executeJsonPatch,
+  async (req, res, next) => {
+    try {
+      const user = req.patchDoc;
       await user.save();
       res.send(user);
     } catch (e) {
@@ -67,9 +78,9 @@ router.patch(
  */
 router.delete("/users/:userId", authenticate, async (req, res, next) => {
   if (!req.user.isAdmin) return res.sendStatus(403);
-  const id = req.params.userId;
+  const { userId } = req.params;
   try {
-    const user = await User.findByIdAndDelete(id);
+    const user = await User.findByIdAndDelete(userId);
     if (!user) return res.sendStatus(404);
     res.send(user);
   } catch (e) {

@@ -14,7 +14,7 @@ router.use(checkDatabaseConn);
 router.param("tagId", validateIdParam);
 
 /**
- * Get all tags, with query and pagination
+ * Get all tags
  */
 router.get("/tags", async (req, res, next) => {
   try {

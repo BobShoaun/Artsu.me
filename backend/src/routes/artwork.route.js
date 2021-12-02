@@ -107,6 +107,22 @@ router.get("/artworks", async (req, res, next) => {
 });
 
 /**
+ * Get artwork by Id
+ */
+ router.get("/artworks/:artworkId", async (req, res, next) => {
+  const artworkId = req.params.artworkId
+  try {
+      const artworks = Artwork.findById(artworkId)
+      if (!artworks) {
+          return res.sendStatus(404)
+      }
+      res.send(artworks);
+  } catch (e) {
+      next(e);
+  }
+});
+
+/**
  * Update artwork
  */
 router.patch(

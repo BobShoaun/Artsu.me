@@ -1,5 +1,5 @@
 import express from "express";
-import { Artwork, User } from "../models/index.js";
+import { Artwork } from "../models/index.js";
 import { authenticate } from "../middlewares/user.middleware.js";
 import { validateIdParam, validateJsonPatch } from "../middlewares/general.middleware.js";
 import { checkDatabaseConn, mongoHandler } from "../middlewares/mongo.middleware.js";
@@ -11,16 +11,48 @@ router.use(checkDatabaseConn);
 router.param("userId", validateIdParam);
 
 /**
+ * Post a new artwork
+ */
+ router.post("/users/:userId/artworks", authenticate, validateJsonPatch, async (req, res, next) => {
+    const { userId } = req.params;
+    if (userId !== req.user._id) {
+        return res.sendStatus(403);
+    }
+    const name = req.body.name
+    const summary = req.body.summary
+    const description = req.body.description
+    const image = req.body.image
+    const likes = []
+    const tagIds = req.body.tagIds
+    if (!name || !summary || !description) {
+        return res.sendStatus(400);
+    }
+    
+    try {
+      const artwork = new Artwork({
+          name, summary, description, image, userId, likes, tagIds
+      })
+      await artwork.save();
+      res.send(artwork)
+    } 
+    catch (e) {
+        next(e);
+    }
+  });
+
+
+
+/**
  * Get all artworks for a user
  */
 router.get("/users/:userId/artworks", async (req, res, next) => {
     const { userId } = req.params;
     try {
-        const artworks = await Artwork.find({ userId });
+        const artworks = await Artwork.find({userId:userId});
         res.send(artworks);
-      } catch (e) {
+    } catch (e) {
         next(e);
-      }
+    }
 });
 
 /**

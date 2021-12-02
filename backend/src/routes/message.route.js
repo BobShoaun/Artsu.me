@@ -58,18 +58,16 @@ router.get("/users/:userId/messages/sent", authenticate, async (req, res, next) 
  router.post("/users/:userId/messages", authenticate, async (req, res, next) => {
     const { userId } = req.params;
     if (userId !== req.user._id) return res.sendStatus(403); // can only send messages at yourself. No admin override!
-    
     const senderId = userId;
     const receiverId = req.body.receiverId;
     const subject = req.body.subject;
     const body  = req.body.body;
-
     if (!subject || !body ) res.sendStatus(400); // ensure all are valid
 
-    const receiver = await User.findById(receiverId); // ensure receiver exists
-    if (!receiver) return res.sendStatus(404);
-
     try {
+        const receiver = await User.findById(receiverId); // ensure receiver exists
+        if (!receiver) return res.sendStatus(404);
+
       const newMessage = new Message({senderId, receiverId, subject, body});
       await newMessage.save();
       res.status(201).send(newMessage);
@@ -83,15 +81,15 @@ router.get("/users/:userId/messages/sent", authenticate, async (req, res, next) 
 router.patch("/users/:userId/messages/:messageId/remove", authenticate, async (req, res, next) => {
     const { userId } = req.params;
     const { messageId } = req.params;
-
     if (userId !== req.user._id) return res.sendStatus(403); // can only remove messages at yourself. No admin override!
-    const specificMessage = await(Message.findById(messageId)) // message in question
-    if (!specificMessage) return res.sendStatus(404); // If message does not exist
-    if(!specificMessage.receiverId === userId) return res.sendStatus(403); // only receiver can delete message.
+    
     try {
-      specificMessage.hasRecipientRemoved = true;
-      await specificMessage.save();
-      res.status(201).send(specificMessage);
+        const specificMessage = await(Message.findById(messageId)) // message in question
+        if (!specificMessage) return res.sendStatus(404); // If message does not exist
+        if(!specificMessage.receiverId === userId) return res.sendStatus(403); // only receiver can delete message.
+        specificMessage.hasRecipientRemoved = true;
+        await specificMessage.save();
+        res.status(201).send(specificMessage);
     } 
     catch (e) {next(e);}
   });

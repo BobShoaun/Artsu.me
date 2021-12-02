@@ -1,9 +1,12 @@
 import express from "express";
 import { Portfolio, User } from "../models/index.js";
 import { authenticate } from "../middlewares/user.middleware.js";
-import { validateIdParam, validateJsonPatch } from "../middlewares/general.middleware.js";
+import {
+  validateIdParam,
+  validateJsonPatch,
+  executeJsonPatch,
+} from "../middlewares/general.middleware.js";
 import { checkDatabaseConn, mongoHandler } from "../middlewares/mongo.middleware.js";
-import { executeJsonPatch } from "../helpers/general.helper.js";
 
 const router = express.Router();
 
@@ -39,10 +42,17 @@ router.patch(
       const portfolio = await Portfolio.findOne({ userId });
       if (!portfolio) return res.sendStatus(404);
 
-      const forbiddenPaths = ["/userId", "/createdAt", "/updatedAt", "/_id"];
-      executeJsonPatch(req, res, portfolio, forbiddenPaths);
-      if (res.headersSent) return; // res already sent in executeJsonPatch
-
+      req.forbiddenPaths = ["/userId", "/createdAt", "/updatedAt", "/_id"];
+      req.patchDoc = portfolio;
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  executeJsonPatch,
+  async (req, res, next) => {
+    try {
+      const portfolio = req.patchDoc;
       await portfolio.save();
       res.send(portfolio);
     } catch (e) {

@@ -13,7 +13,7 @@ router.param("userId", validateIdParam);
 /**
  * Post a new artwork
  */
- router.post("/users/:userId/artworks", authenticate, validateJsonPatch, async (req, res, next) => {
+ router.post("/users/:userId/artworks", authenticate, async (req, res, next) => {
     const { userId } = req.params;
     if (userId !== req.user._id) {
         return res.sendStatus(403);
@@ -39,8 +39,6 @@ router.param("userId", validateIdParam);
         next(e);
     }
   });
-
-
 
 /**
  * Get all artworks for a user
@@ -108,12 +106,31 @@ router.patch("/artworks/:artworkId",
       }
     }
   );
-  
-
 
 /**
  * Update likes of an artwork
  */
+
+
+/**
+ * Delete artwork
+ */
+router.delete("/artworks/:artworkId", authenticate, async (req, res, next) => {
+    const { userId } = req.params;
+    // user can delete their own artwork only
+    if (userId !== req.user._id) {
+        return res.sendStatus(403)
+    }
+    const artworkId = req.params.artworkId
+    
+    try {
+      const artwork = await Artwork.findByIdAndDelete(artworkId);
+      if (!artwork) return res.sendStatus(404);
+  
+      res.send(artwork);
+    } 
+    catch (e) {next(e);}
+});
 
 
 

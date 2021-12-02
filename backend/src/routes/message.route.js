@@ -1,7 +1,7 @@
 import express from "express";
 import { Message, User } from "../models/index.js";
 import { authenticate } from "../middlewares/user.middleware.js";
-import { validateJsonPatch, validateIdParam } from "../middlewares/general.middleware.js";
+import { validateIdParam } from "../middlewares/general.middleware.js";
 import { checkDatabaseConn, mongoHandler } from "../middlewares/mongo.middleware.js";
 
 const router = express.Router();
@@ -17,7 +17,7 @@ router.get("/users/:userId/messages/sent", authenticate, async (req, res, next) 
     const { userId } = req.params;
     if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403); // can only check yours, unless admin
     try {
-        const sentMessages = await(Message.find({senderId: {userId} }))
+        const sentMessages = await(Message.find({senderId: userId }))
         res.send(sentMessages);
     } 
     catch (e) {next(e);}
@@ -30,7 +30,7 @@ router.get("/users/:userId/messages/sent", authenticate, async (req, res, next) 
     const { userId } = req.params;
     if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403); // can only check yours, unless admin
     try {
-        const sentMessages = await(Message.find({receiverId: {userId} }))
+        const sentMessages = await(Message.find({receiverId: userId }))
         res.send(sentMessages);
     } 
     catch (e) {next(e);}
@@ -44,10 +44,9 @@ router.get("/users/:userId/messages/sent", authenticate, async (req, res, next) 
     const { messageId } = req.params;
     if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403); // can only check yours, unless admin
     try {
-        if (!MessageId.isValidObjectId(messageId)) res.sendStatus(400); // If Id is valid
         const specificMessage = await(Message.findById(messageId)) // message in question
         if (!specificMessage) return res.sendStatus(404); // If message does not exist
-        if(specificMessage.senderId === userId ||specificMessage.receiverId === userId || req.user.isAdmin) {res.send(specifcMessage);} // check if user is sender, receiver, or admin (valid targets) 
+        if(specificMessage.senderId === userId ||specificMessage.receiverId === userId || req.user.isAdmin) {res.send(specificMessage);} // check if user is sender, receiver, or admin (valid targets) 
         else {res.sendStatus(403);}
     } 
     catch (e) {next(e);}

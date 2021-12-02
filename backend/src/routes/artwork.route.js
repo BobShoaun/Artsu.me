@@ -81,21 +81,23 @@ router.get("/artworks", async (req, res, next) => {
 /**
  * Update artwork
  */
-router.patch("artworks/:artworkId", authenticate, validateJsonPatch, async (req, res, next) => {
-    const { userId } = req.params;
+router.patch("/artworks/:artworkId", 
+            authenticate, validateJsonPatch, 
+            async (req, res, next) => {
     
     const artworkId = req.params.artworkId
     try {
         const artwork = await Artwork.findById(artworkId)
         // user should edit their own work only
-        if (artwork.userId !== userId){
+        if (artwork.userId !== req.user._id){
             return res.sendStatus(403);
         }
         if (!artwork) {
             return res.sendStatus(404);
         }
   
-        const forbiddenPaths = ["/userId", "/createdAt", "/updatedAt", "/_id", "/likes", "/reports", "/isBanned"];
+        const forbiddenPaths = ["/userId", "/createdAt", "/updatedAt", "/_id", 
+                                "/likes", "/reports", "/isBanned"];
         executeJsonPatch(req, res, artwork, forbiddenPaths);
         if (res.headersSent) return; // res already sent in executeJsonPatch
   

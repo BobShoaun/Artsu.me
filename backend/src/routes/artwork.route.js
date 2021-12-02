@@ -112,7 +112,7 @@ router.get("/artworks", async (req, res, next) => {
  router.get("/artworks/:artworkId", async (req, res, next) => {
   const artworkId = req.params.artworkId
   try {
-      const artworks = Artwork.findById(artworkId)
+      const artworks = await Artwork.findById(artworkId)
       if (!artworks) {
           return res.sendStatus(404)
       }

@@ -80,3 +80,9 @@ router.patch("artworks/:artworkId", authenticate, validateJsonPatch, async (req,
 /**
  * Update likes of an artwork
  */
+
+
+
+ router.use(mongoHandler);
+
+ export default router;

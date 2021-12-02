@@ -78,9 +78,9 @@ router.patch(
  */
 router.delete("/users/:userId", authenticate, async (req, res, next) => {
   if (!req.user.isAdmin) return res.sendStatus(403);
-  const id = req.params.userId;
+  const { userId } = req.params;
   try {
-    const user = await User.findByIdAndDelete(id);
+    const user = await User.findByIdAndDelete(userId);
     if (!user) return res.sendStatus(404);
     res.send(user);
   } catch (e) {

@@ -7,6 +7,7 @@ import {
   mongoHandler,
   validateIdParam,
 } from "../middlewares/mongo.middleware.js";
+import { uploadImage, deleteImage } from "../middlewares/image.middleware.js";
 
 const router = express.Router();
 
@@ -17,37 +18,51 @@ router.param("artworkId", validateIdParam);
 /**
  * Post a new artwork
  */
-router.post("/users/:userId/artworks", authenticate, async (req, res, next) => {
+router.post("/users/:userId/artworks", authenticate, uploadImage, async (req, res, next) => {
   const { userId } = req.params;
-  if (userId !== req.user._id) {
-    return res.sendStatus(403);
-  }
+  if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403);
+
   const name = req.body.name;
   const summary = req.body.summary;
   const description = req.body.description;
-  const image = req.body.image;
-  const likes = [];
-  const tagIds = req.body.tagIds;
-  if (!name || !summary || !description) {
-    return res.sendStatus(400);
-  }
+
+  if (!name) return res.sendStatus(400);
 
   try {
     const artwork = new Artwork({
       name,
       summary,
       description,
-      image,
       userId,
-      likes,
-      tagIds,
+      imageId: req.imageId,
+      imageUrl: req.imageUrl,
     });
     await artwork.save();
-    res.send(artwork);
+    res.status(201).send(artwork);
   } catch (e) {
     next(e);
   }
 });
+
+router.delete(
+  "/users/:userId/artworks/:artworkId",
+  authenticate,
+  async (req, res, next) => {
+    const { userId, artworkId } = req.params;
+    if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403);
+    try {
+      const artwork = await Artwork.findOneAndRemove({ _id: artworkId, userId });
+      if (!artwork) return res.sendStatus(404);
+      req.artwork = artwork;
+      req.imageId = artwork.imageId;
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  deleteImage, // delete frm cloudinary
+  (req, res) => res.send(req.artwork) // send deleted artwork
+);
 
 /**
  * Get all artworks for a user
@@ -55,7 +70,7 @@ router.post("/users/:userId/artworks", authenticate, async (req, res, next) => {
 router.get("/users/:userId/artworks", async (req, res, next) => {
   const { userId } = req.params;
   try {
-    const artworks = await Artwork.find({ userId: userId });
+    const artworks = await Artwork.find({ userId });
     res.send(artworks);
   } catch (e) {
     next(e);
@@ -97,9 +112,10 @@ router.patch(
     const { artworkId } = req.params;
     try {
       const artwork = await Artwork.findById(artworkId);
-      // user should edit their own work only
-      if (artwork.userId !== req.user._id) return res.sendStatus(403);
       if (!artwork) return res.sendStatus(404);
+
+      // user should edit their own work only
+      if (artwork.userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403);
 
       req.forbiddenPaths = [
         "/userId",

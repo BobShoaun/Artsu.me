@@ -46,6 +46,7 @@ export const executeJsonPatch = (req, res, next) => {
     for (const forbiddenKeys of forbiddenPathKeys)
       if (JSON.stringify(keys) === JSON.stringify(forbiddenKeys)) return res.sendStatus(403);
 
+    // traverse path
     for (const key of keys.slice(0, -1)) {
       if (typeof patchDoc !== "object") return res.sendStatus(400);
       if (!(key in patchDoc)) return res.sendStatus(400);
@@ -53,6 +54,7 @@ export const executeJsonPatch = (req, res, next) => {
     }
     const lastKey = keys[keys.length - 1];
 
+    // do op specific instructions
     switch (action.op) {
       case "replace": {
         if (typeof patchDoc !== "object") return res.sendStatus(400);

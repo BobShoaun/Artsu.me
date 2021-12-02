@@ -18,7 +18,7 @@ export const uploadImage = async (req, res, next) =>
   });
 
 export const deleteImage = async (req, res, next) => {
-  const imageId = req.params.imageId;
+  const imageId = req.imageId;
   if (!imageId) return res.sendStatus(400);
   try {
     await cloudinary.v2.uploader.destroy(imageId);

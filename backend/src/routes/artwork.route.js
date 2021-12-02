@@ -25,6 +25,7 @@ router.post("/users/:userId/artworks", authenticate, uploadImage, async (req, re
   const name = req.body.name;
   const summary = req.body.summary;
   const description = req.body.description;
+  const tagIds = req.body.tagIds;
 
   if (!name) return res.sendStatus(400);
 
@@ -36,6 +37,7 @@ router.post("/users/:userId/artworks", authenticate, uploadImage, async (req, re
       userId,
       imageId: req.imageId,
       imageUrl: req.imageUrl,
+      tagIds,
     });
     await artwork.save();
     res.status(201).send(artwork);
@@ -44,6 +46,9 @@ router.post("/users/:userId/artworks", authenticate, uploadImage, async (req, re
   }
 });
 
+/**
+ * Delete artwork
+ */
 router.delete(
   "/users/:userId/artworks/:artworkId",
   authenticate,
@@ -147,29 +152,6 @@ router.patch(
 /**
  * Update likes of an artwork
  */
-
-router.use(mongoHandler);
-
-/**
- * Delete artwork
- */
-router.delete("/artworks/:artworkId", authenticate, async (req, res, next) => {
-  const { userId } = req.params;
-  // user can delete their own artwork only
-  if (userId !== req.user._id) {
-    return res.sendStatus(403);
-  }
-  const artworkId = req.params.artworkId;
-
-  try {
-    const artwork = await Artwork.findByIdAndDelete(artworkId);
-    if (!artwork) return res.sendStatus(404);
-
-    res.send(artwork);
-  } catch (e) {
-    next(e);
-  }
-});
 
 router.use(mongoHandler);
 

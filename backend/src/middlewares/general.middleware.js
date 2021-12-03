@@ -1,20 +1,33 @@
 /**
- * Supports JSON patch format
- * Operations: replace, add
+ * Validates and Executes a patch with jsonpath input in body
+ *
+ * req.patchDoc is the document/object to patch
+ * req.allowedOperations are operations that are allowed
+ * req.allowedPaths are paths that are allowed to be modified
  */
-export const validateJsonPatch = (req, res, next) => {
+export const executeJsonPatch = (req, res, next) => {
   const actions = req.body;
   if (!Array.isArray(actions)) return res.sendStatus(400);
+
+  if (typeof req.patchDoc !== "object") return res.sendStatus(400);
+  if (req.allowedPaths?.length <= 0) return res.sendStatus(403);
+  if (req.allowedOperations?.length <= 0) return res.sendStatus(403);
+
+  const allowedPathKeys = req.allowedPaths.map(path => path.split("/").filter(key => key));
+
   for (const action of actions) {
     if (typeof action.path !== "string") return res.sendStatus(400);
     if (!("path" in action)) return res.sendStatus(400);
+
+    // VALIDATED OPERATION
+    // check if any VALID ops are passed in, so we can show its unimplemented (501) instead of bad request (400)
     switch (action.op) {
       case "replace":
       case "add":
         if (!("value" in action)) return res.sendStatus(400);
-        continue;
+        break;
       case "remove":
-        continue;
+        break;
       case "copy":
       case "move":
       case "test":
@@ -22,29 +35,42 @@ export const validateJsonPatch = (req, res, next) => {
       default:
         return res.sendStatus(400);
     }
-  }
-  next();
-};
 
-/**
- * Executes a patch with jsonpath input in body
- *
- * req.patchDoc is the document/object to patch
- * req.forbiddenPaths are forbidden paths not allowed to be patched
- */
-export const executeJsonPatch = (req, res, next) => {
-  if (typeof req.patchDoc !== "object") return res.sendStatus(400);
+    // check if ops are allowed by us
+    if (!req.allowedOperations.includes(action.op)) return res.sendStatus(403);
 
-  const forbiddenPathKeys =
-    req.forbiddenPaths?.map(path => path.split("/").filter(key => key)) ?? [];
-
-  for (const action of req.body) {
-    let patchDoc = req.patchDoc;
+    // VALIDATE PATH
     const keys = action.path.split("/").filter(key => key);
 
-    // check if keys are forbidden
-    for (const forbiddenKeys of forbiddenPathKeys)
-      if (JSON.stringify(keys) === JSON.stringify(forbiddenKeys)) return res.sendStatus(403);
+    let hasMatchingAllowedPath = false;
+    outer: for (const allowedKeys of allowedPathKeys) {
+      const n = Math.min(allowedKeys.length, keys.length);
+      for (let i = 0; i < n; i++) {
+        if (allowedKeys[i] === "*") {
+          // wildcard path, allow all paths beyond this
+          hasMatchingAllowedPath = true;
+          break outer;
+        }
+
+        if (allowedKeys[i] !== keys[i])
+          // not same path, check next allowedPathKeys
+          break;
+
+        if (i === n - 1) {
+          // last iteration
+          hasMatchingAllowedPath = true;
+          break outer;
+        }
+      }
+    }
+
+    if (!hasMatchingAllowedPath) return res.sendStatus(403);
+  }
+
+  /* DONE validation, now patch the document */
+  for (const action of actions) {
+    let patchDoc = req.patchDoc;
+    const keys = action.path.split("/").filter(key => key);
 
     // traverse path
     for (const key of keys.slice(0, -1)) {

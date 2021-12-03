@@ -6,7 +6,7 @@ import "./index.css";
 
 const Navbar = ({ showSearchButtons }) => {
   const history = useHistory();
-  const [jwt, user, , _logout] = useAuthentication();
+  const [accessToken, user, , _logout] = useAuthentication();
   const [search, setSearch] = useState("");
 
   const logout = () => {
@@ -34,12 +34,7 @@ const Navbar = ({ showSearchButtons }) => {
               history.push("/search");
             }}
           >
-            <input
-              className=""
-              type="search"
-              placeholder="Search"
-              onChange={searchValueOnChange}
-            />
+            <input className="" type="search" placeholder="Search" onChange={searchValueOnChange} />
           </form>
 
           {showSearchButtons && (
@@ -63,29 +58,43 @@ const Navbar = ({ showSearchButtons }) => {
             className="searchbox-icon text-gray-200 opacity-50 absolute right-2 top-1 transition"
           />
         </li>
-        {jwt ? (
+        {accessToken ? (
           <li className="dropdown-wrapper ml-auto relative text-white text-sm flex items-center gap-5">
             <p className="font-semibold">{user.name}</p>
             <img
               className="rounded-full w-10 h-10"
-              src={user.avatar}
+              src={user.avatarUrl}
               alt={`${user.name} avatar`}
             />
             <div className="dropdown opacity-0 backdrop-blur-sm backdrop-filter absolute py-1 right-0 bg-gray-900 rounded-sm">
               <ul>
-                <li className="py-2 px-5 hover:bg-gray-800 transition">
-                  <Link to={`/profile/${user.username}`}>Profile</Link>
+                <li>
+                  <Link className="py-2 px-5 hover:bg-gray-800 transition block" to="/profile">
+                    Profile
+                  </Link>
                 </li>
-                <li className="py-2 px-5 hover:bg-gray-800 transition">
-                  <Link to={`/portfolio/${user.username}`}>Portfolio</Link>
+                <li>
+                  <Link
+                    className="py-2 px-5 hover:bg-gray-800 transition block"
+                    to={`/portfolio/${user.username}`}
+                  >
+                    Portfolio
+                  </Link>
                 </li>
                 {user.isAdmin && (
-                  <li className="py-2 px-5 hover:bg-gray-800 transition">
-                    <Link to={`/admin`}>Admin Panel</Link>
+                  <li>
+                    <Link className="py-2 px-5 hover:bg-gray-800 transition block" to={`/admin`}>
+                      Admin Panel
+                    </Link>
                   </li>
                 )}
-                <li className="py-2 px-5 hover:bg-gray-800 transition">
-                  <button onClick={logout}>Logout</button>
+                <li>
+                  <button
+                    className="py-2 px-5 hover:bg-gray-800 transition block w-full text-left"
+                    onClick={logout}
+                  >
+                    Logout
+                  </button>
                 </li>
               </ul>
             </div>

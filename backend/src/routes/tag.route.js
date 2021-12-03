@@ -1,7 +1,7 @@
 import express from "express";
 import { Tag } from "../models/index.js";
 import { authenticate } from "../middlewares/user.middleware.js";
-import { validateJsonPatch, executeJsonPatch } from "../middlewares/general.middleware.js";
+import { executeJsonPatch } from "../middlewares/general.middleware.js";
 import {
   checkDatabaseConn,
   mongoHandler,
@@ -49,7 +49,6 @@ router.post("/tags", authenticate, async (req, res, next) => {
 router.patch(
   "/tags/:tagId",
   authenticate,
-  validateJsonPatch,
   async (req, res, next) => {
     if (!req.user.isAdmin) return res.sendStatus(403); // Admin-only route
     const { tagId } = req.params;
@@ -57,7 +56,8 @@ router.patch(
     try {
       const tag = await Tag.findById(tagId);
       if (!tag) return res.sendStatus(404);
-      req.forbiddenPaths = ["/_id", "/createdAt", "/updatedAt"];
+      req.allowedOperations = ["replace"];
+      req.allowedPaths = ["/label", "/color"];
       req.patchDoc = tag;
       next();
     } catch (e) {

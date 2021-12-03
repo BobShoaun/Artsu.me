@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { users } from "../users.json";
 
 const initialState = {
-  jwt: "",
-  user: {},
+  accessToken: "",
+  user: null,
 };
 
 export const authenticationSlice = createSlice({
@@ -11,13 +11,14 @@ export const authenticationSlice = createSlice({
   initialState,
   reducers: {
     login: (state, { payload }) => {
-      const { username } = payload;
-      // console.log(payload);
-      state.user = users.find(user => user.username === username);
-      state.jwt = "iamajwttoken";
+      const { user, accessToken } = payload;
+
+      state.user = user;
+      state.accessToken = accessToken;
+      localStorage.setItem("access-token", accessToken);
     },
     logout: state => {
-      state.jwt = "";
+      state.accessToken = "";
       state.user = {};
     },
   },

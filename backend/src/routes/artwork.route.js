@@ -112,12 +112,11 @@ router.get("/artworks", async (req, res, next) => {
 router.get("/artworks/:artworkId", async (req, res, next) => {
   const artworkId = req.params.artworkId;
   try {
-    const artworks = await Artwork.findById(artworkId);
-    if (!artworks) {
-      return res.sendStatus(404);
-    }
-    res.send(artworks);
+    const artwork = await Artwork.findById(artworkId).populate("user");
+    if (!artwork) return res.sendStatus(404);
+    res.json(artwork);
   } catch (e) {
+    console.log(e);
     next(e);
   }
 });

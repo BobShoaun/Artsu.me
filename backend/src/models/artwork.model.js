@@ -15,7 +15,13 @@ const artwork = new Schema(
     isBanned: { type: Boolean, default: false },
     reports: { type: Array, default: [] },
   },
-  { versionKey: false, timestamps: true }
+  { versionKey: false, timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+artwork.virtual("user", {
+  ref: "users",
+  localField: "userId",
+  foreignField: "_id",
+});
 
 export default artwork;

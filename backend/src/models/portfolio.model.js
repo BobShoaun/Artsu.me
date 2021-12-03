@@ -23,6 +23,7 @@ const portfolio = new Schema(
         layoutId: { type: Number },
         experiences: [
           {
+            _id: false, // no ids for experience
             company: { type: String },
             position: { type: String },
             startDate: { type: Date },

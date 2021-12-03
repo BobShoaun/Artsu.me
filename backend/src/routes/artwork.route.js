@@ -159,6 +159,74 @@ router.patch(
 );
 
 /**
+ * Allows a user to report a piece of artwork
+ */
+router.post("/artworks/:artworkId/reports",
+  authenticate,
+  async (req, res, next) => {
+
+    const artworkId = req.params.artworkId
+    const reportingUser = req.user._id
+    const reportText = req.body.message
+
+    if (!reportText) {
+      return res.sendStatus(400);
+    }
+
+    try {
+      const artwork = await Artwork.findById(artworkId)
+      // user should edit their own work only
+      if (!artwork) {
+        return res.sendStatus(404);
+      }
+
+      const report = {
+        userId: reportingUser,
+        message: reportText
+      }
+
+      artwork.reports.push(report)
+
+      await artwork.save();
+      res.status(201).send(artwork);
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
+/**
+ * Allows a user to like a piece of artwork
+ */
+router.post("/artworks/:artworkId/likes",
+  authenticate,
+  async (req, res, next) => {
+
+    const artworkId = req.params.artworkId
+    const userId = req.user._id
+
+    try {
+      const artwork = await Artwork.findById(artworkId)
+      // user should edit their own work only
+      if (!artwork) {
+        return res.sendStatus(404);
+      }
+      //checking if they have liked the artwork already
+      if(!artwork.likes.includes(userId)) {
+        artwork.likes.push(userId)
+      } else{
+        return res.status(200).send(artwork);
+      }
+      await artwork.save();
+      res.status(201).send(artwork);
+    } catch (e) {
+      next(e);
+    }
+  }
+);
+
+
+/**
  * Update likes of an artwork
  */
 

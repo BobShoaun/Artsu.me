@@ -106,9 +106,9 @@
         "biography": "Don't make me ban you",
         "artworkIds": [10011, 10012, 10013, 10014, 10015],
         "themeColor": {
-          "primary": "black",
-          "secondary": "white",
-          "highlight": "red"
+          "primary": "#FFFFFF",
+          "secondary": "#000000",
+          "highlight": "#B91C1C"
         },
         "layoutId": 3
       }

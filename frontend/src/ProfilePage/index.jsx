@@ -100,14 +100,14 @@ const ProfilePage = () => {
                 <input className="" type="text" defaultValue={user.email} />
               </li>
             </ul>
-            <ul className="flex items-center gap-10 mx-auto mb-6">
+            {/* <ul className="flex items-center gap-10 mx-auto mb-6">
               <li>
                 <h3 className="dark:text-gray-200 font-semibold text-right">password:</h3>
               </li>
               <li className="ml-auto">
                 <input className="" type="password" />
               </li>
-            </ul>
+            </ul> */}
             <ul className="flex items-center gap-10 mx-auto mb-6">
               <li>
                 <h3 className="dark:text-gray-200 font-semibold text-right">new password:</h3>

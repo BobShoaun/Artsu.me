@@ -12,10 +12,9 @@ export const authenticationSlice = createSlice({
   reducers: {
     login: (state, { payload }) => {
       const { user, accessToken } = payload;
-      // console.log(payload);
-      // state.user = users.find(user => user.username === username);
+
       state.user = user;
-      state.accessToken = "iamajwttoken";
+      state.accessToken = accessToken;
       localStorage.setItem("access-token", accessToken);
     },
     logout: state => {

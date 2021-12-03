@@ -13,7 +13,7 @@ const multipart = connectMultiparty();
  */
 export const uploadImage = async (req, res, next) =>
   multipart(req, res, async () => {
-    const imagePath = req.files.image?.path;
+    const imagePath = req.files?.image?.path;
     if (!imagePath) return res.sendStatus(400);
     try {
       const response = await cloudinary.v2.uploader.upload(req.files.image.path);

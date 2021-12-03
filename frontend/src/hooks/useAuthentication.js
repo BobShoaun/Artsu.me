@@ -3,15 +3,15 @@ import { login as authLogin, logout as authLogout } from "../store/authenticatio
 
 export const useAuthentication = () => {
   const dispatch = useDispatch();
-  const { jwt, user } = useSelector(state => state.authentication);
+  const { accessToken, user } = useSelector(state => state.authentication);
 
-  const login = (username, accessToken) => {
-    dispatch(authLogin({ username, accessToken }));
+  const login = (user, accessToken) => {
+    dispatch(authLogin({ user, accessToken }));
   };
 
   const logout = () => {
     dispatch(authLogout());
   };
 
-  return [jwt, user, login, logout];
+  return [accessToken, user, login, logout];
 };

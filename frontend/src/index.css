@@ -11,6 +11,7 @@
   input[type="text"],
   input[type="search"],
   input[type="password"],
+  input[type="email"],
   textarea {
     @apply px-2 py-1 w-96 min-w-full outline-none text-white bg-transparent border-opacity-50 focus:border-opacity-100 border-gray-200 transition;
     border-bottom-width: 1px;

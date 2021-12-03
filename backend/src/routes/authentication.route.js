@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { accessTokenSecret } from "../config.js";
 import { checkDatabaseConn, mongoHandler } from "../middlewares/mongo.middleware.js";
 import { usernameHandler } from "../middlewares/user.middleware.js";
+import { authenticate } from "../middlewares/user.middleware.js";
 
 import { User, Portfolio } from "../models/index.js";
 
@@ -64,6 +65,23 @@ router.post("/users/login", async (req, res, next) => {
     );
     res.send({ user, accessToken });
   } catch {
+    next(e);
+  }
+});
+
+router.put("/users/:userId/password", authenticate, async (req, res, next) => {
+  const { userId } = req.params;
+  if (userId !== req.user_id) return res.sendStatus(403);
+  const password = req.body.password;
+  if (!password) return res.sendStatus(400);
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.sendStatus(404);
+    const passwordHash = await bcrypt.hash(password, 10);
+    user.password = passwordHash;
+    await user.save();
+    res.send(user);
+  } catch (e) {
     next(e);
   }
 });

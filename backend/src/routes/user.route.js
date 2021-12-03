@@ -7,6 +7,7 @@ import {
   mongoHandler,
   validateIdParam,
 } from "../middlewares/mongo.middleware.js";
+import { uploadImage } from "../middlewares/image.middleware.js";
 
 const router = express.Router();
 
@@ -41,6 +42,7 @@ router.get("/users/:userId", async (req, res, next) => {
   const { userId } = req.params;
   try {
     const user = await User.findById(userId);
+    if (!user) return res.sendStatus(404);
     res.send(user);
   } catch (e) {
     next(e);
@@ -91,6 +93,21 @@ router.delete("/users/:userId", authenticate, async (req, res, next) => {
   try {
     const user = await User.findByIdAndDelete(userId);
     if (!user) return res.sendStatus(404);
+    res.send(user);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.put("/users/:userId/avatar", authenticate, uploadImage, async (req, res, next) => {
+  const { userId } = req.params;
+  if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403);
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.sendStatus(404);
+    user.avatarUrl = req.imageUrl;
+    user.avatarId = req.imageId;
+    await user.save();
     res.send(user);
   } catch (e) {
     next(e);

@@ -3,6 +3,14 @@ import connectMultiparty from "connect-multiparty";
 
 const multipart = connectMultiparty();
 
+/**
+ * Get image from multipart form and uploads it to cloudinary
+ * key for image must be "image"
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
+ */
 export const uploadImage = async (req, res, next) =>
   multipart(req, res, async () => {
     const imagePath = req.files.image?.path;

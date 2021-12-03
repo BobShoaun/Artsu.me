@@ -1,7 +1,7 @@
 import express from "express";
 import { Artwork } from "../models/index.js";
 import { authenticate } from "../middlewares/user.middleware.js";
-import { validateJsonPatch, executeJsonPatch } from "../middlewares/general.middleware.js";
+import { executeJsonPatch } from "../middlewares/general.middleware.js";
 import {
   checkDatabaseConn,
   mongoHandler,
@@ -109,16 +109,16 @@ router.get("/artworks", async (req, res, next) => {
 /**
  * Get artwork by Id
  */
- router.get("/artworks/:artworkId", async (req, res, next) => {
-  const artworkId = req.params.artworkId
+router.get("/artworks/:artworkId", async (req, res, next) => {
+  const artworkId = req.params.artworkId;
   try {
-      const artworks = await Artwork.findById(artworkId)
-      if (!artworks) {
-          return res.sendStatus(404)
-      }
-      res.send(artworks);
+    const artworks = await Artwork.findById(artworkId);
+    if (!artworks) {
+      return res.sendStatus(404);
+    }
+    res.send(artworks);
   } catch (e) {
-      next(e);
+    next(e);
   }
 });
 
@@ -128,7 +128,6 @@ router.get("/artworks", async (req, res, next) => {
 router.patch(
   "/artworks/:artworkId",
   authenticate,
-  validateJsonPatch,
   async (req, res, next) => {
     const { artworkId } = req.params;
     try {
@@ -138,15 +137,10 @@ router.patch(
       // user should edit their own work only
       if (artwork.userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403);
 
-      req.forbiddenPaths = [
-        "/userId",
-        "/createdAt",
-        "/updatedAt",
-        "/_id",
-        "/likes",
-        "/reports",
-        "/isBanned",
-      ];
+      req.allowedPaths = ["/name", "/summary", "/description", "/tagIds"];
+      if (req.user.isAdmin)
+        req.allowedPaths.push("/imageUrl", "/imageId", "/likes", "/isBanned", "/reports");
+      req.allowedOperations = ["replace", "add", "remove"];
       req.patchDoc = artwork;
       next();
     } catch (e) {

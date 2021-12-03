@@ -28,14 +28,14 @@ const portfolio = new Schema(
             startDate: { type: Date },
             endDate: { type: Date },
             description: { type: String },
-            artworkIds: [{ type: Schema.ObjectId, ref: "artworks", unique: true }],
+            artworkIds: [{ type: Schema.ObjectId, ref: "artworks" }],
           },
         ],
         isVisible: { type: Boolean, required: true, default: true },
       },
       project: {
         layoutId: Number,
-        artworkIds: [{ type: Schema.ObjectId, ref: "artworks", unique: true }],
+        artworkIds: [{ type: Schema.ObjectId, ref: "artworks" }],
         isVisible: { type: Boolean, required: true, default: true },
       },
       contact: {

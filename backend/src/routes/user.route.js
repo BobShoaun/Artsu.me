@@ -1,7 +1,7 @@
 import express from "express";
 import { User } from "../models/index.js";
 import { authenticate, usernameHandler } from "../middlewares/user.middleware.js";
-import { validateJsonPatch, executeJsonPatch } from "../middlewares/general.middleware.js";
+import { executeJsonPatch } from "../middlewares/general.middleware.js";
 import {
   checkDatabaseConn,
   mongoHandler,
@@ -37,13 +37,22 @@ router.get("/users", async (req, res, next) => {
   }
 });
 
+router.get("/users/:userId", async (req, res, next) => {
+  const { userId } = req.params;
+  try {
+    const user = await User.findById(userId);
+    res.send(user);
+  } catch (e) {
+    next(e);
+  }
+});
+
 /**
  * Update fields on user with userId
  */
 router.patch(
   "/users/:userId",
   authenticate,
-  validateJsonPatch,
   async (req, res, next) => {
     const { userId } = req.params;
     if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403); // can only edit yourself, unless admin
@@ -51,9 +60,9 @@ router.patch(
       const user = await User.findById(userId);
       if (!user) return res.sendStatus(404);
 
-      const forbiddenPaths = ["/_id", "/createdAt", "/updatedAt", "/password"];
-      if (!req.user.isAdmin) forbiddenPaths.push("/isAdmin", "/isFeatured", "/isBanned");
-      req.forbiddenPaths = forbiddenPaths;
+      req.allowedPaths = ["/name", "/username"];
+      if (req.user.isAdmin) req.allowedPaths.push("/isFeatured", "/isAdmin", "/isBanned");
+      req.allowedOperations = ["replace"];
       req.patchDoc = user;
       next();
     } catch (e) {

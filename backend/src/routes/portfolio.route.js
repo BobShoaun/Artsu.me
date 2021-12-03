@@ -1,7 +1,7 @@
 import express from "express";
 import { Portfolio, User } from "../models/index.js";
 import { authenticate } from "../middlewares/user.middleware.js";
-import { validateJsonPatch, executeJsonPatch } from "../middlewares/general.middleware.js";
+import { executeJsonPatch } from "../middlewares/general.middleware.js";
 import {
   checkDatabaseConn,
   mongoHandler,
@@ -33,7 +33,6 @@ router.get("/users/:userId/portfolio", async (req, res, next) => {
 router.patch(
   "/users/:userId/portfolio",
   authenticate,
-  validateJsonPatch,
   async (req, res, next) => {
     const { userId } = req.params;
     if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403); // can only edit yourself, unless admin
@@ -42,7 +41,8 @@ router.patch(
       const portfolio = await Portfolio.findOne({ userId });
       if (!portfolio) return res.sendStatus(404);
 
-      req.forbiddenPaths = ["/userId", "/createdAt", "/updatedAt", "/_id"];
+      req.allowedPaths = ["/color/*", "/section/*"];
+      req.allowedOperations = ["replace", "add", "remove"];
       req.patchDoc = portfolio;
       next();
     } catch (e) {

@@ -5,8 +5,7 @@ import { Provider } from "react-redux";
 
 import MainPage from "./MainPage";
 import PortfolioPage from "./PortfolioPage";
-import PortfolioEditorPageStyles from "./PortfolioEditorPageStyles";
-import PortfolioEditorPageContent from "./PortfolioEditorPageContent";
+import PortfolioEditorPage from "./PortfolioEditorPage";
 import ArtworkPage from "./ArtworkPage";
 import ProfilePage from "./ProfilePage";
 import LoginPage from "./LoginPage";
@@ -24,11 +23,7 @@ const App = () => {
       <main className="dark">
         <Router>
           <Switch>
-            <Route path="/portfolio/edit/styles/:username" component={PortfolioEditorPageStyles} />
-            <Route
-              path="/portfolio/edit/content/:username"
-              component={PortfolioEditorPageContent}
-            />
+            <Route path="/portfolio/edit/:username" component={PortfolioEditorPage} />
             <Route path="/portfolio/:username" component={PortfolioPage} />
             <Route path="/artwork/:id" component={ArtworkPage} />
             <Route path="/login" component={LoginPage} />

@@ -26,6 +26,18 @@ router.get("/tags", async (req, res, next) => {
 });
 
 /**
+ * Get a tag
+ */
+ router.get("/tags/:tagId", async (req, res, next) => {
+  const { tagId } = req.params;
+  try {
+    const tag = await Tag.findById(tagId);
+    if (!tag) return res.sendStatus(404);
+    res.send(tag);
+  } catch (e) {next(e);}
+});
+
+/**
  * Add a tag
  */
 router.post("/tags", authenticate, async (req, res, next) => {

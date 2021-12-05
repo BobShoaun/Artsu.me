@@ -1,0 +1,35 @@
+.portfolio-content-artwork-img {
+  width: 160px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.portfolio-form {
+  grid-template-columns: auto 1fr;
+}
+
+.portfolio-form-short {
+  grid-template-columns: auto 1fr 1fr 1fr;
+}
+
+.portfolio-editor-section-visible {
+  display: flex;
+  cursor: pointer;
+  justify-content: right;
+  align-items: right;
+  height: 100%;
+}
+
+.portfolio-editor-section-checkbox{
+	background-color: #ebebeb;
+	border: 1px solid #cacece;
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0px -15px 10px -12px rgba(0,0,0,0.05);
+	padding: 9px;
+	border-radius: 3px;
+	display: inline-block;
+	position: relative;
+}

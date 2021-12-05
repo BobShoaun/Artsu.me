@@ -8,7 +8,7 @@ import { useAuthentication } from "../hooks/useAuthentication";
 import Navbar from "../components/Navbar";
 // API calls
 
-const PortfolioEditorPageContent = () => {
+const PortfolioEditorPage = () => {
   const history = useHistory();
 
   const { username } = useParams();
@@ -36,6 +36,45 @@ const PortfolioEditorPageContent = () => {
     return;
   }
 
+  function addNewExperience(){
+    const experience =  (
+      <div>
+          <div className="grid gap-5 portfolio-form-short">
+            <label className="dark:text-gray-200 text-sm text-right mt-2">
+              Company:
+            </label>
+            <input className="border" type="text"/>
+            <label className="dark:text-gray-200 text-sm text-right mt-2">
+              Position:
+            </label>
+            <input className="border" type="text" />
+            <label className="dark:text-gray-200 text-sm text-right mt-2">
+              Start Date:
+            </label>
+            <input className="bg-transparent border px-1" type="date" />
+            <label className="dark:text-gray-200 text-sm text-right mt-2">
+              End Date:
+            </label>
+            <input className="bg-transparent border px-1" type="date" />
+          </div>
+          <div className="mt-10 grid gap-5 portfolio-form">
+            <label className="dark:text-gray-200 text-sm text-right mt-2">
+              Description:
+            </label>
+            <textarea
+              className="border"
+              rows="4"
+              cols="100"
+            ></textarea>
+            <label className="dark:text-gray-200 text-sm text-right mt-2">
+              Artworks:
+            </label>
+          </div>
+        </div>
+    )
+    document.getElementById('setExperiences').appendChild(experience)
+  }
+
   if (loggedInUser === user) {
     return (
       <main className="bg-gray-700">
@@ -45,7 +84,7 @@ const PortfolioEditorPageContent = () => {
               artsu.me
             </Link>
             <h2 className="dark:text-white text-2xl ml-auto">
-              Edit Portfolio - Content
+              Edit Portfolio
             </h2>
             <button
               onClick={logout}
@@ -55,9 +94,9 @@ const PortfolioEditorPageContent = () => {
             </button>
           </div>
         </header>
-        <section className="dark:text-white container mx-auto py-20">
+        <section className="dark:text-white container mx-auto pt-20">
           <h2 className="mb-10">1. Hero Section</h2>
-          <form action="" className="grid gap-5 portfolio-form">
+          <div className="grid gap-5 portfolio-form">
             <label className="dark:text-gray-200 text-sm text-right mt-2">
               Heading:
             </label>
@@ -66,6 +105,12 @@ const PortfolioEditorPageContent = () => {
               className="px-2 py-1"
               type="text"
             />
+          </div>
+          <label className="dark:text-gray-400 text-xs mt-1 mb-5 portfolio-editor-section-visible">
+            <input type="checkbox" className="portfolio-editor-section-checkbox mx-1"></input>
+            Keep Heading Private
+          </label>
+          <div action="" className="grid gap-5 portfolio-form">
             <label className="dark:text-gray-200 text-sm text-right mt-2">
               About Me:
             </label>
@@ -75,10 +120,57 @@ const PortfolioEditorPageContent = () => {
               rows="4"
               cols="100"
             ></textarea>
-          </form>
+          </div>
+          <label className="dark:text-gray-400 text-xs mt-1 mb-5 portfolio-editor-section-visible">
+            <input type="checkbox" className="portfolio-editor-section-checkbox mx-1"></input>
+            Keep About me Private
+          </label>
+        </section>
+        <section className="dark:text-white container mx-auto mt-20"
+          id="setExperiences">
+          <h2 className="mb-10">2. Experiences</h2>
+          <div className="grid gap-5 portfolio-form-short">
+            <label className="dark:text-gray-200 text-sm text-right mt-2">
+              Company:
+            </label>
+            <input className="border" type="text"/>
+            <label className="dark:text-gray-200 text-sm text-right mt-2">
+              Position:
+            </label>
+            <input className="border" type="text" />
+            <label className="dark:text-gray-200 text-sm text-right mt-2">
+              Start Date:
+            </label>
+            <input className="bg-transparent border px-1" type="date" />
+            <label className="dark:text-gray-200 text-sm text-right mt-2">
+              End Date:
+            </label>
+            <input className="bg-transparent border px-1" type="date" />
+          </div>
+          <div className="mt-10 grid gap-5 portfolio-form">
+            <label className="dark:text-gray-200 text-sm text-right mt-2">
+              Description:
+            </label>
+            <textarea
+              className="border"
+              rows="4"
+              cols="100"
+            ></textarea>
+            <label className="dark:text-gray-200 text-sm text-right mt-2">
+              Artworks:
+            </label>
+          </div>
+          <button className="bg-gray-500 hover:bg-gray-600 text-white text-sm py-1 px-1 my-5"
+                  onClick={e => addNewExperience()}>
+            Add
+          </button>
+          <label className="dark:text-gray-400 text-xs mt-1 mb-5 portfolio-editor-section-visible">
+            <input type="checkbox" className="portfolio-editor-section-checkbox mx-1"></input>
+            Keep Experiences Private
+          </label>
         </section>
         <section
-          className="dark:text-white container mx-auto py-20"
+          className="dark:text-white container mx-auto mt-20"
           id="chooseLayout"
         >
           2. Choose Artworks to Display
@@ -137,7 +229,7 @@ const PortfolioEditorPageContent = () => {
               className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
               to={`/portfolio/edit/styles/${user.username}`}
             >
-              Next
+              Save
             </Link>
           </div>
         </section>
@@ -157,4 +249,4 @@ const PortfolioEditorPageContent = () => {
   }
 };
 
-export default PortfolioEditorPageContent;
+export default PortfolioEditorPage;

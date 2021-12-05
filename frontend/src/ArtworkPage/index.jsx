@@ -1,9 +1,6 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link, useParams } from "react-router-dom";
-import { users } from "../users.json";
-import { artworks } from "../artworks.json";
-import { tags } from "../tags.json";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import ImageStage from "../components/ImageStage";
 import { useState, useEffect } from "react";
@@ -15,46 +12,35 @@ import axios from "axios";
 
 const ArtworkPage = () => {
   const { id } = useParams();
-  // const artwork = artworks.find(artwork => artwork.id === parseInt(id)); // NOTE: will be replaced by api call
-  // const user = users.find(user => user.id === artwork.authorId); // NOTE: will be replaced by api call
-
-  const artworkTags = [];
-  // artwork.tagIds.forEach(tagId => {
-  //   artworkTags.push(tags.find(tag => tag.id === tagId));
-  // });
 
   const [artwork, setArtwork] = useState(null);
+  const [artworkTags, updateArtworkTags] = useState([]);
+  const [otherArtworks, setOtherArtworks] = useState([]);
 
   const getArtwork = async () => {
     try {
-      const { data } = await axios.get(`${apiUrl}/artworks/${id}`);
-      console.log(data);
-      setArtwork(data);
+      const { data: artwork } = await axios.get(`${apiUrl}/artworks/${id}`);
+      setArtwork(artwork);
+      console.log(artwork)
+
+      for (const tagId of artwork.tagIds){
+        const { data: tags } = await axios.get(`${apiUrl}/tags/${tagId}`);
+        updateArtworkTags( artworkTags => [...artworkTags, tags]);
+      }
+
+      const { data: otherArtworks } = await axios.get(`${apiUrl}/users/${artwork.userId}/artworks`);
+      setOtherArtworks(otherArtworks.filter(otherArt => otherArt._id !== artwork._id).sort(() => 0.5 - Math.random()).slice(0,3));
     } catch (e) {
       console.log(e);
     }
   };
-
-  useEffect(getArtwork, []);
-
-  const otherArtworks = [];
-  // user.portfolioSettings.artworkIds
-  //   .filter(id => id !== artwork.id)
-  //   .map(id => artworks.find(artwork => artwork.id === id))
-  //   .sort(() => 0.5 - Math.random());
-
-  // grab artworks, remove currently displayed one, and roughly shuffle them (shuffle apporach found online)
-
+  
+  useEffect(getArtwork, [id]);
   const [fullscreen, setFullscreen] = useState(false);
-
   useScrollToTop();
 
   if (!artwork) return null;
-
-  if (fullscreen)
-    return (
-      <ImageStage onClose={() => setFullscreen(false)} src={artwork.imageUrl} alt={artwork.name} />
-    );
+  if (fullscreen) return (<ImageStage onClose={() => setFullscreen(false)} src={artwork.imageUrl} alt={artwork.name}/>);
 
   return (
     <main className="bg-gray-900 min-h-screen">
@@ -67,7 +53,6 @@ const ArtworkPage = () => {
             src={artwork.imageUrl}
             alt={artwork.name}
           />
-
           <div className="relative">
             <button
               onClick={() => setFullscreen(true)}
@@ -81,13 +66,13 @@ const ArtworkPage = () => {
           </div>
 
           <section className="flex gap-8">
-            <Link to={`/portfolio/${artwork.user.username}`} className="flex-none mt-5">
+            <Link to={`/portfolio/${artwork.user[0].username}`} className="flex-none mt-5">
               <img
                 className="shadow-xl w-24 h-24 object-cover rounded-sm mb-3 mx-auto"
-                src={artwork.user.avatarUrl}
-                alt={artwork.user.name}
+                src={artwork.user[0].avatarUrl}
+                alt={artwork.user[0].name}
               />
-              <p className="text-sm text-white text-center">by {artwork.user.name}</p>
+              <p className="text-sm text-white text-center">by {artwork.user[0].name}</p>
             </Link>
             <div>
               {artworkTags.length > 0 && (
@@ -107,13 +92,12 @@ const ArtworkPage = () => {
             </div>
           </section>
         </main>
-
         <aside className="flex-none">
-          <h3 className="font-semibold text-white mb-8">More from {artwork.user.username}:</h3>
+          <h3 className="font-semibold text-white mb-8">More from {artwork.user[0].username}:</h3>
           <div className="mx-auto grid place-items-center gap-8">
-            {otherArtworks.map(artwork => (
-              <Link key={artwork.id} to={`/artwork/${artwork.id}`} className="hover:bg-gray-800">
-                <img className="shadow-lg w-36" src={artwork.image} alt={artwork.name} />
+            {otherArtworks.map(otherArt => (
+              <Link key={otherArt.id} to={`/artwork/${otherArt.id}`} className="hover:bg-gray-800">
+                <img className="shadow-lg w-36" src={otherArt.imageUrl} alt={otherArt.name} />
               </Link>
             ))}
           </div>

@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import { users } from "../users.json";
 import { tags } from "../tags.json"; */
 import { Link, useParams } from "react-router-dom";
+import { useState } from "react";
 
 import { apiUrl } from "../config";
 import axios from "axios";
@@ -16,29 +17,29 @@ const SearchPage = () => {
     .replace("%20", " ")
     .toLowerCase();
 
+  const [artworks, setArtworks] = useState([]);
+  const [users, setUsers] = useState([])
+  const [tags, setTags] = useState([])
+
   const getSearchResult = async() => {
     try {
       const { data: artworks } = await axios.get(`${apiUrl}/artworks`);
+      setArtworks(artworks)
       console.log(artworks)
       const { data: users } = await axios.get(`${apiUrl}/users`);
+      setUsers(users)
       const { data: tags } = await axios.get(`${apiUrl}/tags`);
-      return artworks, users, tags
+      setTags(tags)
     } catch(e) {
       console.log(e);
     }
   }
 
-  let artworksFiltered;
-  let usersFiltered;
-  let tags;
   /* eslint-disable no-unused-expressions */
-  artworksFiltered, usersFiltered, tags = getSearchResult();
-  console.log(artworksFiltered)
-  console.log(usersFiltered)
-  console.log(tags)
+  getSearchResult();
 
   function displaySearchResult() {
-    let length = artworksFiltered.length;
+    let length = artworks.length;
     /* if (target.substr(0, 5) === "&tag=") {
       let tagFiltered = tags.filter(
         // API calls to get the tag searched
@@ -58,16 +59,16 @@ const SearchPage = () => {
           artwork // API calls to get arts searched
         ) => artwork.name.toLowerCase().includes(target.substr(5))
       ); */
-      length = artworksFiltered.length;
+      length = artworks.length;
     } else if (target.substr(0, 5) === "&usr=") {
       /* usersFiltered = users.filter(
         (
           user // API calls to get users searched
         ) => user.name.toLowerCase().includes(target.substr(5))
       ); */
-      length = usersFiltered.length;
+      length = users.length;
       let msg = "results";
-      if (usersFiltered.length <= 1) {
+      if (users.length <= 1) {
         msg = "result";
       }
       return (
@@ -78,7 +79,7 @@ const SearchPage = () => {
             </p>
           </div>
           <div className="flex flex-wrap gap-x-10 gap-y-10">
-            {usersFiltered.map(user => {
+            {users.map(user => {
               return (
                 <Link
                   to={`/portfolio/${user.username}`}
@@ -110,7 +111,7 @@ const SearchPage = () => {
       );
     }
     let msg = "results";
-    if (artworksFiltered.length <= 1) {
+    if (artworks.length <= 1) {
       msg = "result";
     }
     return (
@@ -121,7 +122,7 @@ const SearchPage = () => {
           </p>
         </div>
         <div className="flex flex-wrap justify-around gap-x-10 gap-y-10">
-          {artworksFiltered.map(artwork => {
+          {artworks.map(artwork => {
             return (
               <Link
                 to={`/artwork/${artwork.id}`}
@@ -130,7 +131,7 @@ const SearchPage = () => {
               >
                 <img
                   className="mb-5 max-w-xs shadow-xl mx-10 mt-5 max-w-20"
-                  src={artwork.image}
+                  src={artwork.imageUrl}
                   alt={artwork.name}
                 />
                 <div className="pl-3">

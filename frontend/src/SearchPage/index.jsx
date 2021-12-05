@@ -1,10 +1,12 @@
-import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { artworks } from "../artworks.json";
+/* import { artworks } from "../artworks.json";
 import { users } from "../users.json";
-import { tags } from "../tags.json";
-//API calls to get arwork, users and tags
+import { tags } from "../tags.json"; */
+import { Link, useParams } from "react-router-dom";
+
+import { apiUrl } from "../config";
+import axios from "axios";
 
 const SearchPage = () => {
   const target = window.location.pathname
@@ -14,12 +16,30 @@ const SearchPage = () => {
     .replace("%20", " ")
     .toLowerCase();
 
-  let artworksFiltered = artworks;
-  let usersFiltered = users;
-  let length = artworksFiltered.length;
+  const getSearchResult = async() => {
+    try {
+      const { data: artworks } = await axios.get(`${apiUrl}/artworks`);
+      console.log(artworks)
+      const { data: users } = await axios.get(`${apiUrl}/users`);
+      const { data: tags } = await axios.get(`${apiUrl}/tags`);
+      return artworks, users, tags
+    } catch(e) {
+      console.log(e);
+    }
+  }
+
+  let artworksFiltered;
+  let usersFiltered;
+  let tags;
+  /* eslint-disable no-unused-expressions */
+  artworksFiltered, usersFiltered, tags = getSearchResult();
+  console.log(artworksFiltered)
+  console.log(usersFiltered)
+  console.log(tags)
 
   function displaySearchResult() {
-    if (target.substr(0, 5) === "&tag=") {
+    let length = artworksFiltered.length;
+    /* if (target.substr(0, 5) === "&tag=") {
       let tagFiltered = tags.filter(
         // API calls to get the tag searched
         tag => tag.label.toLowerCase() === target.substr(5)
@@ -31,19 +51,20 @@ const SearchPage = () => {
         ) => artwork.tagIds.includes(tag)
       );
       length = artworksFiltered.length;
-    } else if (target.substr(0, 5) === "&art=") {
-      artworksFiltered = artworks.filter(
+    } else  */
+    if (target.substr(0, 5) === "&art=") {
+      /* artworksFiltered = artworks.filter(
         (
           artwork // API calls to get arts searched
         ) => artwork.name.toLowerCase().includes(target.substr(5))
-      );
+      ); */
       length = artworksFiltered.length;
     } else if (target.substr(0, 5) === "&usr=") {
-      usersFiltered = users.filter(
+      /* usersFiltered = users.filter(
         (
           user // API calls to get users searched
         ) => user.name.toLowerCase().includes(target.substr(5))
-      );
+      ); */
       length = usersFiltered.length;
       let msg = "results";
       if (usersFiltered.length <= 1) {
@@ -138,7 +159,7 @@ const SearchPage = () => {
         <aside className="search-tag-aside">
           <h3 className="dark:text-gray-200 mb-3 font-semibold">Tags:</h3>
           <div className=" flex-shrink-0 flex-wrap gap-3">
-            {tags.map(tag => {
+            {/* {tags.map(tag => {
               return (
                 <Link to={`/search/&tag=${tag.label}`}>
                   <p
@@ -150,7 +171,7 @@ const SearchPage = () => {
                   </p>
                 </Link>
               );
-            })}
+            })} */}
           </div>
         </aside>
         {displaySearchResult()}

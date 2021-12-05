@@ -13,6 +13,21 @@ const router = express.Router();
 router.use(checkDatabaseConn);
 router.param("userId", validateIdParam);
 
+router.get("/users/username/:username/portfolio", async (req, res, next) => {
+  const { username } = req.params;
+  try {
+    const user = await User.findOne({ username });
+    if (!user) return res.sendStatus(404);
+
+    const portfolio = await Portfolio.findOne({ userId: user._id });
+    if (!portfolio) return res.sendStatus(404);
+
+    res.send(portfolio);
+  } catch (e) {
+    next(e);
+  }
+});
+
 /**
  * Get user's portfolio
  */

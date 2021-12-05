@@ -14,7 +14,6 @@ const ArtworkPage = () => {
   const { id } = useParams();
 
   const [artwork, setArtwork] = useState(null);
-  const [user, setUser] = useState(null);
   const [artworkTags, updateArtworkTags] = useState([]);
   const [otherArtworks, setOtherArtworks] = useState([]);
 
@@ -22,11 +21,7 @@ const ArtworkPage = () => {
     try {
       const { data: artwork } = await axios.get(`${apiUrl}/artworks/${id}`);
       setArtwork(artwork);
-
-      console.log(artwork.userId)
-      const {data: user } = await axios.get(`${apiUrl}/users/${artwork.userId}`);
-      console.log(user)
-      setUser(user)
+      console.log(artwork)
 
       for (const tagId of artwork.tagIds){
         const { data: tags } = await axios.get(`${apiUrl}/tags/${tagId}`);
@@ -34,14 +29,10 @@ const ArtworkPage = () => {
       }
 
       const { data: otherArtworks } = await axios.get(`${apiUrl}/users/${artwork.userId}/artworks`);
-      otherArtworks.sort(() => 0.5 - Math.random());
-      console.log(otherArtworks)
-
-      setOtherArtworks(otherArtworks.slice(0,3));
+      setOtherArtworks(otherArtworks.filter(otherArt => otherArt._id !== artwork._id).sort(() => 0.5 - Math.random()).slice(0,3));
     } catch (e) {
       console.log(e);
     }
-    console.log(otherArtworks)
   };
   
   useEffect(getArtwork, [id]);
@@ -49,7 +40,6 @@ const ArtworkPage = () => {
   useScrollToTop();
 
   if (!artwork) return null;
-  if (!user) return null;
   if (fullscreen) return (<ImageStage onClose={() => setFullscreen(false)} src={artwork.imageUrl} alt={artwork.name}/>);
 
   return (
@@ -76,13 +66,13 @@ const ArtworkPage = () => {
           </div>
 
           <section className="flex gap-8">
-            <Link to={`/portfolio/${user.username}`} className="flex-none mt-5">
+            <Link to={`/portfolio/${artwork.user[0].username}`} className="flex-none mt-5">
               <img
                 className="shadow-xl w-24 h-24 object-cover rounded-sm mb-3 mx-auto"
-                src={user.avatarUrl}
-                alt={user.name}
+                src={artwork.user[0].avatarUrl}
+                alt={artwork.user[0].name}
               />
-              <p className="text-sm text-white text-center">by {user.name}</p>
+              <p className="text-sm text-white text-center">by {artwork.user[0].name}</p>
             </Link>
             <div>
               {artworkTags.length > 0 && (
@@ -103,7 +93,7 @@ const ArtworkPage = () => {
           </section>
         </main>
         <aside className="flex-none">
-          <h3 className="font-semibold text-white mb-8">More from {user.username}:</h3>
+          <h3 className="font-semibold text-white mb-8">More from {artwork.user[0].username}:</h3>
           <div className="mx-auto grid place-items-center gap-8">
             {otherArtworks.map(otherArt => (
               <Link key={otherArt.id} to={`/artwork/${otherArt.id}`} className="hover:bg-gray-800">

@@ -7,6 +7,7 @@ import {
   mongoHandler,
   validateIdParam,
 } from "../middlewares/mongo.middleware.js";
+import { artworkHandler } from "../middlewares/portfolio.middleware.js";
 
 const router = express.Router();
 
@@ -19,7 +20,9 @@ router.get("/users/username/:username/portfolio", async (req, res, next) => {
     const user = await User.findOne({ username });
     if (!user) return res.sendStatus(404);
 
-    const portfolio = await Portfolio.findOne({ userId: user._id });
+    const portfolio = await Portfolio.findOne({ userId: user._id })
+      .populate("user")
+      .populate("section.project.artworks");
     if (!portfolio) return res.sendStatus(404);
 
     res.send(portfolio);
@@ -73,7 +76,8 @@ router.patch(
     } catch (e) {
       next(e);
     }
-  }
+  },
+  artworkHandler
 );
 
 router.use(mongoHandler);

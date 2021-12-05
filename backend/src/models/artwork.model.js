@@ -2,10 +2,13 @@ import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
-const report = new Schema({
-  userId: { type: Schema.ObjectId, required: true, ref: "users" },
-  message: { type: String, required: true, minlength: 1 },
-});
+const report = new Schema(
+  {
+    userId: { type: Schema.ObjectId, required: true, ref: "users" },
+    message: { type: String, required: true, minlength: 1 },
+  },
+  { versionKey: false, timestamps: true }
+);
 
 const artwork = new Schema(
   {

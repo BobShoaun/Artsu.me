@@ -58,6 +58,8 @@ const HeroSection = ({ portfolio }) => {
             </div>
           </div>
         );
+      default:
+        console.log("bad layout id");
     }
   };
 

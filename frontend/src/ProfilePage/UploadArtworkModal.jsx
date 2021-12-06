@@ -4,7 +4,7 @@ import { useAuthentication } from "../hooks/useAuthentication";
 import axios from "axios";
 
 const UploadArtworkModal = ({ onClose }) => {
-  const [accessToken, user] = useAuthentication();
+  const { accessToken, user } = useAuthentication();
 
   const [imageUrl, setImageUrl] = useState("");
   const imageInput = useRef(null);

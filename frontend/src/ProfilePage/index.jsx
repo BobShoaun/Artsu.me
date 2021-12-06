@@ -2,7 +2,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "./index.css";
 
-import { Link } from "react-router-dom"; // removed useParams as it is unused
+import { Link, useHistory } from "react-router-dom"; // removed useParams as it is unused
 import UploadArtworkModal from "./UploadArtworkModal";
 import { useState, useEffect } from "react";
 
@@ -10,13 +10,15 @@ import { useAuthentication } from "../hooks/useAuthentication";
 import axios from "axios";
 import { apiUrl } from "../config";
 
+import Unauthenticated from "../components/Unauthenticated";
 import ArtworkPreview from "../components/ArtworkPreview";
 
 const ProfilePage = () => {
-  const [accessToken, user] = useAuthentication();
+  const { accessToken, user } = useAuthentication();
   const [showArtworkModal, setShowArtworkModal] = useState(false);
 
   const [artworks, setArtworks] = useState([]);
+  const history = useHistory();
 
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
@@ -32,20 +34,14 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
+    if (!accessToken || !user) {
+      history.push(`/login?destination=/profile`);
+      return;
+    }
     getArtworks();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [accessToken, user]);
 
-  if (!accessToken)
-    return (
-      <main className="dark:bg-gray-900">
-        <Navbar />
-        <h1 className="dark:text-white text-2xl font-semibold text-center py-5 min-h-screen">
-          403 Unauthorized
-        </h1>
-        <Footer />
-      </main>
-    );
+  if (!accessToken || !user) return <Unauthenticated />;
 
   return (
     <main className="dark:bg-gray-900">

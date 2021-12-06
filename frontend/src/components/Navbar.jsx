@@ -10,7 +10,7 @@ import { apiUrl } from "../config";
 
 const Navbar = ({ showSearchButtons }) => {
   const history = useHistory();
-  const [accessToken, user, , _logout] = useAuthentication();
+  const { accessToken, user, logout: _logout } = useAuthentication();
   const [search, setSearch] = useState("");
   const [messages, setMessages] = useState([]);
 

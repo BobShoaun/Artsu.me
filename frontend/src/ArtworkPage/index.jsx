@@ -23,14 +23,14 @@ const ArtworkPage = () => {
   const [likes, setLikes] = useState([]);
   const [showReport, setShowReport] = useState(false);
 
-  const [accessToken, user] = useAuthentication();
+  const { accessToken, user } = useAuthentication();
 
   const getArtwork = async () => {
     try {
       const { data: artwork } = await axios.get(`${apiUrl}/artworks/${id}`);
       setArtwork(artwork);
       setLikes(artwork.likes);
-      setArtworkTags(artwork.tags)
+      setArtworkTags(artwork.tags);
 
       const { data: otherArtworks } = await axios.get(`${apiUrl}/users/${artwork.userId}/artworks`);
       setOtherArtworks(
@@ -44,10 +44,7 @@ const ArtworkPage = () => {
     }
   };
 
-  useEffect(() => {
-    getArtwork();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEffect(() => getArtwork(), [id]);
 
   const likeArtwork = async () => {
     if (!accessToken) return;
@@ -82,7 +79,7 @@ const ArtworkPage = () => {
       <ImageStage onClose={() => setFullscreen(false)} src={artwork.imageUrl} alt={artwork.name} />
     );
 
-  const hasLiked = user ? likes.includes(user._id): false;
+  const hasLiked = user ? likes.includes(user._id) : false;
 
   return (
     <main className="bg-gray-900 min-h-screen">
@@ -112,7 +109,7 @@ const ArtworkPage = () => {
                   className={` ${hasLiked ? "text-rose-400 fill-current" : "text-white"} `}
                   size={20}
                 />
-                {likes.length} Like{likes.length === 1 ? "" : "s" }
+                {likes.length} Like{likes.length === 1 ? "" : "s"}
               </button>
 
               <button

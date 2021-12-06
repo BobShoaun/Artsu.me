@@ -1,6 +1,5 @@
 import { Link, useHistory } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
-import { users } from "../users.json"; // will get from api
 import { useAuthentication } from "../hooks/useAuthentication";
 
 import ArtsumeModal from "../components/ArtsumeModal";
@@ -10,7 +9,6 @@ import axios from "axios";
 
 const RegisterPage = () => {
   const history = useHistory();
-  const usernameRef = useRef(null);
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
   const [jwt, , _login] = useAuthentication();
@@ -18,10 +16,6 @@ const RegisterPage = () => {
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
 
-  const [usernameError, setUsernameError] = useState("");
-  const [fullNameError, setFullNameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {

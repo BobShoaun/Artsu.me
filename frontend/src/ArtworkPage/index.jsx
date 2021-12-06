@@ -130,7 +130,7 @@ const ArtworkPage = () => {
                 onClick={() => setFullscreen(true)}
                 className="text-white flex gap-2 items-center hover:bg-gray-800 px-2 py-1 rounded-sm"
               >
-                <Maximize size={20} fstrokeWidth={3} />
+                <Maximize size={20} />
                 Fullscreen
               </button>
             </div>
@@ -140,7 +140,7 @@ const ArtworkPage = () => {
           </div>
 
           <section className="flex gap-8">
-            <Link to={`/portfolio/${artwork.user.username}`} className="flex-none mt-5">
+            <Link to={`/portfolio/${artwork.user.username}`} className="flex-none">
               <img
                 className="shadow-xl w-24 h-24 object-cover rounded-sm mb-3 mx-auto"
                 src={artwork.user.avatarUrl}

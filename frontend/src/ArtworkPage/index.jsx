@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import ImageStage from "../components/ImageStage";
 import { useState, useEffect } from "react";
 import { Maximize } from "react-feather";
@@ -23,7 +23,8 @@ const ArtworkPage = () => {
   const [likes, setLikes] = useState([]);
   const [showReport, setShowReport] = useState(false);
 
-  const { accessToken, user } = useAuthentication();
+  const { isLoggedIn, accessToken, user, redirectToLogin } = useAuthentication();
+  const history = useHistory();
 
   const getArtwork = async () => {
     try {
@@ -47,7 +48,10 @@ const ArtworkPage = () => {
   useEffect(() => getArtwork(), [id]);
 
   const likeArtwork = async () => {
-    if (!accessToken) return;
+    if (!isLoggedIn) {
+      redirectToLogin();
+      return;
+    }
     try {
       const { data } = await axios.post(`${apiUrl}/artworks/${id}/like`, null, {
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -59,7 +63,7 @@ const ArtworkPage = () => {
   };
 
   const unlikeArtwork = async () => {
-    if (!accessToken) return;
+    if (!isLoggedIn) return;
     try {
       const { data } = await axios.delete(`${apiUrl}/artworks/${id}/unlike`, {
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -79,7 +83,7 @@ const ArtworkPage = () => {
       <ImageStage onClose={() => setFullscreen(false)} src={artwork.imageUrl} alt={artwork.name} />
     );
 
-  const hasLiked = user ? likes.includes(user._id) : false;
+  const hasLiked = isLoggedIn ? likes.includes(user._id) : false;
 
   return (
     <main className="bg-gray-900 min-h-screen">
@@ -99,8 +103,8 @@ const ArtworkPage = () => {
               alt={artwork.name}
             />
           </div>
-          <div className="relative border-gray-400 mb-10" style={{ borderBottomWidth: "1px" }}>
-            <div className="absolute right-0 flex items-center gap-3">
+          <div className="border-gray-400 mb-10" style={{ borderBottomWidth: "1px" }}>
+            <div className="float-right flex items-center gap-x-2">
               <button
                 onClick={hasLiked ? unlikeArtwork : likeArtwork}
                 className="text-white flex gap-2 items-center hover:bg-gray-800 px-2 py-1 rounded-sm"
@@ -113,7 +117,7 @@ const ArtworkPage = () => {
               </button>
 
               <button
-                onClick={() => setShowReport(true)}
+                onClick={() => (isLoggedIn ? setShowReport(true) : redirectToLogin())}
                 className="text-white hover:bg-gray-800 px-2 py-1 flex gap-2 items-center rounded-sm"
               >
                 <Flag className="text-white" size={20} />
@@ -128,9 +132,10 @@ const ArtworkPage = () => {
                 Fullscreen
               </button>
             </div>
-
-            <h1 className="text-white text-left text-2xl font-bold mb-1">{artwork.name}</h1>
-            <p className="text-left text-gray-300 font mb-4">{artwork.summary}</p>
+            <div>
+              <h1 className="text-white text-left text-2xl font-bold mb-1">{artwork.name}</h1>
+              <p className="text-left text-gray-300 font mb-4">{artwork.summary}</p>
+            </div>
           </div>
 
           <section className="flex gap-8">

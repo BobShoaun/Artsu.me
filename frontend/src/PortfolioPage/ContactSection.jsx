@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react"; // removed useEffect, useRef
 import axios from "axios";
 import { useAuthentication } from "../hooks/useAuthentication";
 

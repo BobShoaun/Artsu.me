@@ -1,12 +1,14 @@
 # team18: Artsu.me
 
 Website:
-https://artsu.me/
-https://artsume-2260e.web.app/
+
+- https://artsu.me/
+- https://artsume-2260e.web.app/
 
 API:
-https://artsu-me.herokuapp.com/ (with SSL certificate)
-http://api.artsu.me/ (without SSL certificate)
+
+- https://artsu-me.herokuapp.com/ (with SSL certificate)
+- http://api.artsu.me/ (without SSL certificate)
 
 # Team Members:
 

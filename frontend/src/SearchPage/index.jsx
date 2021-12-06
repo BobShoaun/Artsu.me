@@ -1,10 +1,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-/* import { artworks } from "../artworks.json";
-import { users } from "../users.json";
-import { tags } from "../tags.json"; */
-import { Link, useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 import { apiUrl } from "../config";
 import axios from "axios";
@@ -15,10 +12,10 @@ const SearchPage = () => {
   const art = urlParams.get('art')
   const user = urlParams.get('usr')
   const tag = urlParams.get('tag')
-  console.log(art, user, tag)
 
   const [artworks, setArtworks] = useState([]);
   const [users, setUsers] = useState([])
+  const [portfolios, updatePortfolios] = useState([])
   const [tags, setTags] = useState([])
 
   let length;
@@ -29,12 +26,16 @@ const SearchPage = () => {
       const { data: tags } = await axios.get(`${apiUrl}/tags`)
       setTags(tags)
 
-      if (art) {
-        const { data: artworks } = await axios.get(`${apiUrl}/artworks?name=${art}`);
+      if (art != null) {
+        const { data: artworks } = await axios.get(`${apiUrl}/artworks?query=${art}`);
         setArtworks(artworks)
       }
-      else if (user) {
-        const { data: users } = await axios.get(`${apiUrl}/users?name=${user}`);
+      else if (user != null) {
+        const { data: users } = await axios.get(`${apiUrl}/users`);
+        /* for (const user of users) {
+          const { data: portfolio } = await axios.get(`${apiUrl}/users/${user._id}/portfolio`)
+          updatePortfolios( portfolios => [...portfolios, portfolio])
+        } */
         setUsers(users)
       }
       else if (tag) {
@@ -58,8 +59,8 @@ const SearchPage = () => {
   }
 
   function displaySearchResult() {
-    if (user) {
-      // console.log('user')
+    if (user != null) {
+      console.log(users)
       length = users.length
       return (
         <div>
@@ -70,29 +71,29 @@ const SearchPage = () => {
           </div>
           <div className="flex flex-wrap gap-x-10 gap-y-10">
             {users.map(user => {
+              // const portfolio = portfolios.find( portfolio => Portfolio.userId === user._id )
               return (
                 <Link
-                  to={`/portfolio/${user.username}`}
-                  key={user.id}
+                  to={`/portfolio/${user._id}`}
+                  key={user._id}
                   className="hover:bg-gray-800 rounded-lg transition-all p-5 
                           cursor-pointer ml-5"
                 >
                   <div className="mb-2 p-3">
                     <img
                       className="mb-5 max-w-xs shadow-xl mx-10 mt-5 w-36"
-                      src={user.avatar}
-                      alt={`${user.name} avatar`}
+                      src={user.avatarUrl}
+                      alt={`${user._id}`}
                     />
                   </div>
                   <h2
                     className="dark:text-white font-semibold text-lg ml-10 
-                              mb-5"
-                  >
+                              mb-5">
                     {user.name}
                   </h2>
-                  <p className="dark:text-gray-200 text-sm ml-10">
+                  {/* <p className="dark:text-gray-200 text-sm ml-10">
                     {user.portfolioSettings.heading}
-                  </p>
+                  </p> */}
                 </Link>
               );
             })}

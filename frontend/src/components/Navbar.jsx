@@ -48,7 +48,10 @@ const Navbar = ({ showSearchButtons }) => {
     getMessages();
   };
 
-  useEffect(() => getMessages, [accessToken]);
+  useEffect(() => {
+    getMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessToken]);
 
   return (
     <nav className=" bg-gray-800 bg-opacity-50 z-20 py-5 shadow-lg backdrop-filter backdrop-blur-sm sticky top-0">

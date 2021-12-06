@@ -33,6 +33,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     getArtworks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!accessToken)

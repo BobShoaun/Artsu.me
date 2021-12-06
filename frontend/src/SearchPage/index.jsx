@@ -53,7 +53,10 @@ const SearchPage = () => {
     }
   }
   
-  useEffect(() => getSearchResult, [art, user, tag]);
+  useEffect(() => {
+    getSearchResult();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [art, user, tag]);
 
   let msg = "results";
   if (length <= 1) {

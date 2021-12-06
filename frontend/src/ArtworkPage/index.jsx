@@ -25,28 +25,26 @@ const ArtworkPage = () => {
 
   const [accessToken, user] = useAuthentication();
 
-  const getArtwork = () => {
-    (async () => {
-      try {
-        const { data: artwork } = await axios.get(`${apiUrl}/artworks/${id}`);
-        setArtwork(artwork);
-        setLikes(artwork.likes);
-        setArtworkTags(artwork.tags)
+  const getArtwork = async () => {
+    try {
+      const { data: artwork } = await axios.get(`${apiUrl}/artworks/${id}`);
+      setArtwork(artwork);
+      setLikes(artwork.likes);
+      setArtworkTags(artwork.tags)
 
-        const { data: otherArtworks } = await axios.get(`${apiUrl}/users/${artwork.userId}/artworks`);
-        setOtherArtworks(
-          otherArtworks
-            .filter(otherArt => otherArt._id !== artwork._id)
-            .sort(() => 0.5 - Math.random())
-            .slice(0, 3)
-        );
-      } catch (e) {
-        console.log(e);
-      }
-    })();
+      const { data: otherArtworks } = await axios.get(`${apiUrl}/users/${artwork.userId}/artworks`);
+      setOtherArtworks(
+        otherArtworks
+          .filter(otherArt => otherArt._id !== artwork._id)
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 3)
+      );
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  useEffect(getArtwork, [id]);
+  useEffect(() => getArtwork(), []);
 
   const likeArtwork = async () => {
     if (!accessToken) return;

@@ -71,7 +71,7 @@ const SearchPage = () => {
               Displaying {length} {msg}
             </p>
           </div>
-          <div className="flex flex-wrap gap-x-10 gap-y-10">
+          <div className="flex flex-wrap gap-x-5 gap-y-5">
             {users.map(user => {
               // const portfolio = portfolios.find( portfolio => Portfolio.userId === user._id )
               return (

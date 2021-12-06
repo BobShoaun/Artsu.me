@@ -15,6 +15,7 @@ const SearchPage = () => {
   const art = urlParams.get('art')
   const user = urlParams.get('usr')
   const tag = urlParams.get('tag')
+  console.log(art, user, tag)
 
   const [artworks, setArtworks] = useState([]);
   const [users, setUsers] = useState([])
@@ -31,22 +32,18 @@ const SearchPage = () => {
       if (art) {
         const { data: artworks } = await axios.get(`${apiUrl}/artworks?name=${art}`);
         setArtworks(artworks)
-        length = artworks.length
       }
       else if (user) {
         const { data: users } = await axios.get(`${apiUrl}/users?name=${user}`);
         setUsers(users)
-        length = users.length
       }
       else if (tag) {
         const { data: artworks } = await axios.get(`${apiUrl}/artworks?tags=${[tag]}`);
         setArtworks(artworks)
-        length = artworks.length
       }
       else {
         const { data: artworks } = await axios.get(`${apiUrl}/artworks`);
         setArtworks(artworks)
-        length = artworks.length
       }
     } catch(e) {
       console.log(e);
@@ -62,6 +59,8 @@ const SearchPage = () => {
 
   function displaySearchResult() {
     if (user) {
+      // console.log('user')
+      length = users.length
       return (
         <div>
           <div className="ml-20 w-full mb-10">
@@ -102,6 +101,7 @@ const SearchPage = () => {
       );
     }
     else {
+      length = artworks.length
       return (
         <div>
           <div className="ml-20 w-full mb-10">
@@ -145,8 +145,8 @@ const SearchPage = () => {
           <div className=" flex-shrink-0 flex-wrap gap-3">
             { tags.map(tag => {
               return (
-                <Link to={`/search/&tag=${tag.id}`}
-                      key={tag.id}>
+                <Link to={`/search/&tag=${tag._id}`}
+                      key={tag._id}>
                   <p className={`text-gray-700 cursor-pointer font-semibold 
                               text-sm bg-${tag.color} rounded-sm px-2 py-2 my-5`}>
                     #{tag.label}

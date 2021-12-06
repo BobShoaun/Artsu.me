@@ -2,7 +2,7 @@ import { Link, useHistory } from "react-router-dom";
 import { useAuthentication } from "../hooks/useAuthentication";
 import { useState, useEffect } from "react";
 import { Search, Bell, Check } from "react-feather";
-import { formatRelative } from "date-fns";
+import MessagePanel from "./MessagePanel";
 import "./index.css";
 
 import axios from "axios";
@@ -92,68 +92,29 @@ const Navbar = ({ showSearchButtons }) => {
         </li>
         {accessToken ? (
           <>
-            <li tabIndex={0} className="ml-auto notif-wrapper relative cursor-pointer">
-              <Bell className="text-white" size={20} />
+            <li
+              tabIndex={0}
+              className="ml-auto hover:bg-gray-700 hover:bg-opacity-50 rounded-full p-2 notif-wrapper relative cursor-pointer"
+            >
+              <Bell className="text-white rounded-full" size={20} />
 
               {messages.length > 0 && (
                 <>
-                  <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-300 rounded-full animate-ping"></span>
-                  <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full"></span>
+                  <span className="absolute top-1 right-1.5 w-2.5 h-2.5 bg-red-300 rounded-full animate-ping"></span>
+                  <span className="absolute top-1 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full"></span>
                 </>
               )}
 
-              <div className="notifications bg-gray-900 transition-opacity p-1 w-96 transform -translate-x-1/2 left-0 absolute border-2 border-gray-900 top-10 rounded-md">
-                <h2 className="text-gray-100 text-sm font-medium p-2">Messages:</h2>
-                {messages.length > 0 ? (
-                  <main className="max-h-96 overflow-auto">
-                    {messages.map(message => (
-                      <div key={message._id} className="bg-gray-800 p-3 flex items-center m-2">
-                        <div>
-                          <div className="flex items-center gap-3 mb-3" key={message._id}>
-                            <img
-                              className="rounded-full w-8 h-8 object-cover"
-                              src={message.sender.avatarUrl}
-                              alt={message.sender.name}
-                            />
-                            <div>
-                              <p className="text-gray-100 font-medium text-sm">
-                                {message.sender.name}
-                              </p>
-                              <p className="text-gray-300 text-xs">
-                                {formatRelative(new Date(message.createdAt), new Date())}
-                              </p>
-                            </div>
-                          </div>
-                          <h3 className="text-gray-100 text-sm">{message.subject}</h3>
-                          <p className="text-gray-300 text-xs">{message.body}</p>
-                        </div>
-                        <button
-                          onClick={() => readMessage(message._id)}
-                          title="Mark as read"
-                          className="ml-auto bg-gray-900 hover:bg-gray-700 rounded-full p-1.5"
-                        >
-                          <Check className="text-white" size={12} />
-                        </button>
-                      </div>
-                    ))}
-                  </main>
-                ) : (
-                  <main>
-                    <h2 className="text-gray-100 text-center text-sm p-3 bg-gray-800">
-                      You have no messages.
-                    </h2>
-                  </main>
-                )}
-              </div>
+              <MessagePanel messages={messages} onReadMessage={readMessage} />
             </li>
             <li className="dropdown-wrapper relative text-white text-sm flex items-center gap-5">
-              <p className="font-semibold">{user.name}</p>
+              <p className="font-semibold z-10">{user.name}</p>
               <img
-                className="rounded-full w-10 h-10 object-cover"
+                className="rounded-full w-10 h-10 object-cover z-10"
                 src={user.avatarUrl}
                 alt={`${user.name} avatar`}
               />
-              <div className="dropdown opacity-0 backdrop-blur-sm backdrop-filter absolute py-1 right-0 bg-gray-900 rounded-sm">
+              <div className="dropdown opacity-0 absolute py-1 right-0 bg-gray-900 rounded-sm">
                 <ul>
                   <li>
                     <Link className="py-2 px-5 hover:bg-gray-800 transition block" to="/profile">

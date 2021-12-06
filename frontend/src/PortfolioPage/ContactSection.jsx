@@ -41,6 +41,8 @@ const ContactSection = ({ portfolio }) => {
         }
       );
       alert("Message sent to: " + portfolio.user.name);
+      setSubject("");
+      setBody("");
     } catch (e) {
       alert("Oops! something went wrong.");
       console.log(e);

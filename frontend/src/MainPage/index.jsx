@@ -1,24 +1,41 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { users } from "../users.json";
 import { Link } from "react-router-dom";
 import { tags } from "../tags.json";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { setIsPublic } from "../store/generalSlice";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import "./index.css";
 // API calls to read users and tags
 
+import Loading from "../components/Loading";
+import axios from "axios";
+import { apiUrl } from "../config";
+
 const MainPage = () => {
   const dispatch = useDispatch();
 
+  const [users, setUsers] = useState([]);
+
+  const getUsers = async () => {
+    try {
+      const { data } = await axios.get(`${apiUrl}/users`);
+      console.log(data);
+      setUsers(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
     dispatch(setIsPublic({ isPublic: false }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    getUsers();
+  }, [dispatch]);
 
   useScrollToTop();
+
+  if (users.length <= 0) return <Loading />;
 
   return (
     <main className="dark:bg-gray-900">
@@ -54,14 +71,14 @@ const MainPage = () => {
           {users.map(user => (
             <Link
               to={`/portfolio/${user.username}`}
-              key={user.id}
+              key={user._id}
               className={`mx-auto ${
                 user.featured
                   ? "bg-gradient-to-br hover:from-fuchsia-500 hover:to-emerald-500"
                   : "hover:bg-gray-800"
               }  rounded-lg transition-all p-5 cursor-pointer`}
             >
-              {user.featured && (
+              {user.isFeatured && (
                 <h3 className="underline-offset text-white text-sm font-semibold underline mb-2">
                   Featured
                 </h3>
@@ -69,17 +86,13 @@ const MainPage = () => {
               <div className="mb-2">
                 <img
                   className="main-page-avatar shadow-lg rounded-sm w-48 h-48 object-cover"
-                  src={user.avatar}
+                  src={user.avatarUrl}
                   alt={`${user.name} avatar`}
                 />
               </div>
               <div className="px-2">
-                <h2 className="dark:text-white font-semibold text-lg">
-                  {user.name}
-                </h2>
-                <p className="dark:text-gray-200 text-sm">
-                  {user.portfolioSettings.heading}
-                </p>
+                <h2 className="dark:text-white font-semibold text-lg">{user.name}</h2>
+                <p className="dark:text-gray-200 text-sm">{user.username}</p>
               </div>
             </Link>
           ))}

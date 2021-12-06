@@ -1,0 +1,20 @@
+{
+  "name": "artsu.me",
+  "version": "1.0.0",
+  "description": "- Ng Bob Shoaun (1006568992)\r - Jessica Hypatia Boritz (1006163189)\r - Ran Shi (1004793495)\r - Louis Scheffer V (1005879284)",
+  "main": "index.js",
+  "scripts": {
+    "frontend": "cd frontend && yarn start",
+    "backend": "cd backend && npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/csc309-fall-2021/team18.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/csc309-fall-2021/team18/issues"
+  },
+  "homepage": "https://github.com/csc309-fall-2021/team18#readme"
+}

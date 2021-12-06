@@ -13,7 +13,7 @@ const PortfolioEditorPageStyles = () => {
   const user = users.find(user => user.username === username);
   const [, loggedInUser, , _logout] = useAuthentication();
   let themeColor = user.portfolioSettings.themeColor;
-  console.log(themeColor)
+  let themeColor = JSON.parse(JSON.stringify(user.portfolioSettings.themeColor));
   let layoutId = user.portfolioSettings.layoutId;
 
   const [layout, setlayout] = useState(layoutId);
@@ -64,7 +64,7 @@ const PortfolioEditorPageStyles = () => {
                     type="color"
                     id={key}
                     defaultValue={themeColor[key]}
-                    /*onChange={e => (themeColor[key] = e.target.value)}*/
+                    onChange={e => (themeColor[key] = e.target.value)}
                   />
                   <br />
                   <div className="dark:text-white text-xs text-center">
@@ -109,7 +109,7 @@ const PortfolioEditorPageStyles = () => {
               Previous
             </Link>
           </div>
-          <div class=" float-right inline-block">
+          <div className=" float-right inline-block">
             <Link
               className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5 mx-5"
               to={`/portfolio/${user.username}`} /* API calls to save settings */

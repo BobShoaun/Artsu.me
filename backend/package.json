@@ -1,0 +1,33 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend for artsum.me",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest",
+    "test:auth": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest -- authentication.test.js",
+    "test:user": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest -- user.test.js",
+    "test:portfolio": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest -- portfolio.test.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cloudinary": "^1.27.1",
+    "connect-multiparty": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.0.13"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^27.4.2",
+    "nodemon": "^2.0.15",
+    "supertest": "^6.1.6"
+  }
+}

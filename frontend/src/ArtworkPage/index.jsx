@@ -1,7 +1,6 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link, useParams } from "react-router-dom";
-import { useScrollToTop } from "../hooks/useScrollToTop";
 import ImageStage from "../components/ImageStage";
 import { useState, useEffect } from "react";
 import { Maximize } from "react-feather";
@@ -26,23 +25,25 @@ const ArtworkPage = () => {
 
   const [accessToken, user] = useAuthentication();
 
-  const getArtwork = async () => {
-    try {
-      const { data: artwork } = await axios.get(`${apiUrl}/artworks/${id}`);
-      setArtwork(artwork);
-      setLikes(artwork.likes);
-      setArtworkTags(artwork.tags)
+  const getArtwork = () => {
+    (async () => {
+      try {
+        const { data: artwork } = await axios.get(`${apiUrl}/artworks/${id}`);
+        setArtwork(artwork);
+        setLikes(artwork.likes);
+        setArtworkTags(artwork.tags)
 
-      const { data: otherArtworks } = await axios.get(`${apiUrl}/users/${artwork.userId}/artworks`);
-      setOtherArtworks(
-        otherArtworks
-          .filter(otherArt => otherArt._id !== artwork._id)
-          .sort(() => 0.5 - Math.random())
-          .slice(0, 3)
-      );
-    } catch (e) {
-      console.log(e);
-    }
+        const { data: otherArtworks } = await axios.get(`${apiUrl}/users/${artwork.userId}/artworks`);
+        setOtherArtworks(
+          otherArtworks
+            .filter(otherArt => otherArt._id !== artwork._id)
+            .sort(() => 0.5 - Math.random())
+            .slice(0, 3)
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    })();
   };
 
   useEffect(getArtwork, [id]);
@@ -72,7 +73,6 @@ const ArtworkPage = () => {
   };
 
   const [fullscreen, setFullscreen] = useState(false);
-  // useScrollToTop();
 
   if (!artwork) return <Loading />;
 

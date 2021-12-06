@@ -92,9 +92,7 @@ router.get("/artworks", async (req, res, next) => {
 
   try {
     const artworks = await (query
-      ? Artwork.aggregate([
-          { $search: { index: "fuzzy", text: { query, path: { wildcard: "*" } } } },
-        ])
+      ? Artwork.find({name: query})
       : Artwork.find()
     )
       .skip(offset > 0 ? offset : 0)

@@ -27,12 +27,12 @@ const SearchPage = () => {
       setTags(tags)
 
       if (art !== null) {
-        const { data: artworks } = await axios.get(`${apiUrl}/artworks?query=${art}`);
+        const { data: artworks } = await axios.get(`${apiUrl}/artworks?query=${art}&limit=1000`);
         setArtworks(artworks)
         console.log(artworks)
       }
       else if (user !== null) {
-        const { data: users } = await axios.get(`${apiUrl}/users`);
+        const { data: users } = await axios.get(`${apiUrl}/users?query=${user}&limit=1000`);
         /* for (const user of users) {
           const { data: portfolio } = await axios.get(`${apiUrl}/users/${user._id}/portfolio`)
           updatePortfolios( portfolios => [...portfolios, portfolio])

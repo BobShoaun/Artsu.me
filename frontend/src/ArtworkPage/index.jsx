@@ -85,7 +85,7 @@ const ArtworkPage = () => {
       <ImageStage onClose={() => setFullscreen(false)} src={artwork.imageUrl} alt={artwork.name} />
     );
 
-  const hasLiked = likes.includes(user._id);
+  const hasLiked = user ? likes.includes(user._id): false;
 
   return (
     <main className="bg-gray-900 min-h-screen">

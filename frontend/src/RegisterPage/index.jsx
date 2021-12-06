@@ -80,24 +80,25 @@ const RegisterPage = () => {
       </header>
       <form className="">
         <div className="flex items-center gap-7 mb-10">
-          <div className="flex-1">
+          <div className="flex-grow-0">
             <label className="dark:text-gray-200 text-sm text-right mb-2">Full name:</label>
 
             <input
               value={fullName}
               onChange={e => setFullName(e.target.value)}
-              className="px-2 py-1 w-auto"
+              className="px-2 py-1"
               type="text"
+              name="name"
             />
           </div>
-          <div>
+          <div className="flex-grow-0">
             <label className="dark:text-gray-200 text-sm text-right mb-2">Username:</label>
-
             <input
               value={username}
               onChange={e => setUsername(e.target.value)}
-              className="px-2 py-1 w-auto"
+              className="px-2 py-1"
               type="text"
+              name="username"
             />
           </div>
         </div>

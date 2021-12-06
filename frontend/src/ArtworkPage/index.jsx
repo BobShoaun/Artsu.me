@@ -19,7 +19,7 @@ const ArtworkPage = () => {
   const { id } = useParams();
 
   const [artwork, setArtwork] = useState(null);
-  const [artworkTags, updateArtworkTags] = useState([]);
+  const [artworkTags, setArtworkTags] = useState([]);
   const [otherArtworks, setOtherArtworks] = useState([]);
   const [likes, setLikes] = useState([]);
   const [showReport, setShowReport] = useState(false);
@@ -31,11 +31,7 @@ const ArtworkPage = () => {
       const { data: artwork } = await axios.get(`${apiUrl}/artworks/${id}`);
       setArtwork(artwork);
       setLikes(artwork.likes);
-
-      for (const tagId of artwork.tagIds) {
-        const { data: tags } = await axios.get(`${apiUrl}/tags/${tagId}`);
-        updateArtworkTags(artworkTags => [...artworkTags, tags]);
-      }
+      setArtworkTags(artwork.tags)
 
       const { data: otherArtworks } = await axios.get(`${apiUrl}/users/${artwork.userId}/artworks`);
       setOtherArtworks(

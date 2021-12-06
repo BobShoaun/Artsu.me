@@ -196,7 +196,6 @@ router.post("/artworks/:artworkId/likes", authenticate, async (req, res, next) =
 
   try {
     const artwork = await Artwork.findById(artworkId);
-    // user should edit their own work only
     if (!artwork) {
       return res.sendStatus(404);
     }
@@ -214,8 +213,30 @@ router.post("/artworks/:artworkId/likes", authenticate, async (req, res, next) =
 });
 
 /**
- * Update likes of an artwork
+ * Allows a user to unlike a piece of artwork
  */
+ router.delete("/artworks/:artworkId/likes", authenticate, async (req, res, next) => {
+  const artworkId = req.params.artworkId;
+  const userId = req.user._id;
+
+  try {
+    const artwork = await Artwork.findById(artworkId);
+
+    if (!artwork) {
+      return res.sendStatus(404);
+    }
+    //checking if they have liked the artwork already
+    if (artwork.likes.includes(userId)) {
+      artwork.likes = artwork.likes.filter(id => id !== userId);
+    } else {
+      return res.status(200).send(artwork);
+    }
+    await artwork.save();
+    res.status(201).send(artwork);
+  } catch (e) {
+    next(e);
+  }
+});
 
 router.use(mongoHandler);
 

@@ -111,7 +111,6 @@ router.get("/artworks/:artworkId", async (req, res, next) => {
     if (!artwork) return res.sendStatus(404);
     res.json(artwork);
   } catch (e) {
-    console.log(e);
     next(e);
   }
 });

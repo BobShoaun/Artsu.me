@@ -13,7 +13,7 @@ const PortfolioEditorPageStyles = () => {
   const user = users.find(user => user.username === username);
   const [, loggedInUser, , _logout] = useAuthentication();
   let themeColor = user.portfolioSettings.themeColor;
-  let themeColor = JSON.parse(JSON.stringify(user.portfolioSettings.themeColor));
+  // let themeColor = JSON.parse(JSON.stringify(user.portfolioSettings.themeColor));
   let layoutId = user.portfolioSettings.layoutId;
 
   const [layout, setlayout] = useState(layoutId);
@@ -42,13 +42,8 @@ const PortfolioEditorPageStyles = () => {
             <Link to="/" className="dark:text-white text-2xl font-semibold">
               artsu.me
             </Link>
-            <h2 className="dark:text-white text-2xl ml-auto">
-              Edit Portfolio - Styles
-            </h2>
-            <button
-              onClick={logout}
-              className="dark:text-white text-l font-semibold ml-auto"
-            >
+            <h2 className="dark:text-white text-2xl ml-auto">Edit Portfolio - Styles</h2>
+            <button onClick={logout} className="dark:text-white text-l font-semibold ml-auto">
               Logout
             </button>
           </div>
@@ -67,9 +62,7 @@ const PortfolioEditorPageStyles = () => {
                     onChange={e => (themeColor[key] = e.target.value)}
                   />
                   <br />
-                  <div className="dark:text-white text-xs text-center">
-                    {key}
-                  </div>
+                  <div className="dark:text-white text-xs text-center">{key}</div>
                 </div>
               );
             })}
@@ -82,9 +75,7 @@ const PortfolioEditorPageStyles = () => {
               return (
                 <div
                   key={key}
-                  className={`${
-                    layout === index + 1 ? "bg-gray-500" : "hover:bg-gray-600"
-                  }`}
+                  className={`${layout === index + 1 ? "bg-gray-500" : "hover:bg-gray-600"}`}
                   onClick={() => layoutOnClick(index)}
                 >
                   <img

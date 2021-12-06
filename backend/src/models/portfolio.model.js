@@ -18,6 +18,30 @@ const artworkArtistValidator = {
 
 // TODO: check if duplicate artworkId
 
+// const experience = new Schema(
+//   {
+//     company: { type: String },
+//     position: { type: String },
+//     startDate: { type: Date },
+//     endDate: { type: Date },
+//     description: { type: String },
+//     artworkIds: [
+//       {
+//         type: Schema.ObjectId,
+//         ref: "artworks",
+//         validate: artworkExistValidator,
+//       },
+//     ],
+//   },
+//   { versionKey: false, toJSON: { virtuals: true }, toObject: { virtuals: true } }
+// );
+
+// experience.virtual("artworks", {
+//   ref: "artworks",
+//   localField: "artworkIds",
+//   foreignField: "_id",
+// });
+
 const portfolio = new Schema(
   {
     userId: { type: Schema.ObjectId, required: true, ref: "users", unique: true, immutable: true },
@@ -40,7 +64,6 @@ const portfolio = new Schema(
         layoutId: { type: Number },
         experiences: [
           {
-            _id: false, // no ids for experience
             company: { type: String },
             position: { type: String },
             startDate: { type: Date },
@@ -89,5 +112,11 @@ portfolio.virtual("section.project.artworks", {
   localField: "section.project.artworkIds",
   foreignField: "_id",
 });
+
+// portfolio.virtual("section.experience.experiences", {
+//   ref: "experiences",
+//   localField: "section.experience.experiences",
+//   foreignField: "_id",
+// });
 
 export default portfolio;

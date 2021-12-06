@@ -1,28 +1,69 @@
-const HeroSection = ({ portfolio, primary, secondary }) => {
+const HeroSection = ({ portfolio }) => {
+  const layoutId = 2;
+
+  const displayHero = () => {
+    switch (layoutId) {
+      case 0:
+      case 1:
+        return (
+          <div
+            className={`flex items-center ${
+              layoutId === 0 ? "flex-row" : "flex-row-reverse"
+            } justify-around gap-10 min-h-screen`}
+          >
+            <div>
+              <h1 className="dark:text-white font-bold text-4xl mb-4">
+                {portfolio.section.hero.heading}
+              </h1>
+              <p className="dark:text-gray-300 text-sm">{portfolio.section.hero.subtitle}</p>
+            </div>
+            <div className="relative avatar-wrapper">
+              <div
+                className={`absolute bg-primary-gradient -top-8 -left-8 w-24 h-24 rounded-lg shadow-lg`}
+              ></div>
+              <img
+                className="rounded-lg shadow-xl z-10 relative"
+                src={portfolio.user.avatarUrl}
+                alt={`${portfolio.user.name} avatar`}
+              />
+              <div
+                className={`absolute bg-secondary-gradient -bottom-8 -right-8 w-24 h-24 rounded-lg shadow-lg`}
+              ></div>
+            </div>
+          </div>
+        );
+      case 2:
+        return (
+          <div className="flex -flex-col -gap-32 min-h-screen">
+            <div className="m-auto">
+              <div className="relative mb-20 mx-auto max-w-max">
+                <div
+                  className={`absolute bg-primary-gradient -top-8 -left-8 w-24 h-24 rounded-lg shadow-lg`}
+                ></div>
+                <img
+                  className="rounded-lg shadow-xl z-10 relative h-60"
+                  src={portfolio.user.avatarUrl}
+                  alt={`${portfolio.user.name} avatar`}
+                />
+                <div
+                  className={`absolute bg-secondary-gradient -bottom-8 -right-8 w-24 h-24 rounded-lg shadow-lg`}
+                ></div>
+              </div>
+              <div className="text-center">
+                <h1 className="dark:text-white font-bold text-4xl mb-4">
+                  {portfolio.section.hero.heading}
+                </h1>
+                <p className="dark:text-gray-300 text-sm">{portfolio.section.hero.subtitle}</p>
+              </div>
+            </div>
+          </div>
+        );
+    }
+  };
+
   return (
-    <section
-      id="main"
-      className="flex items-center justify-around gap-10 pb-20 min-h-screen container mx-auto"
-    >
-      <div>
-        <h1 className="dark:text-white font-bold text-4xl mb-4">
-          {portfolio.section.hero.heading}
-        </h1>
-        <p className="dark:text-gray-300 text-sm">{portfolio.section.hero.subtitle}</p>
-      </div>
-      <div className="relative avatar-wrapper">
-        <div
-          className={`absolute -top-8 -left-8 w-24 h-24 rounded-lg shadow-lg bg-gradient-to-br from-${primary.light} to-${primary.dark}`}
-        ></div>
-        <img
-          className="rounded-lg shadow-xl z-10 relative"
-          src={portfolio.user.avatarUrl}
-          alt={`${portfolio.user.name} avatar`}
-        />
-        <div
-          className={`absolute -bottom-8 -right-8 w-24 h-24 rounded-lg shadow-lg bg-gradient-to-br from-${secondary.light} to-${secondary.dark}`}
-        ></div>
-      </div>
+    <section id="main" className="container mx-auto">
+      {displayHero()}
     </section>
   );
 };

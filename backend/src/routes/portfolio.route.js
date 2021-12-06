@@ -1,5 +1,5 @@
 import express from "express";
-import { Portfolio, User } from "../models/index.js";
+import { Artwork, Portfolio, User } from "../models/index.js";
 import { authenticate } from "../middlewares/user.middleware.js";
 import { executeJsonPatch } from "../middlewares/general.middleware.js";
 import {
@@ -23,10 +23,21 @@ router.get("/users/username/:username/portfolio", async (req, res, next) => {
     const portfolio = await Portfolio.findOne({ userId: user._id })
       .populate("user")
       .populate("section.project.artworks");
+
     if (!portfolio) return res.sendStatus(404);
 
-    res.send(portfolio);
+    const pf = portfolio.toObject();
+
+    // manually populate artwordIds in experiences
+    for (const experience of pf.section.experience.experiences) {
+      const artworks = await Artwork.find({ _id: { $in: experience.artworkIds } });
+      experience.artworks = artworks;
+      console.log(artworks);
+    }
+
+    res.send(pf);
   } catch (e) {
+    console.log(e);
     next(e);
   }
 });

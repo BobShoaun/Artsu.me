@@ -22,9 +22,6 @@ const PortfolioPage = () => {
   // const user = users.find(user => user.username === username);
   // will get user from backend
 
-  const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
-  const secondary = { main: "teal-600", light: "teal-500", dark: "teal-800" };
-
   useScrollToTop();
 
   //phase2: create method here for API call to contact the owner of the profile
@@ -43,11 +40,52 @@ const PortfolioPage = () => {
 
   useEffect(getPortfolio, [username]);
 
+  // from css tricks https://css-tricks.com/snippets/javascript/lighten-darken-color/
+  const lightenDarkenColor = (col, amt) => {
+    let usePound = false;
+    if (col[0] == "#") {
+      col = col.slice(1);
+      usePound = true;
+    }
+    let num = parseInt(col, 16);
+    let r = (num >> 16) + amt;
+    if (r > 255) r = 255;
+    else if (r < 0) r = 0;
+    let b = ((num >> 8) & 0x00ff) + amt;
+    if (b > 255) b = 255;
+    else if (b < 0) b = 0;
+    let g = (num & 0x0000ff) + amt;
+    if (g > 255) g = 255;
+    else if (g < 0) g = 0;
+    return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16);
+  };
+
   if (!portfolio) return null; // TODO loading state
 
+  const primary = {
+    main: portfolio.color.primary,
+    light: lightenDarkenColor(portfolio.color.primary, 20),
+    dark: lightenDarkenColor(portfolio.color.primary, -20),
+  };
+  const secondary = {
+    main: portfolio.color.secondary,
+    light: lightenDarkenColor(portfolio.color.secondary, 30),
+    dark: lightenDarkenColor(portfolio.color.secondary, -30),
+  };
+
   return (
-    <main className="dark:bg-gray-900 scroll-smooth">
-      <header className="z-20 py-5 shadow-lg bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm sticky top-0">
+    <main
+      className="dark:bg-gray-900 scroll-smooth portfolio"
+      style={{
+        "--primary": primary.main,
+        "--primary-light": primary.light,
+        "--primary-dark": primary.dark,
+        "--secondary": secondary.main,
+        "--secondary-light": secondary.light,
+        "--secondary-dark": secondary.dark,
+      }}
+    >
+      <header className="z-20 py-5 shadow-lg bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm fixed top-0 left-0 right-0">
         <div className="container mx-auto flex item-center gap-10">
           <a href="#main" className="dark:text-white text-lg font-semibold">
             {portfolio.user.name}

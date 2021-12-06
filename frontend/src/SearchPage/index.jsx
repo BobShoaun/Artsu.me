@@ -26,11 +26,11 @@ const SearchPage = () => {
       const { data: tags } = await axios.get(`${apiUrl}/tags`)
       setTags(tags)
 
-      if (art != null) {
+      if (art !== null) {
         const { data: artworks } = await axios.get(`${apiUrl}/artworks?query=${art}`);
         setArtworks(artworks)
       }
-      else if (user != null) {
+      else if (user !== null) {
         const { data: users } = await axios.get(`${apiUrl}/users`);
         /* for (const user of users) {
           const { data: portfolio } = await axios.get(`${apiUrl}/users/${user._id}/portfolio`)
@@ -38,8 +38,9 @@ const SearchPage = () => {
         } */
         setUsers(users)
       }
-      else if (tag) {
-        const { data: artworks } = await axios.get(`${apiUrl}/artworks?tags=${[tag]}`);
+      else if (tag !== null) {
+        let { data: artworks } = await axios.get(`${apiUrl}/artworks`);
+        artworks = artworks.filter(artwork => tag in artwork.tagIds)
         setArtworks(artworks)
       }
       else {

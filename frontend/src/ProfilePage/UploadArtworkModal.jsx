@@ -56,7 +56,7 @@ const UploadArtworkModal = ({ onClose }) => {
   return (
     <main
       onClick={onClose}
-      className="fixed inset-0 z-30  overflow-auto bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm flex"
+      className="fixed inset-0 z-30 overflow-auto bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm flex"
     >
       <form
         onClick={e => e.stopPropagation()}

@@ -8,11 +8,39 @@ import { Link, useParams } from "react-router-dom";
 //replace with API call in phase 2
 import { artworks } from "../artworks.json";
 import {useAuthentication} from "../hooks/useAuthentication";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { apiUrl } from "../config";
 
 const ProfilePage = () => {
   const { username } = useParams();
-  const user = users.find(user => user.username === username);
   const [, adminUser] = useAuthentication();
+  const [user, setUser, portfolio, setPortfolio] = useState([]);
+
+  //phase2: create method here for API call to update user information
+  const getUser = async () => {
+    try {
+      const { data } = await axios.get(`${apiUrl}/users/${username}`);
+      setUser(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getPortfolio = async () => {
+    try {
+      const { data } = await axios.get(`${apiUrl}/users/${username}/portfolio`);
+      setPortfolio(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+    getPortfolio();
+  }, []);
+
 
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
@@ -75,7 +103,7 @@ const ProfilePage = () => {
                   </li>
                   <li className="ml-auto">
                     <p className="dark:text-gray-200 text-right">
-                      {user.portfolioSettings.heading}
+                      {portfolio.section.hero.heading}
                     </p>
                   </li>
                 </ul>
@@ -87,7 +115,7 @@ const ProfilePage = () => {
                   </li>
                   <li className="ml-auto">
                     <p className="dark:text-gray-200 text-right">
-                      {user.portfolioSettings.biography}
+                      {portfolio.section.about.biography}
                     </p>
                   </li>
                 </ul>
@@ -138,7 +166,7 @@ const ProfilePage = () => {
                 User Artworks
               </h1>
               <div className="flex flex-wrap items-center justify-around gap-x-10 gap-y-10">
-                {user.portfolioSettings.artworkIds.map(id => {
+                {portfolio.section.project.artworkIds.map(id => {
                   const artwork = artworks.find(artwork => artwork.id === id);
                   return (
                       <Link

@@ -1,18 +1,35 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { users } from "../users.json";
+// import { users } from "../users.json";
 
 import {Link} from "react-router-dom";
 import {useDispatch} from "react-redux";
-import {useEffect} from "react";
+import { useEffect, useState } from "react";
 import {setIsPublic} from "../store/generalSlice";
 import {useScrollToTop} from "../hooks/useScrollToTop";
 import {useAuthentication} from "../hooks/useAuthentication";
+import { apiUrl } from "../config";
+import axios from "axios";
 
 
 const AdminPanel = () => {
   const dispatch = useDispatch();
   const [, user] = useAuthentication();
+  const [users, setUsers] = useState([]);
+
+  //phase2: create method here for API call to update user information
+  const getUsers = async () => {
+    try {
+      const { data } = await axios.get(`${apiUrl}/users`);
+      setUsers(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getUsers();
+  }, []);
 
     useEffect(() => {
     dispatch(setIsPublic({ isPublic: false }));
@@ -37,13 +54,16 @@ const AdminPanel = () => {
                             name
                         </th>
                         <th className="text-white p-1 w-128 border-2">
-                            email
-                        </th>
-                        <th className="text-white p-1 w-32 border-2">
                             id
                         </th>
                         <th className="text-white p-1 w-32 border-2">
-                            is banned
+                            avatarUrl
+                        </th>
+                        <th className="text-white p-1 w-32 border-2">
+                            isBanned
+                        </th>
+                        <th className="text-white p-1 w-32 border-2">
+                            isAdmin
                         </th>
                     </tr>
                 </thead>
@@ -74,22 +94,24 @@ const AdminPanel = () => {
                                     key={user.id}
                                     className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
                                 >
-                                    {user.email}
+                                    {user._id}
                                 </Link>
                             </td>
-                            <td className="dark:text-white text-lg mr-3 w-32 text-center border-2 p-1">
+                            <td className="dark:text-white text-lg mr-3 w-256 text-center border-2 p-1">
                                 <Link
-                                    to={`/admin/${user.username}`}
+                                    to={`${user.avatarUrl}`}
                                     key={user.id}
                                     className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
                                 >
-                                    {user.id}
+                                    {user.avatarUrl}
                                 </Link>
                             </td>
                             <td className="dark:text-white text-lg mr-3 w-32 text-center border-2 p-1">
                                 {user.isBanned.toString()}
                             </td>
-
+                            <td className="dark:text-white text-lg mr-3 w-32 text-center border-2 p-1">
+                                {user.isAdmin.toString()}
+                            </td>
                         </tr>
                     ))}
                 </tbody>

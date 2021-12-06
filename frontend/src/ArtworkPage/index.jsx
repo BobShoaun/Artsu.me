@@ -44,7 +44,10 @@ const ArtworkPage = () => {
     }
   };
 
-  useEffect(() => getArtwork(), []);
+  useEffect(() => {
+    getArtwork();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const likeArtwork = async () => {
     if (!accessToken) return;

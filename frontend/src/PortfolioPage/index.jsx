@@ -33,12 +33,15 @@ const PortfolioPage = () => {
     }
   };
 
-  useEffect(() => getPortfolio, [username]);
+  useEffect(() => {
+    getPortfolio();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [username]);
 
   // from css tricks https://css-tricks.com/snippets/javascript/lighten-darken-color/
   const lightenDarkenColor = (col, amt) => {
     let usePound = false;
-    if (col[0] == "#") {
+    if (col[0] === "#") {
       col = col.slice(1);
       usePound = true;
     }

@@ -6,8 +6,6 @@ import { Link, useParams } from "react-router-dom";
 import UploadArtworkModal from "./UploadArtworkModal";
 import { useState, useEffect } from "react";
 
-//phase2: add API call to get information
-import { artworks } from "../artworks.json";
 import { useAuthentication } from "../hooks/useAuthentication";
 import axios from "axios";
 import { apiUrl } from "../config";

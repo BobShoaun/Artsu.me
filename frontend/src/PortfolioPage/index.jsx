@@ -33,7 +33,7 @@ const PortfolioPage = () => {
     }
   };
 
-  useEffect(getPortfolio, [username]);
+  useEffect(() => getPortfolio, [username]);
 
   // from css tricks https://css-tricks.com/snippets/javascript/lighten-darken-color/
   const lightenDarkenColor = (col, amt) => {

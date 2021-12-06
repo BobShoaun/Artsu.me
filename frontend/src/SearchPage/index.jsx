@@ -53,7 +53,7 @@ const SearchPage = () => {
     }
   }
   
-  useEffect(getSearchResult, [art, user, tag]);
+  useEffect(() => getSearchResult, [art, user, tag]);
 
   let msg = "results";
   if (length <= 1) {

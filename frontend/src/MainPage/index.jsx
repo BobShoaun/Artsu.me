@@ -49,7 +49,7 @@ const MainPage = () => {
         </div>
         <img
           className="max-h-72 object-cover w-full"
-          src="https://www.juegostudio.com/wp-content/uploads/2016/11/lowPoly-art-img-5.jpg"
+          src="http://res.cloudinary.com/artsu-me/image/upload/v1638819783/kwzo6zl0a3nvh6narndx.jpg"
           alt="low poly lion"
         />
       </div>
@@ -108,7 +108,7 @@ const MainPage = () => {
         </div>
         <img
           className="max-h-72 object-cover w-full"
-          src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/1b23c832616941.568cab27a6aad.jpg"
+          src="http://res.cloudinary.com/artsu-me/image/upload/v1638819768/gyqgkurdoqnknin3yi4z.jpg"
           alt="low poly lighthouse"
         />
       </div>

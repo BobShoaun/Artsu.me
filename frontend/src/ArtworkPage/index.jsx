@@ -8,8 +8,9 @@ import { Maximize } from "react-feather";
 import "./index.css";
 import { useAuthentication } from "../hooks/useAuthentication";
 
-import { Heart } from "react-feather";
+import { Heart, Flag } from "react-feather";
 import Loading from "../components/Loading";
+import ReportModal from "./ReportModal";
 
 import { apiUrl } from "../config";
 import axios from "axios";
@@ -21,6 +22,7 @@ const ArtworkPage = () => {
   const [artworkTags, updateArtworkTags] = useState([]);
   const [otherArtworks, setOtherArtworks] = useState([]);
   const [likes, setLikes] = useState([]);
+  const [showReport, setShowReport] = useState(false);
 
   const [accessToken, user] = useAuthentication();
 
@@ -77,6 +79,7 @@ const ArtworkPage = () => {
   // useScrollToTop();
 
   if (!artwork) return <Loading />;
+
   if (fullscreen)
     return (
       <ImageStage onClose={() => setFullscreen(false)} src={artwork.imageUrl} alt={artwork.name} />
@@ -87,6 +90,9 @@ const ArtworkPage = () => {
   return (
     <main className="bg-gray-900 min-h-screen">
       <Navbar />
+
+      {showReport && <ReportModal artwork={artwork} onClose={() => setShowReport(false)} />}
+
       <div className="container pt-20 py-32 mx-auto flex gap-14">
         <main>
           <div
@@ -100,21 +106,29 @@ const ArtworkPage = () => {
             />
           </div>
           <div className="relative border-gray-400 mb-10" style={{ borderBottomWidth: "1px" }}>
-            <div className="absolute right-0 flex items-center gap-6">
+            <div className="absolute right-0 flex items-center gap-3">
               <button
                 onClick={hasLiked ? unlikeArtwork : likeArtwork}
-                className="text-white flex gap-2 items-center"
+                className="text-white flex gap-2 items-center hover:bg-gray-800 px-2 py-1 rounded-sm"
               >
                 <Heart
                   className={` ${hasLiked ? "text-rose-400 fill-current" : "text-white"} `}
                   size={20}
                 />
-                {/* {hasLiked ? "Liked" : "Like"} */}
                 {likes.length} Likes
               </button>
+
+              <button
+                onClick={() => setShowReport(true)}
+                className="text-white hover:bg-gray-800 px-2 py-1 flex gap-2 items-center rounded-sm"
+              >
+                <Flag className="text-white" size={20} />
+                Report
+              </button>
+
               <button
                 onClick={() => setFullscreen(true)}
-                className="text-white flex gap-2 items-center"
+                className="text-white flex gap-2 items-center hover:bg-gray-800 px-2 py-1 rounded-sm"
               >
                 <Maximize size={20} fstrokeWidth={3} />
                 Fullscreen

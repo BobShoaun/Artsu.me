@@ -1,7 +1,7 @@
 import { Link, useHistory } from "react-router-dom";
 import { useAuthentication } from "../hooks/useAuthentication";
 import { useState, useEffect } from "react";
-import { Search, Bell, Check } from "react-feather";
+import { Search, Bell } from "react-feather"; // removed Check
 import MessagePanel from "./MessagePanel";
 import "./index.css";
 
@@ -28,7 +28,7 @@ const Navbar = ({ showSearchButtons }) => {
     const { data } = await axios.get(`${apiUrl}/users/${user._id}/messages/received`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
-    console.log(data);
+    //console.log(data);
     const messages = data
       .filter(m => !m.hasRead)
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -44,7 +44,7 @@ const Navbar = ({ showSearchButtons }) => {
         headers: { Authorization: `Bearer ${accessToken}` },
       }
     );
-    console.log(data);
+    //console.log(data);
     getMessages();
   };
 

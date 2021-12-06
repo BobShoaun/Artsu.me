@@ -1,4 +1,4 @@
-import { Search, Bell, Check } from "react-feather";
+import { Check } from "react-feather"; // removed Search, Bell
 import { Link } from "react-router-dom";
 
 import { formatRelative } from "date-fns";

@@ -13,7 +13,7 @@ const report = new Schema(
 const artwork = new Schema(
   {
     name: { type: String, required: true, minlength: 1 },
-    summary: { type: String },
+    summary: { type: String, maxlength: 100 },
     description: { type: String },
     imageUrl: { type: String, required: true },
     imageId: { type: String, required: true }, // cloudinary id

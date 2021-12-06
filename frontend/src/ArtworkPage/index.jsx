@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 import { Maximize } from "react-feather";
 import "./index.css";
 
+import Loading from "../components/Loading";
+
 import { apiUrl } from "../config";
 import axios from "axios";
 
@@ -44,7 +46,7 @@ const ArtworkPage = () => {
   const [fullscreen, setFullscreen] = useState(false);
   useScrollToTop();
 
-  if (!artwork) return null;
+  if (!artwork) return <Loading />;
   if (fullscreen)
     return (
       <ImageStage onClose={() => setFullscreen(false)} src={artwork.imageUrl} alt={artwork.name} />

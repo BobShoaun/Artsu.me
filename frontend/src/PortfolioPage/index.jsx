@@ -14,6 +14,8 @@ import ContactSection from "./ContactSection";
 import HeroSection from "./HeroSection";
 import ExperienceSection from "./ExperienceSection";
 
+import Loading from "../components/Loading";
+
 const PortfolioPage = () => {
   const { username } = useParams();
   const { isPublic } = useSelector(state => state.general);
@@ -60,7 +62,7 @@ const PortfolioPage = () => {
     return (usePound ? "#" : "") + (g | (b << 8) | (r << 16)).toString(16);
   };
 
-  if (!portfolio) return null; // TODO loading state
+  if (!portfolio) return <Loading />;
 
   const primary = {
     main: portfolio.color.primary,
@@ -95,7 +97,7 @@ const PortfolioPage = () => {
               Back to Browse
             </Link>
           )}
-          {accessToken && user.username === portfolio.user.username && (
+          {accessToken && user._id === portfolio.user._id && (
             <Link
               to={`/portfolio/edit/${portfolio.user.username}`}
               className="text-gray-200 text-sm hover:underline self-center"
@@ -118,20 +120,12 @@ const PortfolioPage = () => {
         </div>
       </header>
 
-      {portfolio.section.hero.isVisible && (
-        <HeroSection portfolio={portfolio} primary={primary} secondary={secondary} />
-      )}
+      {portfolio.section.hero.isVisible && <HeroSection portfolio={portfolio} />}
 
-      {portfolio.section.experience.isVisible && (
-        <ExperienceSection portfolio={portfolio} primary={primary} secondary={secondary} />
-      )}
-      {portfolio.section.project.isVisible && (
-        <ProjectSection portfolio={portfolio} primary={primary} secondary={secondary} />
-      )}
+      {portfolio.section.experience.isVisible && <ExperienceSection portfolio={portfolio} />}
+      {portfolio.section.project.isVisible && <ProjectSection portfolio={portfolio} />}
 
-      {portfolio.section.contact.isVisible && (
-        <ContactSection portfolio={portfolio} primary={primary} secondary={secondary} />
-      )}
+      {portfolio.section.contact.isVisible && <ContactSection portfolio={portfolio} />}
 
       <footer className="py-20 bg-gray-900">
         <h4 className="text-center dark:text-gray-300 font-semibold text-xs">

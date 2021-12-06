@@ -9,3 +9,37 @@
 .artwork {
   max-width: 15em;
 }
+
+.portfolio {
+  --primary: #ffffff;
+  --primary-light: #ffffff;
+  --primary-dark: #ffffff;
+
+  --secondary: #ffffff;
+  --secondary-light: #ffffff;
+  --secondary-dark: #ffffff;
+}
+
+.project:is(:hover, :focus) {
+  background-image: linear-gradient(to bottom right, var(--primary-dark), var(--secondary-dark));
+}
+
+.send-button {
+  background: var(--secondary);
+}
+
+.send-button:is(:hover, :focus) {
+  background: var(--secondary-dark);
+}
+
+.bg-primary-gradient {
+  background-image: linear-gradient(to bottom right, var(--primary-light), var(--primary-dark));
+}
+
+.bg-secondary-gradient {
+  background-image: linear-gradient(to bottom right, var(--secondary-light), var(--secondary-dark));
+}
+
+.bg-mix-gradient {
+  background-image: linear-gradient(to bottom right, var(--primary-dark), var(--secondary-dark));
+}

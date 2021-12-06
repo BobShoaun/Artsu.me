@@ -1,0 +1,27 @@
+@keyframes color-change {
+  0% {
+    color: #fda4af;
+  }
+  20% {
+    color: #eca780;
+  }
+  40% {
+    color: #beb169;
+  }
+  60% {
+    color: #7fb87a;
+  }
+  80% {
+    color: #14b8a6;
+  }
+  100% {
+    color: #fda4af;
+  }
+}
+
+.artsume {
+  animation: color-change 2s ease infinite;
+}
+.spinner {
+  animation: spin 1.25s linear infinite;
+}

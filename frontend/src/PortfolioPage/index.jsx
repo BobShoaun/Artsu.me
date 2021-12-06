@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react"; // removed useRef 
 import { Link, useParams } from "react-router-dom";
-//NOTE: replace with API calls
 
 import { useSelector } from "react-redux";
 import { useScrollToTop } from "../hooks/useScrollToTop";

@@ -2,7 +2,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "./index.css";
 
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom"; // removed useParams as it is unused
 import UploadArtworkModal from "./UploadArtworkModal";
 import { useState, useEffect } from "react";
 

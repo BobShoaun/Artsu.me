@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { apiUrl } from "../config";
 import axios from "axios";
@@ -15,7 +15,7 @@ const SearchPage = () => {
 
   const [artworks, setArtworks] = useState([]);
   const [users, setUsers] = useState([])
-  const [portfolios, updatePortfolios] = useState([])
+  // const [portfolios, updatePortfolios] = useState([])
   const [tags, setTags] = useState([])
 
   let length;
@@ -29,6 +29,7 @@ const SearchPage = () => {
       if (art !== null) {
         const { data: artworks } = await axios.get(`${apiUrl}/artworks?query=${art}`);
         setArtworks(artworks)
+        console.log(artworks)
       }
       else if (user !== null) {
         const { data: users } = await axios.get(`${apiUrl}/users`);
@@ -51,8 +52,8 @@ const SearchPage = () => {
       console.log(e);
     }
   }
-
-  getSearchResult()
+  
+  useEffect(getSearchResult, [art, user, tag]);
 
   let msg = "results";
   if (length <= 1) {

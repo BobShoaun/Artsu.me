@@ -111,7 +111,7 @@ const ArtworkPage = () => {
                   className={` ${hasLiked ? "text-rose-400 fill-current" : "text-white"} `}
                   size={20}
                 />
-                {likes.length} Likes
+                {likes.length} Like{likes.length === 1 ? "" : "s" }
               </button>
 
               <button

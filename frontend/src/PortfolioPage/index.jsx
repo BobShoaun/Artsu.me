@@ -34,7 +34,6 @@ const PortfolioPage = () => {
     try {
       const { data } = await axios.get(`${apiUrl}/users/username/${username}/portfolio`);
       setPortfolio(data);
-      console.log(data);
     } catch (e) {
       console.log(e);
     }

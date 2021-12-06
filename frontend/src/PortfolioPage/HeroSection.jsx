@@ -34,14 +34,14 @@ const HeroSection = ({ portfolio }) => {
         );
       case 2:
         return (
-          <div className="flex -flex-col -gap-32 min-h-screen">
+          <div className="flex min-h-screen">
             <div className="m-auto">
               <div className="relative mb-20 mx-auto max-w-max">
                 <div
                   className={`absolute bg-primary-gradient -top-8 -left-8 w-24 h-24 rounded-lg shadow-lg`}
                 ></div>
                 <img
-                  className="rounded-lg shadow-xl z-10 relative h-60"
+                  className="rounded-lg shadow-xl z-10 relative h-60 mt-10"
                   src={portfolio.user.avatarUrl}
                   alt={`${portfolio.user.name} avatar`}
                 />

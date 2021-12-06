@@ -68,3 +68,11 @@
 .searchbox:focus-within > .searchbox-icon {
   opacity: 1;
 }
+
+.notifications {
+  opacity: 0;
+}
+
+.notif-wrapper:focus-within .notifications {
+  opacity: 0.95;
+}

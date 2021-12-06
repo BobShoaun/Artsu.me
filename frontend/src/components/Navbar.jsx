@@ -37,7 +37,8 @@ const Navbar = ({ showSearchButtons }) => {
 
   const readMessage = async messageId => {
     if (!accessToken) return;
-    const { data } = await axios.patch(
+    //const { data } = 
+    await axios.patch(
       `${apiUrl}/users/${user._id}/messages/${messageId}/remove`,
       {},
       {

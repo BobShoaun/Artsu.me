@@ -5,7 +5,7 @@ import { useAuthentication } from "../hooks/useAuthentication";
 
 const ReportModal = ({ onClose, artwork }) => {
   const reasonInput = useRef(null);
-  const [accessToken, user] = useAuthentication();
+  const { accessToken } = useAuthentication();
 
   const report = async e => {
     e.preventDefault();
@@ -15,7 +15,7 @@ const ReportModal = ({ onClose, artwork }) => {
     if (!message) return;
 
     try {
-      const { data } = await axios.post(
+      await axios.post(
         `${apiUrl}/artworks/${artwork._id}/reports`,
         {
           message,

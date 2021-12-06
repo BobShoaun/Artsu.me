@@ -8,18 +8,21 @@ import axios from "axios";
 
 const LoginPage = () => {
   const history = useHistory();
+
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
-  const [jwt, , _login] = useAuthentication();
+  const { accessToken, user, login: _login } = useAuthentication();
 
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
   useEffect(() => {
     // redirect to main page if logged in
-    if (!jwt) return;
-    history.push("/");
-  });
+    if (accessToken && user) {
+      history.push("/");
+      return;
+    }
+  }, []);
 
   const login = async e => {
     e.preventDefault();
@@ -43,7 +46,9 @@ const LoginPage = () => {
 
       // NOTE: authenticate user in backend
       _login(user, accessToken);
-      history.push("/");
+
+      const params = new URLSearchParams(history.location.search);
+      history.push(params.get("destination") ?? "/");
     } catch (e) {
       setUsernameError("invalid username or password");
     }

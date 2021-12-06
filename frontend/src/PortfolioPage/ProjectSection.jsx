@@ -91,6 +91,8 @@ const ProjectSection = ({ portfolio, primary, secondary }) => {
             ))}
           </div>
         );
+      default:
+        console.log("bad layout id");
     }
   };
 

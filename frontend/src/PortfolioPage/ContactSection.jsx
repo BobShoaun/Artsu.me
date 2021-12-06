@@ -1,4 +1,4 @@
-import { useState } from "react"; // removed useEffect, useRef
+import { useState, useEffect } from "react"; // removed useEffect, useRef
 import axios from "axios";
 import { useAuthentication } from "../hooks/useAuthentication";
 
@@ -12,12 +12,23 @@ const ContactSection = ({ portfolio }) => {
 
   const history = useHistory();
 
-  const [accessToken, user] = useAuthentication();
+  const { accessToken, user, isLoggedIn } = useAuthentication();
+
+  useEffect(() => {
+    const params = new URLSearchParams(history.location.search);
+    setSubject(params.get("subject"));
+    setBody(params.get("body"));
+  }, [history]);
 
   const sendMessage = async () => {
-    if (!accessToken) {
+    if (!isLoggedIn) {
       // need to login first
-      history.push("/login");
+      const params = new URLSearchParams();
+      if (subject) params.set("subject", subject);
+      if (body) params.set("body", body);
+      const params2 = new URLSearchParams();
+      params2.set("destination", `/portfolio/${portfolio.user.username}?${params}`);
+      history.push(`/login?${params2}`);
       return;
     }
 
@@ -74,12 +85,14 @@ const ContactSection = ({ portfolio }) => {
         </form>
         {errorMessage && <em className="text-rose-400 text-sm">*{errorMessage}</em>}
         <div className="flex items-center">
-          <em className="text-gray-300 text-sm mr-auto">
-            Note: You need to be logged in to send messages
-          </em>
+          {!isLoggedIn && (
+            <em className="text-gray-300 text-sm">
+              Note: You need to be logged in to send messages
+            </em>
+          )}
           <button
             onClick={() => sendMessage()}
-            className={`dark:text-gray-200 send-button transition-colors py-1 px-3`}
+            className={`ml-auto dark:text-gray-200 send-button transition-colors py-1 px-3`}
           >
             Submit
           </button>

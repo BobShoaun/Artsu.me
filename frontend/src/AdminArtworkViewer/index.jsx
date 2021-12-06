@@ -18,7 +18,7 @@ const AdminArtworkViewer = () => {
   const artwork = artworks.find(artwork => artwork.id === parseInt(id));
   //replace with API call in phase 2
   const user = users.find(user => user.id === artwork.authorId);
-  const [, adminUser] = useAuthentication();
+  const { user: adminUser } = useAuthentication();
   const artworkTags = [];
   artwork.tagIds.forEach(tagid => {
     artworkTags.push(tags.find(tag => tag.id === tagid));
@@ -30,9 +30,7 @@ const AdminArtworkViewer = () => {
   const otherArtsArray = [];
   for (let i = 1; i <= 3; i++) {
     if (otherArts.length >= i)
-      otherArtsArray.push(
-        artworks.find(artwork => artwork.id === otherArts[i])
-      );
+      otherArtsArray.push(artworks.find(artwork => artwork.id === otherArts[i]));
   }
 
   useScrollToTop();
@@ -44,27 +42,14 @@ const AdminArtworkViewer = () => {
       <main className="bg-gray-900 min-h-screen">
         <Navbar />
         <div className="container mx-auto px-5">
-          <img
-            className="pt-10 mb-5 max-w-xlg mx-auto"
-            src={artwork.image}
-            alt={artwork.name}
-          />
+          <img className="pt-10 mb-5 max-w-xlg mx-auto" src={artwork.image} alt={artwork.name} />
           <h1 className="place-self-center mb-5 text-white text-center text-5xl col-span-3">
             {artwork.name}
           </h1>
-          <p className="text-center text-gray-300 font mb-14">
-            {artwork.summary}
-          </p>
+          <p className="text-center text-gray-300 font mb-14">{artwork.summary}</p>
           <section className="flex gap-x-10 px-5">
-            <Link
-              to={`/admin/${user.username}`}
-              className={"hover:bg-gray-800 flex-none w-40"}
-            >
-              <img
-                className="rounded-lg shadow-xl"
-                src={user.avatar}
-                alt={user.name}
-              />
+            <Link to={`/admin/${user.username}`} className={"hover:bg-gray-800 flex-none w-40"}>
+              <img className="rounded-lg shadow-xl" src={user.avatar} alt={user.name} />
               <p className="text-xl text-white text-center">{user.name}</p>
             </Link>
             <div>
@@ -76,12 +61,7 @@ const AdminArtworkViewer = () => {
                       className={`flex gap-3 items-center text-gray-900 cursor-pointer font-semibold text-xs bg-${tag.color} rounded-sm px-2 py-1`}
                     >
                       #{tag.label}
-                      <X
-                        size={20}
-                        color="white"
-                        strokeWidth={3}
-                        className="cursor-pointer"
-                      />
+                      <X size={20} color="white" strokeWidth={3} className="cursor-pointer" />
                     </p>
                   ))}
                 </div>

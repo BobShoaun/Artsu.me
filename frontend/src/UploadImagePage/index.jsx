@@ -10,7 +10,7 @@ const UploadImagePage = () => {
   const fileRef = useRef(null);
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
-  const [acccessToken, user] = useAuthentication();
+  const { isLoggedIn, user } = useAuthentication();
 
   const [fileError, setFileError] = useState("");
   const [titleError, setTitleError] = useState("");
@@ -45,7 +45,7 @@ const UploadImagePage = () => {
     //phase2: extend method to call API to upload the image
   };
 
-  if (!acccessToken) {
+  if (!isLoggedIn) {
     return (
       <main className="dark:bg-gray-900">
         <Navbar />

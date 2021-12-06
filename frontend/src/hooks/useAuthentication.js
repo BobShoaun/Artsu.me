@@ -13,5 +13,13 @@ export const useAuthentication = () => {
     dispatch(authLogout());
   };
 
-  return [accessToken, user, login, logout];
+  const isLoggedIn = accessToken && user;
+
+  return {
+    isLoggedIn,
+    accessToken,
+    user,
+    login,
+    logout,
+  };
 };

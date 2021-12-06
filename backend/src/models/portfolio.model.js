@@ -79,7 +79,7 @@ const portfolio = new Schema(
             ],
           },
         ],
-        isVisible: { type: Boolean, required: true, default: true },
+        isVisible: { type: Boolean, required: true, default: false },
       },
       project: {
         layoutId: Number,
@@ -90,7 +90,7 @@ const portfolio = new Schema(
             validate: [artworkExistValidator, artworkArtistValidator],
           },
         ],
-        isVisible: { type: Boolean, required: true, default: true },
+        isVisible: { type: Boolean, required: true, default: false },
       },
       contact: {
         isVisible: { type: Boolean, required: true, default: true },

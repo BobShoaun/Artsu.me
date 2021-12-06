@@ -21,7 +21,7 @@ const MainPage = () => {
   const getUsers = async () => {
     try {
       const { data } = await axios.get(`${apiUrl}/users`);
-      console.log(data);
+      //console.log(data);
       setUsers(data);
     } catch (e) {
       console.log(e);

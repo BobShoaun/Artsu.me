@@ -22,6 +22,8 @@ router.post(
     const password = req.body.password;
     const name = req.body.name;
     if (!username || !password || !name) return res.sendStatus(400);
+    if (password.length < 8)
+      return res.status(400).send("Bad request: Password has to be at least 8 characters long");
     try {
       const passwordHash = await bcrypt.hash(password, 10);
       // create new user

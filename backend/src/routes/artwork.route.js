@@ -112,7 +112,7 @@ router.get("/artworks", async (req, res, next) => {
 router.get("/artworks/:artworkId", async (req, res, next) => {
   const artworkId = req.params.artworkId;
   try {
-    const artwork = await Artwork.findById(artworkId).populate("user");
+    const artwork = await Artwork.findById(artworkId).populate("user").populate("tags");
     if (!artwork) return res.sendStatus(404);
     res.json(artwork);
   } catch (e) {
@@ -161,74 +161,82 @@ router.patch(
 /**
  * Allows a user to report a piece of artwork
  */
-router.post("/artworks/:artworkId/reports",
-  authenticate,
-  async (req, res, next) => {
+router.post("/artworks/:artworkId/reports", authenticate, async (req, res, next) => {
+  const artworkId = req.params.artworkId;
+  const reportingUser = req.user._id;
+  const reportText = req.body.message;
 
-    const artworkId = req.params.artworkId
-    const reportingUser = req.user._id
-    const reportText = req.body.message
+  if (!reportText) return res.sendStatus(400);
 
-    if (!reportText) {
-      return res.sendStatus(400);
-    }
+  try {
+    const artwork = await Artwork.findById(artworkId);
+    // user should edit their own work only
+    if (!artwork) return res.sendStatus(404);
 
-    try {
-      const artwork = await Artwork.findById(artworkId)
-      // user should edit their own work only
-      if (!artwork) {
-        return res.sendStatus(404);
-      }
+    const report = {
+      userId: reportingUser,
+      message: reportText,
+    };
 
-      const report = {
-        userId: reportingUser,
-        message: reportText
-      }
+    artwork.reports.push(report);
 
-      artwork.reports.push(report)
-
-      await artwork.save();
-      res.status(201).send(artwork);
-    } catch (e) {
-      next(e);
-    }
+    await artwork.save();
+    res.status(201).send(artwork);
+  } catch (e) {
+    next(e);
   }
-);
+});
 
 /**
  * Allows a user to like a piece of artwork
  */
-router.post("/artworks/:artworkId/likes",
-  authenticate,
-  async (req, res, next) => {
+router.post("/artworks/:artworkId/likes", authenticate, async (req, res, next) => {
+  const artworkId = req.params.artworkId;
+  const userId = req.user._id;
 
-    const artworkId = req.params.artworkId
-    const userId = req.user._id
-
-    try {
-      const artwork = await Artwork.findById(artworkId)
-      // user should edit their own work only
-      if (!artwork) {
-        return res.sendStatus(404);
-      }
-      //checking if they have liked the artwork already
-      if(!artwork.likes.includes(userId)) {
-        artwork.likes.push(userId)
-      } else{
-        return res.status(200).send(artwork);
-      }
-      await artwork.save();
-      res.status(201).send(artwork);
-    } catch (e) {
-      next(e);
+  try {
+    const artwork = await Artwork.findById(artworkId);
+    if (!artwork) {
+      return res.sendStatus(404);
     }
+    //checking if they have liked the artwork already
+    if (!artwork.likes.includes(userId)) {
+      artwork.likes.push(userId);
+    } else {
+      return res.status(200).send(artwork);
+    }
+    await artwork.save();
+    res.status(201).send(artwork);
+  } catch (e) {
+    next(e);
   }
-);
-
+});
 
 /**
- * Update likes of an artwork
+ * Allows a user to unlike a piece of artwork
  */
+ router.delete("/artworks/:artworkId/likes", authenticate, async (req, res, next) => {
+  const artworkId = req.params.artworkId;
+  const userId = req.user._id;
+
+  try {
+    const artwork = await Artwork.findById(artworkId);
+
+    if (!artwork) {
+      return res.sendStatus(404);
+    }
+    //checking if they have liked the artwork already
+    if (artwork.likes.includes(userId)) {
+      artwork.likes = artwork.likes.filter(id => id !== userId);
+    } else {
+      return res.status(200).send(artwork);
+    }
+    await artwork.save();
+    res.status(201).send(artwork);
+  } catch (e) {
+    next(e);
+  }
+});
 
 router.use(mongoHandler);
 

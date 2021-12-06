@@ -6,8 +6,11 @@ import ImageStage from "../components/ImageStage";
 import { useState, useEffect } from "react";
 import { Maximize } from "react-feather";
 import "./index.css";
+import { useAuthentication } from "../hooks/useAuthentication";
 
+import { Heart, Flag } from "react-feather";
 import Loading from "../components/Loading";
+import ReportModal from "./ReportModal";
 
 import { apiUrl } from "../config";
 import axios from "axios";
@@ -18,12 +21,16 @@ const ArtworkPage = () => {
   const [artwork, setArtwork] = useState(null);
   const [artworkTags, updateArtworkTags] = useState([]);
   const [otherArtworks, setOtherArtworks] = useState([]);
+  const [likes, setLikes] = useState([]);
+  const [showReport, setShowReport] = useState(false);
+
+  const [accessToken, user] = useAuthentication();
 
   const getArtwork = async () => {
     try {
       const { data: artwork } = await axios.get(`${apiUrl}/artworks/${id}`);
       setArtwork(artwork);
-      console.log(artwork);
+      setLikes(artwork.likes);
 
       for (const tagId of artwork.tagIds) {
         const { data: tags } = await axios.get(`${apiUrl}/tags/${tagId}`);
@@ -43,40 +50,97 @@ const ArtworkPage = () => {
   };
 
   useEffect(getArtwork, [id]);
+
+  const likeArtwork = async () => {
+    if (!accessToken) return;
+    try {
+      const { data } = await axios.post(`${apiUrl}/artworks/${id}/like`, null, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      setLikes(data.likes);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const unlikeArtwork = async () => {
+    if (!accessToken) return;
+    try {
+      const { data } = await axios.delete(`${apiUrl}/artworks/${id}/unlike`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      setLikes(data.likes);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const [fullscreen, setFullscreen] = useState(false);
-  useScrollToTop();
+  // useScrollToTop();
 
   if (!artwork) return <Loading />;
+
   if (fullscreen)
     return (
       <ImageStage onClose={() => setFullscreen(false)} src={artwork.imageUrl} alt={artwork.name} />
     );
 
+  const hasLiked = likes.includes(user._id);
+
   return (
     <main className="bg-gray-900 min-h-screen">
       <Navbar />
+
+      {showReport && <ReportModal artwork={artwork} onClose={() => setShowReport(false)} />}
+
       <div className="container pt-20 py-32 mx-auto flex gap-14">
         <main>
-          <img
+          <div
             onClick={() => setFullscreen(true)}
-            className="artwork-page-artwork mx-auto shadow-xl cursor-zoom-in mb-8"
-            src={artwork.imageUrl}
-            alt={artwork.name}
-          />
-          <div className="relative">
-            <button
-              onClick={() => setFullscreen(true)}
-              className="text-gray-800 text-xs py-1 px-3 font-semibold rounded-sm absolute right-0 flex gap-1 items-center bg-gray-300"
-            >
-              Fullscreen <Maximize size={13} strokeWidth={3} />
-            </button>
+            className="bg-black mb-8 cursor-zoom-in shadow-inner"
+          >
+            <img
+              className="artwork-page-artwork mx-auto shadow-xl "
+              src={artwork.imageUrl}
+              alt={artwork.name}
+            />
+          </div>
+          <div className="relative border-gray-400 mb-10" style={{ borderBottomWidth: "1px" }}>
+            <div className="absolute right-0 flex items-center gap-3">
+              <button
+                onClick={hasLiked ? unlikeArtwork : likeArtwork}
+                className="text-white flex gap-2 items-center hover:bg-gray-800 px-2 py-1 rounded-sm"
+              >
+                <Heart
+                  className={` ${hasLiked ? "text-rose-400 fill-current" : "text-white"} `}
+                  size={20}
+                />
+                {likes.length} Likes
+              </button>
 
-            <h1 className="text-white text-center text-2xl font-bold mb-1">{artwork.name}</h1>
-            <p className="text-center text-gray-300 font mb-14">{artwork.summary}</p>
+              <button
+                onClick={() => setShowReport(true)}
+                className="text-white hover:bg-gray-800 px-2 py-1 flex gap-2 items-center rounded-sm"
+              >
+                <Flag className="text-white" size={20} />
+                Report
+              </button>
+
+              <button
+                onClick={() => setFullscreen(true)}
+                className="text-white flex gap-2 items-center hover:bg-gray-800 px-2 py-1 rounded-sm"
+              >
+                <Maximize size={20} />
+                Fullscreen
+              </button>
+            </div>
+
+            <h1 className="text-white text-left text-2xl font-bold mb-1">{artwork.name}</h1>
+            <p className="text-left text-gray-300 font mb-4">{artwork.summary}</p>
           </div>
 
           <section className="flex gap-8">
-            <Link to={`/portfolio/${artwork.user.username}`} className="flex-none mt-5">
+            <Link to={`/portfolio/${artwork.user.username}`} className="flex-none">
               <img
                 className="shadow-xl w-24 h-24 object-cover rounded-sm mb-3 mx-auto"
                 src={artwork.user.avatarUrl}

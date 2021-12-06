@@ -21,12 +21,7 @@ const PortfolioPage = () => {
   const { isPublic } = useSelector(state => state.general);
   const { accessToken, user } = useSelector(state => state.authentication);
 
-  // const user = users.find(user => user.username === username);
-  // will get user from backend
-
   useScrollToTop();
-
-  //phase2: create method here for API call to contact the owner of the profile
 
   const [portfolio, setPortfolio] = useState(null);
 

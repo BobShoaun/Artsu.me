@@ -66,7 +66,12 @@ const Navbar = ({ showSearchButtons }) => {
               history.push("/search");
             }}
           >
-            <input className="" type="search" placeholder="Search" onChange={searchValueOnChange} />
+            <input
+              className="w-96"
+              type="search"
+              placeholder="Search"
+              onChange={searchValueOnChange}
+            />
           </form>
 
           {showSearchButtons && (
@@ -153,7 +158,7 @@ const Navbar = ({ showSearchButtons }) => {
             <li className="ml-auto">
               <Link
                 to="/register"
-                className="text-gray-900 font-semibold bg-gradient-to-br from-fuchsia-500 to-fuchsia-700 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm"
+                className="text-gray-900 font-semibold bg-gradient-to-br from-rose-300 to-rose-500 rounded-sm hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm"
               >
                 Sign Up
               </Link>

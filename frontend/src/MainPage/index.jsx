@@ -11,6 +11,8 @@ import Loading from "../components/Loading";
 import axios from "axios";
 import { apiUrl } from "../config";
 
+import ArtsumeBanner from "../components/ArtsumeBanner";
+
 import { useHistory } from "react-router";
 
 const MainPage = () => {
@@ -51,7 +53,7 @@ const MainPage = () => {
   if (users.length <= 0) return <Loading />;
 
   return (
-    <main className="dark:bg-gray-900">
+    <main className="bg-gray-900 pt-20">
       <Navbar
         onSearch={() => {
           const params = new URLSearchParams();
@@ -60,7 +62,7 @@ const MainPage = () => {
         }}
         searchInput={searchInput}
       />
-      <div className="relative pt-20">
+      <div className="relative">
         <div className="absolute inset-0 container flex">
           <div className="my-auto pl-5 bg-opacity-10 backdrop-filter backdrop-blur-sm p-5">
             <h1 className="text-white text-5xl font-bold">Discover</h1>
@@ -73,7 +75,7 @@ const MainPage = () => {
           alt="low poly lion"
         />
       </div>
-      <div className="container mx-auto py-20">
+      <div className="container mx-auto py-14">
         <aside className="mb-10 mx-10">
           <div className="flex flex-wrap justify-center gap-3">
             {tags.map(tag => (
@@ -119,20 +121,7 @@ const MainPage = () => {
           ))}
         </section>
       </div>
-      <div className="relative">
-        <div className="absolute inset-0 container flex">
-          <div className="m-auto">
-            <h1 className="text-white text-4xl font-bold p-5 -bg-gray-900 bg-opacity-10 backdrop-filter backdrop-blur-sm">
-              Make your Artsume today
-            </h1>
-          </div>
-        </div>
-        <img
-          className="max-h-72 object-cover w-full"
-          src="http://res.cloudinary.com/artsu-me/image/upload/v1638819768/gyqgkurdoqnknin3yi4z.jpg"
-          alt="low poly lighthouse"
-        />
-      </div>
+      <ArtsumeBanner></ArtsumeBanner>
 
       <Footer />
     </main>

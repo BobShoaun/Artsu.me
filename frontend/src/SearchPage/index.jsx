@@ -6,6 +6,7 @@ import { useHistory } from "react-router";
 
 import { apiUrl } from "../config";
 import axios from "axios";
+import ArtsumeBanner from "../components/ArtsumeBanner";
 
 const SearchPage = () => {
   const history = useHistory();
@@ -72,7 +73,7 @@ const SearchPage = () => {
   const numResults = type.current === "user" ? users.length : artworks.length;
 
   return (
-    <main className="bg-gray-900">
+    <main className="bg-gray-900 pt-20">
       <Navbar
         onSearch={() => {
           query.current = searchInput.current.value;
@@ -80,7 +81,7 @@ const SearchPage = () => {
         }}
         searchInput={searchInput}
       />
-      <div className="container mx-auto pt-20 mb-20 py-20 gap-8">
+      <div className="container mx-auto mb-20 py-10 gap-8">
         <div className="flex flex-wrap gap-3 mx-auto my-10 justify-center">
           {tags.map(tag => (
             <button
@@ -180,6 +181,7 @@ const SearchPage = () => {
               ))}
         </div>
       </div>
+      <ArtsumeBanner />
       <Footer />
     </main>
   );

@@ -14,7 +14,7 @@ import EditArtworkModal from "./EditArtworkModal";
 import { Edit, Eye, Trash2 } from "react-feather";
 
 const ArtworkListPage = () => {
-  const { isLoggedIn, user, redirectToLogin } = useAuthentication();
+  const { isLoggedIn, user, redirectToLogin, accessToken } = useAuthentication();
   const [artworks, setArtworks] = useState([]);
   const [showArtworkModal, setShowArtworkModal] = useState(false);
   const [loading, setLoading] = useState(true);

@@ -1,28 +1,40 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
-import { tags } from "../tags.json";
 import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { setIsPublic } from "../store/generalSlice";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import "./index.css";
-// API calls to read users and tags
 
 import Loading from "../components/Loading";
 import axios from "axios";
 import { apiUrl } from "../config";
 
+import { useHistory } from "react-router";
+
 const MainPage = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [users, setUsers] = useState([]);
+  const [tags, setTags] = useState([]);
+
+  const searchInput = useRef(null);
 
   const getUsers = async () => {
     try {
       const { data } = await axios.get(`${apiUrl}/users`);
-      //console.log(data);
       setUsers(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getTags = async () => {
+    try {
+      const { data: tags } = await axios.get(`${apiUrl}/tags`);
+      setTags(tags);
     } catch (e) {
       console.log(e);
     }
@@ -31,6 +43,7 @@ const MainPage = () => {
   useEffect(() => {
     dispatch(setIsPublic({ isPublic: false }));
     getUsers();
+    getTags();
   }, [dispatch]);
 
   useScrollToTop();
@@ -39,7 +52,14 @@ const MainPage = () => {
 
   return (
     <main className="dark:bg-gray-900">
-      <Navbar />
+      <Navbar
+        onSearch={() => {
+          const params = new URLSearchParams();
+          params.set("query", searchInput.current.value);
+          history.push(`/search?${params}`);
+        }}
+        searchInput={searchInput}
+      />
       <div className="relative pt-20">
         <div className="absolute inset-0 container flex">
           <div className="my-auto pl-5 bg-opacity-10 backdrop-filter backdrop-blur-sm p-5">
@@ -55,9 +75,9 @@ const MainPage = () => {
       </div>
       <div className="container mx-auto py-20">
         <aside className="mb-10 mx-10">
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap justify-center gap-3">
             {tags.map(tag => (
-              <Link key={tag.id} to={`/search/&tag=${tag.label}`}>
+              <Link key={tag._id} to={`/search?&tag=${tag._id}`}>
                 <p
                   className={`text-gray-900 -text-white cursor-pointer font-semibold text-sm  bg-${tag.color} rounded-sm px-2 py-1`}
                 >
@@ -67,6 +87,7 @@ const MainPage = () => {
             ))}
           </div>
         </aside>
+
         <section className="flex-1 grid md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-y-8 gap-x-3">
           {users.map(user => (
             <Link

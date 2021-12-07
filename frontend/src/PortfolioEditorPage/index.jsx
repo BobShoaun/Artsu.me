@@ -153,18 +153,6 @@ const PortfolioEditorPage = () => {
             </label>
             <input className="border" type="text" defaultValue={experience.position}
                    onChange={e => experience.position = e.target.value}/>
-            {/* <label className="dark:text-gray-200 text-sm text-right mt-2">
-              Start Date: 
-            </label>
-            <input className="bg-transparent border px-1" type="date" 
-                   defaultValue={experience.startDate.split('T')[0]}
-                   onChange={e => experience.startDate = e.target.value}/>
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
-              End Date:
-            </label>
-            <input className="bg-transparent border px-1" type="date" 
-                   defaultValue={experience.endDate}
-                   onChange={e => experience.endDate = e.target.value}/> */}
           </div>
           <div className="mt-10 grid gap-5 portfolio-form mb-10">
             <label className="dark:text-gray-200 text-sm text-right mt-2">

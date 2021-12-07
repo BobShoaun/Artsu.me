@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useHistory } from "react-router";
 
-import { apiUrl } from "../config";
+import { apiUrl, defaultAvatarUrl } from "../config";
 import axios from "axios";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import ArtsumeBanner from "../components/ArtsumeBanner";
+import Loading from "../components/Loading";
 
 const SearchPage = () => {
   const history = useHistory();
@@ -53,7 +54,7 @@ const SearchPage = () => {
   };
   useScrollToTop();
 
-  const search = useCallback( () => {
+  const search = useCallback(() => {
     if (type.current === "user") getUsers();
     else getArtworks();
     const params = new URLSearchParams();
@@ -71,6 +72,8 @@ const SearchPage = () => {
     tagId.current = params.get("tag") || "";
     search();
   }, [search, history]);
+
+  if ((!users.length && !artworks.length) || !tags.length) return <Loading />;
 
   const numResults = type.current === "user" ? users.length : artworks.length;
 
@@ -156,7 +159,8 @@ const SearchPage = () => {
                 >
                   <img
                     className="w-48 h-48 object-cover shadow-xl mb-3 mx-auto"
-                    src={user.avatarUrl}
+                    src={user.avatarUrl || defaultAvatarUrl}
+                    onError={e => (e.target.src = defaultAvatarUrl)}
                     alt={`${user._id}`}
                   />
                   <div className="text-center mx-auto max-w-sm">

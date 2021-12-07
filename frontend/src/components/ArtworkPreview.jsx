@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const ArtworkPreview = ({ artwork, primary, secondary }) => {
+const ArtworkPreview = ({ artwork }) => {
   return (
     <Link
       to={`/artwork/${artwork._id}`}

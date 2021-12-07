@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import UploadArtworkModal from "./UploadArtworkModal";
 import { useAuthentication } from "../hooks/useAuthentication";
 
@@ -22,7 +22,7 @@ const ArtworkListPage = () => {
 
   const [editingArtwork, setEditingArtwork] = useState(null);
 
-  const getArtworks = async () => {
+  const getArtworks = useCallback(async () => {
     try {
       const { data } = await axios.get(`${apiUrl}/users/${user._id}/artworks`);
       setArtworks(data);
@@ -30,7 +30,7 @@ const ArtworkListPage = () => {
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -38,7 +38,7 @@ const ArtworkListPage = () => {
       return;
     }
     getArtworks();
-  }, [isLoggedIn]);
+  }, [isLoggedIn, redirectToLogin, getArtworks]);
 
   if (!isLoggedIn) return <Unauthenticated />;
 

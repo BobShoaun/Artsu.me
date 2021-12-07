@@ -39,4 +39,6 @@ artwork.virtual("tags", {
   foreignField: "_id",
 });
 
+artwork.index({ name: "text", summary: "text", description: "text" });
+
 export default artwork;

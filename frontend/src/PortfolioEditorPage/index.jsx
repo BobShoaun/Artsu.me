@@ -13,14 +13,12 @@ const PortfolioEditorPage = () => {
 
   const { username } = useParams();
   const user = users.find(user => user.username === username); // NOTE: will get user from api
-  const [, loggedInUser, , _logout] = useAuthentication();
+  const { user: loggedInUser, logout: _logout } = useAuthentication();
 
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
 
-  const [SelectedArt, setSelectedArt] = useState(
-    user.portfolioSettings.artworkIds
-  );
+  const [SelectedArt, setSelectedArt] = useState(user.portfolioSettings.artworkIds);
 
   const logout = () => {
     _logout();
@@ -36,43 +34,27 @@ const PortfolioEditorPage = () => {
     return;
   }
 
-  function addNewExperience(){
-    const experience =  (
+  function addNewExperience() {
+    const experience = (
       <div>
-          <div className="grid gap-5 portfolio-form-short">
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
-              Company:
-            </label>
-            <input className="border" type="text"/>
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
-              Position:
-            </label>
-            <input className="border" type="text" />
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
-              Start Date:
-            </label>
-            <input className="bg-transparent border px-1" type="date" />
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
-              End Date:
-            </label>
-            <input className="bg-transparent border px-1" type="date" />
-          </div>
-          <div className="mt-10 grid gap-5 portfolio-form">
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
-              Description:
-            </label>
-            <textarea
-              className="border"
-              rows="4"
-              cols="100"
-            ></textarea>
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
-              Artworks:
-            </label>
-          </div>
+        <div className="grid gap-5 portfolio-form-short">
+          <label className="dark:text-gray-200 text-sm text-right mt-2">Company:</label>
+          <input className="border" type="text" />
+          <label className="dark:text-gray-200 text-sm text-right mt-2">Position:</label>
+          <input className="border" type="text" />
+          <label className="dark:text-gray-200 text-sm text-right mt-2">Start Date:</label>
+          <input className="bg-transparent border px-1" type="date" />
+          <label className="dark:text-gray-200 text-sm text-right mt-2">End Date:</label>
+          <input className="bg-transparent border px-1" type="date" />
         </div>
-    )
-    document.getElementById('setExperiences').appendChild(experience)
+        <div className="mt-10 grid gap-5 portfolio-form">
+          <label className="dark:text-gray-200 text-sm text-right mt-2">Description:</label>
+          <textarea className="border" rows="4" cols="100"></textarea>
+          <label className="dark:text-gray-200 text-sm text-right mt-2">Artworks:</label>
+        </div>
+      </div>
+    );
+    document.getElementById("setExperiences").appendChild(experience);
   }
 
   if (loggedInUser === user) {
@@ -83,13 +65,8 @@ const PortfolioEditorPage = () => {
             <Link to="/" className="dark:text-white text-2xl font-semibold">
               artsu.me
             </Link>
-            <h2 className="dark:text-white text-2xl ml-auto">
-              Edit Portfolio
-            </h2>
-            <button
-              onClick={logout}
-              className="dark:text-white text-l font-semibold ml-auto"
-            >
+            <h2 className="dark:text-white text-2xl ml-auto">Edit Portfolio</h2>
+            <button onClick={logout} className="dark:text-white text-l font-semibold ml-auto">
               Logout
             </button>
           </div>
@@ -97,9 +74,7 @@ const PortfolioEditorPage = () => {
         <section className="dark:text-white container mx-auto pt-20">
           <h2 className="mb-10">1. Hero Section</h2>
           <div className="grid gap-5 portfolio-form">
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
-              Heading:
-            </label>
+            <label className="dark:text-gray-200 text-sm text-right mt-2">Heading:</label>
             <input
               defaultValue={user.portfolioSettings.heading}
               className="px-2 py-1"
@@ -111,9 +86,7 @@ const PortfolioEditorPage = () => {
             Keep Heading Private
           </label>
           <div action="" className="grid gap-5 portfolio-form">
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
-              About Me:
-            </label>
+            <label className="dark:text-gray-200 text-sm text-right mt-2">About Me:</label>
             <textarea
               className="border"
               defaultValue={user.portfolioSettings.biography}
@@ -126,42 +99,27 @@ const PortfolioEditorPage = () => {
             Keep About me Private
           </label>
         </section>
-        <section className="dark:text-white container mx-auto mt-20"
-          id="setExperiences">
+        <section className="dark:text-white container mx-auto mt-20" id="setExperiences">
           <h2 className="mb-10">2. Experiences</h2>
           <div className="grid gap-5 portfolio-form-short">
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
-              Company:
-            </label>
-            <input className="border" type="text"/>
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
-              Position:
-            </label>
+            <label className="dark:text-gray-200 text-sm text-right mt-2">Company:</label>
             <input className="border" type="text" />
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
-              Start Date:
-            </label>
+            <label className="dark:text-gray-200 text-sm text-right mt-2">Position:</label>
+            <input className="border" type="text" />
+            <label className="dark:text-gray-200 text-sm text-right mt-2">Start Date:</label>
             <input className="bg-transparent border px-1" type="date" />
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
-              End Date:
-            </label>
+            <label className="dark:text-gray-200 text-sm text-right mt-2">End Date:</label>
             <input className="bg-transparent border px-1" type="date" />
           </div>
           <div className="mt-10 grid gap-5 portfolio-form">
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
-              Description:
-            </label>
-            <textarea
-              className="border"
-              rows="4"
-              cols="100"
-            ></textarea>
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
-              Artworks:
-            </label>
+            <label className="dark:text-gray-200 text-sm text-right mt-2">Description:</label>
+            <textarea className="border" rows="4" cols="100"></textarea>
+            <label className="dark:text-gray-200 text-sm text-right mt-2">Artworks:</label>
           </div>
-          <button className="bg-gray-500 hover:bg-gray-600 text-white text-sm py-1 px-1 my-5"
-                  onClick={e => addNewExperience()}>
+          <button
+            className="bg-gray-500 hover:bg-gray-600 text-white text-sm py-1 px-1 my-5"
+            onClick={e => addNewExperience()}
+          >
             Add
           </button>
           <label className="dark:text-gray-400 text-xs mt-1 mb-5 portfolio-editor-section-visible">
@@ -169,10 +127,7 @@ const PortfolioEditorPage = () => {
             Keep Experiences Private
           </label>
         </section>
-        <section
-          className="dark:text-white container mx-auto mt-20"
-          id="chooseLayout"
-        >
+        <section className="dark:text-white container mx-auto mt-20" id="chooseLayout">
           2. Choose Artworks to Display
           <div className="flex flex-wrap items-center justify-around gap-x-10 gap-y-10 my-10">
             {user.portfolioSettings.artworkIds.map(id => {
@@ -193,9 +148,7 @@ const PortfolioEditorPage = () => {
                     alt={artwork.name}
                   />
                   <div className="pl-3">
-                    <h2 className="dark:text-white text-lg font-semibold mb-1">
-                      {artwork.name}
-                    </h2>
+                    <h2 className="dark:text-white text-lg font-semibold mb-1">{artwork.name}</h2>
                   </div>
                 </button>
               );

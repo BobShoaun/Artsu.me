@@ -16,6 +16,7 @@ import AdminProfileViewer from "./AdminProfileViewer";
 import AdminArtworkViewer from "./AdminArtworkViewer";
 import UploadImagePage from "./UploadImagePage";
 import UploadAvatarPage from "./UploadAvatarPage";
+import ArtworkListPage from "./ArtworkListPage";
 
 const App = () => {
   return (
@@ -23,15 +24,13 @@ const App = () => {
       <main className="dark">
         <Router>
           <Switch>
-            <Route path="/portfolio/edit/:username" component={PortfolioEditorPage} />
+            <Route path="/portfolio/editor" component={PortfolioEditorPage} />
             <Route path="/portfolio/:username" component={PortfolioPage} />
             <Route path="/artwork/:id" component={ArtworkPage} />
             <Route path="/login" component={LoginPage} />
             <Route path="/register" component={RegisterPage} />
-            <Route path="/profile/:username/upload-avatar" component={UploadAvatarPage} />
-            <Route path="/profile/upload" component={UploadImagePage} />
             <Route path="/profile" component={ProfilePage} />
-            <Route path="/search/:username" component={SearchPage} />
+            <Route path="/artworks" component={ArtworkListPage} />
             <Route path="/search" component={SearchPage} />
             <Route path="/admin/artwork/:id" component={AdminArtworkViewer} />
             <Route path="/admin/:username" component={AdminProfileViewer} />

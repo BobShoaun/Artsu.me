@@ -69,6 +69,8 @@ const ExperienceSection = ({ portfolio }) => {
             </div>
           </div>
         );
+      default:
+        console.log("bad layout id");
     }
   };
 

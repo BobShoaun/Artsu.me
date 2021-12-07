@@ -1,6 +1,6 @@
 import { Link, useHistory } from "react-router-dom";
 import { useAuthentication } from "../hooks/useAuthentication";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react"; // removed useRef
 import { Search, Bell } from "react-feather"; // removed Check
 import MessagePanel from "./MessagePanel";
 import "./index.css";
@@ -32,7 +32,7 @@ const Navbar = ({ onSearch, searchInput }) => {
 
   const readMessage = async messageId => {
     if (!isLoggedIn) return;
-    const { data } = await axios.patch(
+    await axios.patch(
       `${apiUrl}/users/${user._id}/messages/${messageId}/remove`,
       {},
       {

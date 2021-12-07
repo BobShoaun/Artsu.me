@@ -19,7 +19,7 @@ import Loading from "../components/Loading";
 const PortfolioPage = () => {
   const { username } = useParams();
   const { isPublic } = useSelector(state => state.general);
-  const { accessToken, user, isLoggedIn } = useAuthentication();
+  const { user, isLoggedIn } = useAuthentication(); // removed accessToken
 
   useScrollToTop();
 

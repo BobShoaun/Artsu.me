@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { Link, useParams } from "react-router-dom"; // removed useHistory 
 import ImageStage from "../components/ImageStage";
 import { useState, useEffect } from "react";
 import { Maximize } from "react-feather";
@@ -25,7 +25,7 @@ const ArtworkPage = () => {
   const [showReport, setShowReport] = useState(false);
 
   const { isLoggedIn, accessToken, user, redirectToLogin } = useAuthentication();
-  const history = useHistory();
+  //const history = useHistory();
 
   const getArtwork = async () => {
     try {

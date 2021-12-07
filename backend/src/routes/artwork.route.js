@@ -25,10 +25,9 @@ router.post("/users/:userId/artworks", authenticate, uploadImage, async (req, re
   const name = req.body.name;
   const summary = req.body.summary;
   const description = req.body.description;
-  const tagIds = req.body.tagIds;
-
+  const tagIds = JSON.parse(req.body.tagIds);
   if (!name) return res.sendStatus(400);
-
+  
   try {
     const artwork = new Artwork({
       name,

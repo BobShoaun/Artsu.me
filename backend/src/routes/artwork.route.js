@@ -93,6 +93,7 @@ router.get("/users/:userId/artworks", async (req, res, next) => {
 
 /**
  * Get artworks with query
+ * sorted by likes, and not including banned artworks
  */
 router.get("/artworks", async (req, res, next) => {
   const query = req.query.query;
@@ -100,9 +101,13 @@ router.get("/artworks", async (req, res, next) => {
   const offset = parseInt(req.query.offset);
 
   try {
-    const artworks = await (query ? Artwork.find({ $text: { $search: query } }) : Artwork.find())
+    const artworks = await Artwork.aggregate([
+      { $match: query ? { $text: { $search: query } } : { isBanned: false } },
+      { $addFields: { length: { $size: "$likes" } } },
+      { $sort: { length: -1 } },
+    ])
       .skip(offset > 0 ? offset : 0)
-      .limit(limit > 0 ? limit : 0);
+      .limit(limit > 0 ? limit : 1);
 
     res.send(artworks);
   } catch (e) {

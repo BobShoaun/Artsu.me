@@ -144,35 +144,37 @@ const MainPage = () => {
         Top Artists / Users:
       </h2>
       <section className="mb-14 container mx-auto flex flex-wrap items-center justify-evenly gap-y-3 gap-x-1">
-        {users.map(user => (
-          <Link
-            to={`/portfolio/${user.username}`}
-            key={user._id}
-            className={`mx-auto ${
-              user.featured
-                ? "bg-gradient-to-br hover:from-fuchsia-500 hover:to-emerald-500"
-                : "hover:bg-gray-800"
-            }  rounded-lg transition-all p-4 cursor-pointer`}
-          >
-            {user.isFeatured && (
-              <h3 className="underline-offset text-white text-sm font-semibold underline mb-2">
-                Featured
-              </h3>
-            )}
-            <div className="mb-2">
-              <img
-                className="main-page-avatar shadow-lg rounded-sm w-48 h-48 object-cover"
-                src={user.avatarUrl || defaultAvatarUrl}
-                onError={e => (e.target.src = defaultAvatarUrl)}
-                alt={`${user.name} avatar`}
-              />
-            </div>
-            <div className="px-2 text-center">
-              <h2 className="dark:text-white font-semibold text-lg">{user.name}</h2>
-              <p className="dark:text-gray-200 text-sm">{user.username}</p>
-            </div>
-          </Link>
-        ))}
+        {users
+          .filter(user => !user.isBanned)
+          .map(user => (
+            <Link
+              to={`/portfolio/${user.username}`}
+              key={user._id}
+              className={`mx-auto ${
+                user.featured
+                  ? "bg-gradient-to-br hover:from-fuchsia-500 hover:to-emerald-500"
+                  : "hover:bg-gray-800"
+              }  rounded-lg transition-all p-4 cursor-pointer`}
+            >
+              {user.isFeatured && (
+                <h3 className="underline-offset text-white text-sm font-semibold underline mb-2">
+                  Featured
+                </h3>
+              )}
+              <div className="mb-2">
+                <img
+                  className="main-page-avatar shadow-lg rounded-sm w-48 h-48 object-cover"
+                  src={user.avatarUrl || defaultAvatarUrl}
+                  onError={e => (e.target.src = defaultAvatarUrl)}
+                  alt={`${user.name} avatar`}
+                />
+              </div>
+              <div className="px-2 text-center">
+                <h2 className="dark:text-white font-semibold text-lg">{user.name}</h2>
+                <p className="dark:text-gray-200 text-sm">{user.username}</p>
+              </div>
+            </Link>
+          ))}
       </section>
 
       <div className="text-center mb-20">

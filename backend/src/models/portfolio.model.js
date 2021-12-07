@@ -52,7 +52,7 @@ const portfolio = new Schema(
     },
     section: {
       hero: {
-        layoutId: { type: Number },
+        layoutId: { type: Number, default: 0 },
         heading: { type: String },
         subtitle: { type: String },
         isVisible: { type: Boolean, required: true, default: true },
@@ -62,7 +62,7 @@ const portfolio = new Schema(
         isVisible: { type: Boolean, required: true, default: true },
       },
       experience: {
-        layoutId: { type: Number },
+        layoutId: { type: Number, default: 0 },
         experiences: [
           {
             company: { type: String },
@@ -82,7 +82,7 @@ const portfolio = new Schema(
         isVisible: { type: Boolean, required: true, default: false },
       },
       project: {
-        layoutId: Number,
+        layoutId: {Number, default: 0 },
         artworkIds: [
           {
             type: Schema.ObjectId,

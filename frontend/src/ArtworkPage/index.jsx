@@ -151,7 +151,7 @@ const ArtworkPage = () => {
               {artworkTags.length > 0 && (
                 <div className="flex flex-wrap gap-3 mb-5">
                   {artworkTags.map(tag => (
-                    <Link key={tag._id} to={`/search/&tag=${tag.label}`}>
+                    <Link key={tag._id} to={`/search?tag=${tag._id}`}>
                       <p
                         className={`text-gray-900 cursor-pointer font-semibold text-xs bg-${tag.color} rounded-sm px-2 py-1`}
                       >

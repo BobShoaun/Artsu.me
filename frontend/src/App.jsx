@@ -33,7 +33,7 @@ const App = () => {
             <Route path="/artworks" component={ArtworkListPage} />
             <Route path="/search" component={SearchPage} />
             <Route path="/admin/artwork/:id" component={AdminArtworkViewer} />
-            <Route path="/admin/:username" component={AdminProfileViewer} />
+            <Route path="/admin/:id" component={AdminProfileViewer} />
             <Route path="/admin" component={AdminPanel} />
             <Route path="/" component={MainPage} />
           </Switch>

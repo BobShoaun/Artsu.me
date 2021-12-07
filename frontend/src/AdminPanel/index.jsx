@@ -43,62 +43,6 @@ const AdminPanel = () => {
         <Navbar />
         <h1 className="dark:text-white text-2xl font-semibold text-center py-5">Admin Panel</h1>
         <div className="container mx-auto flex-none mb-20 min-h-screen">
-          <table className="table-fixed border-white center border-collapse border-2 mx-auto">
-            <thead>
-              <tr>
-                <th className="text-white p-1 w-64 border-2">username</th>
-                <th className="text-white p-1 w-64 border-2">name</th>
-                <th className="text-white p-1 w-128 border-2">email</th>
-                <th className="text-white p-1 w-32 border-2">id</th>
-                <th className="text-white p-1 w-32 border-2">is banned</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map(user => (
-                <tr key={user.id}>
-                  <td className="dark:text-white text-lg mr-3 w-64 text-center border-2 p-1">
-                    <Link
-                      to={`/admin/${user.username}`}
-                      key={user.id}
-                      className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
-                    >
-                      {user.username}
-                    </Link>
-                  </td>
-                  <td className="dark:text-white text-lg mr-3 w-64 text-center border-2 p-1">
-                    <Link
-                      to={`/admin/${user.username}`}
-                      key={user.id}
-                      className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
-                    >
-                      {user.name}
-                    </Link>
-                  </td>
-                  <td className="dark:text-white text-lg mr-3 w-128 text-center border-2 p-1">
-                    <Link
-                      to={`/admin/${user.username}`}
-                      key={user.id}
-                      className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
-                    >
-                      {user.email}
-                    </Link>
-                  </td>
-                  <td className="dark:text-white text-lg mr-3 w-32 text-center border-2 p-1">
-                    <Link
-                      to={`/admin/${user.username}`}
-                      key={user.id}
-                      className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
-                    >
-                      {user.id}
-                    </Link>
-                  </td>
-                  <td className="dark:text-white text-lg mr-3 w-32 text-center border-2 p-1">
-                    {user.isBanned.toString()}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
             <table className="table-fixed border-white center border-collapse border-2 mx-auto">
                 <thead>
                     <tr>
@@ -127,8 +71,8 @@ const AdminPanel = () => {
                         <tr key={user.id}>
                                 <td className="dark:text-white text-lg mr-3 w-64 text-center border-2 p-1">
                                     <Link
-                                        to={`/admin/${user.username}`}
-                                        key={user.id}
+                                        to={`/admin/${user._id}`}
+                                        key={user._id}
                                         className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
                                     >
                                     {user.username}
@@ -136,8 +80,8 @@ const AdminPanel = () => {
                                 </td>
                                 <td className="dark:text-white text-lg mr-3 w-64 text-center border-2 p-1">
                                     <Link
-                                        to={`/admin/${user.username}`}
-                                        key={user.id}
+                                        to={`/admin/${user._id}`}
+                                        key={user._id}
                                         className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
                                     >
                                    {user.name}
@@ -145,7 +89,7 @@ const AdminPanel = () => {
                                 </td>
                             <td className="dark:text-white text-lg mr-3 w-128 text-center border-2 p-1">
                                 <Link
-                                    to={`/admin/${user.username}`}
+                                    to={`/admin/${user._id}`}
                                     key={user.id}
                                     className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
                                 >
@@ -155,7 +99,7 @@ const AdminPanel = () => {
                             <td className="dark:text-white text-lg mr-3 w-256 text-center border-2 p-1">
                                 <Link
                                     to={`${user.avatarUrl}`}
-                                    key={user.id}
+                                    key={user.avatarUrl}
                                     className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
                                 >
                                     {user.avatarUrl}

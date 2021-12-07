@@ -2,13 +2,10 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import { useAuthentication } from "../hooks/useAuthentication";
-import UploadArtworkModal from "../ArtworkListPage/UploadArtworkModal";
-
 import axios from "axios";
 import { apiUrl } from "../config";
 import Loading from "../components/Loading";
 import Unauthenticated from "../components/Unauthenticated";
-
 import "./index.css";
 
 const PortfolioEditorPage = () => {
@@ -18,7 +15,6 @@ const PortfolioEditorPage = () => {
   const [experiences, setExperiences] = useState([]);
   const [artworks, setArtworks] = useState([]);
   const [projects, setProjects] = useState([])
-  const [showArtworkModal, setShowArtworkModal] = useState(false);
   const [heroLayout, setHeroLayout] = useState(null);
   const [experienceLayout, setExperienceLayout] = useState(null);
   const [projectLayout, setProjectLayout] = useState(null);
@@ -209,14 +205,6 @@ const PortfolioEditorPage = () => {
 
   return (
       <main className="bg-gray-900">
-        {showArtworkModal && (
-        <UploadArtworkModal
-          onClose={() => {
-            setShowArtworkModal(false);
-            getArtworks();
-          }}
-        />
-      )}
         <header className="z-20 py-5 shadow-lg bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm sticky top-0">
           <div className="container mx-auto flex item-center gap-10">
             <Link to="/" className="dark:text-white text-2xl font-semibold">

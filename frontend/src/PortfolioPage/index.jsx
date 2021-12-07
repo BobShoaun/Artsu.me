@@ -123,7 +123,7 @@ const PortfolioPage = () => {
         </div>
       </header>
 
-      {portfolio.section.hero.isVisible && <HeroSection portfolio={portfolio} />}
+      <HeroSection portfolio={portfolio} />
       {portfolio.section.experience.isVisible && <ExperienceSection portfolio={portfolio} />}
       {portfolio.section.project.isVisible && <ProjectSection portfolio={portfolio} />}
       {portfolio.section.contact.isVisible && <ContactSection portfolio={portfolio} />}

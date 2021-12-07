@@ -15,15 +15,15 @@ const PortfolioEditorPage = () => {
 
   const { isLoggedIn, accessToken, user, redirectToLogin, login } = useAuthentication();
   const [portfolio, setPortfolio] = useState(null);
-  const [newExperiences, setNewExperiences] = useState([])
-  const [artworks, setArtworks] = useState([])
+  const [experiences, setExperiences] = useState([]);
+  const [artworks, setArtworks] = useState([]);
+  const [projects, setProjects] = useState([])
   const [showArtworkModal, setShowArtworkModal] = useState(false);
-  const [heroLayout, setHeroLayout] = useState(null)
-  const [experienceLayout, setExperienceLayout] = useState(null)
-  const [projectLayout, setProjectLayout] = useState(null)
+  const [heroLayout, setHeroLayout] = useState(null);
+  const [experienceLayout, setExperienceLayout] = useState(null);
+  const [projectLayout, setProjectLayout] = useState(null);
 
   const getPortfolio = async () => {
-    console.log("user", user)
     try {
       const { data } = await axios.get(`${apiUrl}/users/username/${user.username}/portfolio`);
       setPortfolio(data);
@@ -38,7 +38,7 @@ const PortfolioEditorPage = () => {
       try {
         const { data } = await axios.get(`${apiUrl}/users/${userId}/artworks`)
         setArtworks(data)
-        console.log(data)
+        
       } catch (e) {
         console.log(e)
       }
@@ -46,14 +46,13 @@ const PortfolioEditorPage = () => {
   };
 
   const savePortfolio = async e => {
-    e.preventDefault()
     console.log(portfolio)
+    e.preventDefault()
     portfolio.section.hero.layoutId = heroLayout
     portfolio.section.experience.layoutId = experienceLayout
     portfolio.section.project.layoutId = projectLayout
     const userId = portfolio.userId
     try {
-      console.log(color)
       const { data } = await axios.patch(`${apiUrl}/users/${userId}/portfolio`, 
       [
         { op: "replace", path: "/color", value: color },
@@ -76,24 +75,14 @@ const PortfolioEditorPage = () => {
 
   const color = portfolio.color
   const hero = portfolio.section.hero
-  let experiences = portfolio.section.experience.experiences
-  const projects = portfolio.section.project
+  const project = portfolio.section.project
   const contact = portfolio.section.contact
+  // if no value
+  if (experiences.length === 0 && experiences != portfolio.section.experience.experiences)setExperiences(portfolio.section.experience.experiences)
+  if (projects.length ===0 && projects != project.artworkIds) setProjects(project.artworkIds)
   if (!heroLayout && heroLayout != hero.layoutId) setHeroLayout(hero.layoutId)
-  if (!projectLayout && projectLayout != projects.layoutId) setProjectLayout(projects.layoutId)
+  if (!projectLayout && projectLayout != project.layoutId) setProjectLayout(project.layoutId)
   if (!experienceLayout && experienceLayout != portfolio.section.experience.layoutId) setExperienceLayout(portfolio.section.experience.layoutId)
-  
-
-  
-
-  /* function selectArt(artid) {
-    if (SelectedArt.includes(artid)) {
-      setSelectedArt(SelectedArt.filter(id => artid !== id));
-    } else {
-      setSelectedArt(SelectedArt.concat(artid));
-    }
-    return;
-  } */
 
   const emptyExperience = {
     company: '',
@@ -128,18 +117,18 @@ const PortfolioEditorPage = () => {
             </label>
             <input className="border" type="text" defaultValue={experience.position}
                    onChange={e => experience.position = e.target.value}/>
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
+            {/* <label className="dark:text-gray-200 text-sm text-right mt-2">
               Start Date: 
             </label>
             <input className="bg-transparent border px-1" type="date" 
-                   defaultValue={experience.startDate}
+                   defaultValue={experience.startDate.split('T')[0]}
                    onChange={e => experience.startDate = e.target.value}/>
             <label className="dark:text-gray-200 text-sm text-right mt-2">
               End Date:
             </label>
             <input className="bg-transparent border px-1" type="date" 
                    defaultValue={experience.endDate}
-                   onChange={e => experience.endDate = e.target.value}/>
+                   onChange={e => experience.endDate = e.target.value}/> */}
           </div>
           <div className="mt-10 grid gap-5 portfolio-form mb-10">
             <label className="dark:text-gray-200 text-sm text-right mt-2">
@@ -162,11 +151,12 @@ const PortfolioEditorPage = () => {
                 <div className="w-40 mx-5" key={artwork._id}> 
                   <div className={`${experience.artworkIds.includes(artwork._id) ? "bg-gray-600" : "hover:bg-gray-700"}`}
                        onClick={() => {
+                        
                         if(experience.artworkIds.includes(artwork._id)) {experience.artworkIds=removeFromArray(artwork._id, experience.artworkIds)}
                         else {experience.artworkIds.push(artwork._id)}
                         const temp = [...experiences]
-                        setNewExperiences(temp)
-                        console.log(experiences)
+                        portfolio.section.experience.experiences = temp
+                        setExperiences(temp)
                   }}>
                     <img
                       className="portfolio-editor-choose-experience-artwork cursor-pointer py-5"
@@ -175,7 +165,7 @@ const PortfolioEditorPage = () => {
                     />
                   </div>
                   <div className="pl-3">
-                    <h2 className="dark:text-white text-lg font-semibold mb-1 text-center">
+                    <h2 className="dark:text-white text-base px-0 mb-1 text-center">
                       {artwork.name}
                     </h2>
                   </div>
@@ -188,12 +178,11 @@ const PortfolioEditorPage = () => {
           <div id="portfolio-editor-experience-remove-button">
           <button className="bg-gray-700 hover:bg-gray-600 text-white text-sm py-1 px-2 mt-10"
                   onClick={e => {
-                    const temp = experiences.filter( experienceObj => {
-                      return experience != experienceObj
+                    const temp = experiences.filter( (exp, idx) => {
+                      return experiences.indexOf(experience) !== idx
                     })
-                    console.log(temp)
-                    setNewExperiences([...temp])
-                    console.log(newExperiences)
+                    portfolio.section.experience.experiences = temp
+                    setExperiences([...temp])
                   }} >
             Remove
           </button>
@@ -260,7 +249,7 @@ const PortfolioEditorPage = () => {
             </label>
             <input
               defaultValue={hero.heading}
-              onChange={e => hero.headding = e.target.value}
+              onChange={e => hero.heading = e.target.value}
               className="px-2 py-1"
               type="text"
             />
@@ -275,9 +264,12 @@ const PortfolioEditorPage = () => {
             />
           </div>
           <h3 className="mt-10">Select a layout:</h3>
-          <div className="container mx-auto flex flex-wrap item-center gap-20 py-5" id="hero-layout">
+          <div className="container mx-auto flex flex-wrap item-center gap-20 py-5">
             <div className={`${0 === heroLayout ? "bg-gray-700" : "hover:bg-gray-800"}`}
-                 onClick={() => setHeroLayout(0)} >
+                 onClick={() => {
+                   setHeroLayout(0)
+                   console.log(heroLayout)
+                 }} >
               <div className="portfolio-editor-layout-div">
                 <img
                   className="cursor-pointer mx-1 my-5 h-20"
@@ -331,8 +323,8 @@ const PortfolioEditorPage = () => {
                     const newExperience = JSON.parse(JSON.stringify(emptyExperience))
                     experiences.push(newExperience)
                     const temp = [...experiences]
-                    setNewExperiences(temp)
-                    console.log(experiences)
+                    portfolio.section.experience.experiences = temp
+                    setExperiences(temp)
                   }} >
             Add Experience
           </button>
@@ -365,19 +357,27 @@ const PortfolioEditorPage = () => {
           <h2 className="mb-10">4. Projects
           <label className="dark:text-gray-400 text-sm mt-1 mb-5 portfolio-editor-section-visible">
             <input type="checkbox" className="portfolio-editor-section-checkbox mx-1"
-                   onChange={e=>projects.isVisible = !e.target.checked}
-                   defaultChecked={!projects.isVisible}></input>
+                   onChange={e=>project.isVisible = !e.target.checked}
+                   defaultChecked={!project.isVisible}></input>
             Keep Projects Private
           </label></h2>
+          <h3 className="mx-5">Select artworks you want to display:</h3>
+          
           <div className="flex flex-wrap mx-10 my-10">
             { artworks.map(artwork => {
               return (
                 <div className="w-48 mx-5" key={artwork._id}>
+                  <div className={`${projects.includes(artwork._id) ? "bg-gray-600" : "hover:bg-gray-700"}`}
+                       onClick={() => {
+                        if(projects.includes(artwork._id)) {setProjects(removeFromArray(artwork._id, projects))}
+                        else {setProjects([...projects, artwork._id])}
+                        project.artworkIds = projects
+                  }}>
                   <img
-                    className="portfolio-content-artwork-img"
+                    className="portfolio-content-artwork-img cursor-pointer"
                     src={artwork.imageUrl}
                     alt={artwork.name}
-                  />
+                  /></div>
                   <div className="pl-3">
                     <h2 className="dark:text-white text-lg font-semibold mb-1 text-center">
                       {artwork.name}
@@ -408,15 +408,25 @@ const PortfolioEditorPage = () => {
                 layout 1
               </div>
             </div>
-            {/* <div className={`${1 === experienceLayout ? "bg-gray-500" : "hover:bg-gray-600"}`}
-                onClick={() => setExperienceLayout(1)}>
+            <div className={`${1 === projectLayout ? "bg-gray-700" : "hover:bg-gray-800"}`}
+                onClick={() => setProjectLayout(1)}>
               <img
                 className=" items-center cursor-pointer mx-5 my-5 h-20"
-                src="http://res.cloudinary.com/artsu-me/image/upload/v1638863953/faiesnys3xjrfhcinld8.png"/>
+                src="http://res.cloudinary.com/artsu-me/image/upload/v1638909073/k7dr6fdjwvej7jpcdk2g.png"/>
               <div className="dark:text-white text-xs text-center my-5">
                 layout 2
               </div>
-            </div> */}
+            </div>
+            <div className={`${2 === projectLayout ? "bg-gray-700" : "hover:bg-gray-800"}`}
+                onClick={() => setProjectLayout(2)}>
+              <img
+                className=" items-center cursor-pointer mx-5 my-5 h-20"
+                src="http://res.cloudinary.com/artsu-me/image/upload/v1638909099/scqallfnjvxjwf8civf6.png"/>
+              <div className="dark:text-white text-xs text-center my-5">
+                layout 3
+              </div>
+            </div>
+            
           </div>
         
         </section>

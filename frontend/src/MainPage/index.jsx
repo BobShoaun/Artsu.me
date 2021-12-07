@@ -77,7 +77,7 @@ const MainPage = () => {
         <div className="absolute inset-0 container flex">
           <div className="my-auto pl-5 bg-opacity-20 shadow-xl bg-gray-900 backdrop-filter backdrop-blur-sm p-5">
             <h1 className="text-white text-4xl font-bold">Discover</h1>
-            <p className="text-gray-100 text-xl font-medium">Great artworks & Talented artists</p>
+            <p className="text-gray-100 text-xl font-medium">Great artwork & Talented artists</p>
           </div>
         </div>
         <img
@@ -102,7 +102,7 @@ const MainPage = () => {
         </div>
       </aside>
 
-      <h2 className="text-gray-200 mx-auto container font-light py-2 mb-2">Top Artworks:</h2>
+      <h2 className="text-gray-200 text-lg mx-auto container font-light py-2 mb-2">Top Artworks:</h2>
 
       <div className="overflow-hidden py-3">
         <section className="flex gap-3 justify-center mb-3">
@@ -129,7 +129,7 @@ const MainPage = () => {
         </section>
       </div>
 
-      <h2 className="text-gray-200 mx-auto container font-light py-2 mb-5">Top Artists / Users:</h2>
+      <h2 className="text-gray-200 text-lg mx-auto container font-light py-2 mb-5">Top Artists / Users:</h2>
       <section className="mb-14 container mx-auto flex flex-wrap items-center justify-evenly gap-y-3 gap-x-1">
         {users.map(user => (
           <Link

@@ -32,7 +32,7 @@ const MainPage = () => {
     } catch (e) {
       console.log(e);
     }
-  }, [apiUrl]);
+  }, []);
 
   const getTags = useCallback(async () => {
     try {
@@ -41,7 +41,7 @@ const MainPage = () => {
     } catch (e) {
       console.log(e);
     }
-  }, [apiUrl]);
+  }, []);
 
   const getArtworks = useCallback(async () => {
     try {
@@ -50,7 +50,7 @@ const MainPage = () => {
     } catch (e) {
       console.log(e);
     }
-  }, [apiUrl]);
+  }, []);
 
   useEffect(() => {
     dispatch(setIsPublic({ isPublic: false }));

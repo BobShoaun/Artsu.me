@@ -152,7 +152,7 @@ const SearchPage = () => {
                   className="hover:bg-gray-800 rounded-md transition-colors p-6 mx-3"
                 >
                   <img
-                    className="h-52 shadow-xl mb-3 mx-auto"
+                    className="w-48 h-48 object-cover shadow-xl mb-3 mx-auto"
                     src={user.avatarUrl}
                     alt={`${user._id}`}
                   />

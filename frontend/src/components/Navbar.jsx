@@ -7,6 +7,7 @@ import "./index.css";
 
 import axios from "axios";
 import { apiUrl } from "../config";
+import { User, LogOut, Layout, Image, Users } from "react-feather";
 
 const Navbar = ({ onSearch, searchInput }) => {
   const history = useHistory();
@@ -47,7 +48,7 @@ const Navbar = ({ onSearch, searchInput }) => {
 
   return (
     <nav className=" bg-gray-800 bg-opacity-80 z-20 py-5 shadow-lg backdrop-filter backdrop-blur-lg fixed top-0 left-0 right-0">
-      <ul className="flex items-center gap-4 container mx-auto">
+      <ul className="flex items-center gap-5 container mx-auto">
         <li>
           <Link to="/" className="dark:text-white text-2xl font-semibold">
             artsu.me
@@ -96,36 +97,45 @@ const Navbar = ({ onSearch, searchInput }) => {
               <div className="dropdown opacity-0 absolute py-1 right-0 bg-gray-900 rounded-sm">
                 <ul>
                   <li>
-                    <Link className="py-2 px-5 hover:bg-gray-800 transition block" to="/profile">
-                      Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <Link className="py-2 px-5 hover:bg-gray-800 transition block" to="/artworks">
-                      Artworks
+                    <Link
+                      className="py-2 px-5 flex items-center gap-2 hover:bg-gray-800 transition"
+                      to="/profile"
+                    >
+                      <User size={15} /> Profile
                     </Link>
                   </li>
                   <li>
                     <Link
-                      className="py-2 px-5 hover:bg-gray-800 transition block"
+                      className="py-2 px-5 flex items-center gap-2 hover:bg-gray-800 transition"
+                      to="/artworks"
+                    >
+                      <Image size={15} /> Artworks
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="py-2 px-5 flex items-center gap-2 hover:bg-gray-800 transition"
                       to={`/portfolio/${user.username}`}
                     >
-                      Portfolio
+                      <Layout size={15} /> Portfolio
                     </Link>
                   </li>
                   {user.isAdmin && (
                     <li>
-                      <Link className="py-2 px-5 hover:bg-gray-800 transition block" to={`/admin`}>
-                        Admin Panel
+                      <Link
+                        className="py-2 px-5 flex items-center gap-2 hover:bg-gray-800 transition"
+                        to={`/admin`}
+                      >
+                        <Users size={15} /> Admin Panel
                       </Link>
                     </li>
                   )}
                   <li>
                     <button
-                      className="py-2 px-5 hover:bg-gray-800 transition block w-full text-left"
+                      className="py-2 px-5 flex items-center gap-2 hover:bg-gray-800 transition w-full text-left"
                       onClick={logout}
                     >
-                      Logout
+                      <LogOut size={15} /> Logout
                     </button>
                   </li>
                 </ul>

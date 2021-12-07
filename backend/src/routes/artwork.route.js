@@ -128,7 +128,7 @@ router.patch(
       if (!artwork) return res.sendStatus(404);
 
       // user should edit their own work only
-      if (artwork.userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403);
+      if (!artwork.userId.equals(req.user._id) && !req.user.isAdmin) return res.sendStatus(403);
 
       req.allowedPaths = ["/name", "/summary", "/description", "/tagIds"];
       if (req.user.isAdmin)

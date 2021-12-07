@@ -155,7 +155,7 @@ const ProfilePage = () => {
           <h1 className="text-white text-xl font-bold mb-3">Portfolio</h1>
           <Link
             to="/portfolio/editor"
-            className="text-gray-900 block text-center w-full bg-gray-300 hover:bg-gray-400 py-1.5 px-3 mb-5 text-sm rounded-sm shadow-lg font-medium transition"
+            className="text-gray-900 ml-5 block text-center bg-gray-300 hover:bg-gray-400 py-1.5 px-3 mb-5 text-sm rounded-sm shadow-lg font-medium transition"
           >
             Go to Portfolio editor
           </Link>

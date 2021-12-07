@@ -446,7 +446,8 @@ const PortfolioEditorPage = () => {
           <div className="m-auto">
               <Link 
                 to={`/artworks`}
-                className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
+                className="text-gray-900 bg-gray-300 hover:bg-gray-400 py-1.5 px-10 mb-5 text-sm rounded-sm shadow-lg font-medium transition"
+                >
                 Manage All Artworks
               </Link>
           </div>
@@ -466,22 +467,24 @@ const PortfolioEditorPage = () => {
             Do not receive messages from other users
           </label></h2>
         </section>
-
+        <div className="float-right mr-5">
+              {errorMsg && <em className="text-rose-400 text-sm float-left">{errorMsg}</em>}
+        </div>
+        <br/>
 
         <div className="flex justify-start" id="buttons">
-          <div className="ml-5 mt-7 mb-5">
+          <div className="ml-5 mt-1 mb-5">
             <Link
-              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full"
-              to={`/portfolio/${user.username}`}
+            className="text-gray-900 bg-gray-300 hover:bg-gray-400 py-1.5 px-3 mb-5 text-sm rounded-sm shadow-lg font-medium transition"
+            to={`/portfolio/${user.username}`}
             >
               Quit
             </Link>
           </div>
           <div className="ml-auto mb-5 mr-5">
-            
             <button
             onClick={savePortfolio}
-              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5"
+            className="text-gray-900 bg-gray-300 hover:bg-gray-400 py-1.5 px-3 mb-5 text-sm rounded-sm shadow-lg font-medium transition"
             >
               Save
             </button>
@@ -489,10 +492,7 @@ const PortfolioEditorPage = () => {
           </div>
           
         </div>
-        <div className="float-right mr-5">
-              {errorMsg && <em className="text-rose-400 text-sm float-left">{errorMsg}</em>}
-        </div>
-        <br/>
+        
         <Footer />
       </main>
     );

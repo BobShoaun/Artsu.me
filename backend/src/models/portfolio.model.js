@@ -53,8 +53,8 @@ const portfolio = new Schema(
     section: {
       hero: {
         layoutId: { type: Number, default: 0 },
-        heading: { type: String },
-        subtitle: { type: String },
+        heading: { type: String, default: "" },
+        subtitle: { type: String, default: "" },
         isVisible: { type: Boolean, required: true, default: true },
       },
       about: {

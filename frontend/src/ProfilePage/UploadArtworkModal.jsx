@@ -56,7 +56,7 @@ const UploadArtworkModal = ({ onClose }) => {
   return (
     <main
       onClick={onClose}
-      className="fixed inset-0 z-30  overflow-auto bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm flex"
+      className="fixed inset-0 z-30 overflow-auto bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm flex"
     >
       <form
         onClick={e => e.stopPropagation()}
@@ -64,7 +64,7 @@ const UploadArtworkModal = ({ onClose }) => {
         className="bg-gray-700 p-8 m-auto max-w-4xl flex gap-8 shadow-lg rounded-md"
       >
         <div className="" style={{ flexBasis: "45%" }}>
-          <img className="mb-5" src={imageUrl} />
+          <img className="mb-5" src={imageUrl} alt={""} />
           <label className="dark:text-gray-200 text-sm text-right mb-2">Image:</label>
           {imageError && <em className="text-rose-400 text-sm float-right">*{imageError}</em>}
           <input

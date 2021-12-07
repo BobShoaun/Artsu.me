@@ -1,7 +1,7 @@
 import { Link, useHistory } from "react-router-dom";
 import { useAuthentication } from "../hooks/useAuthentication";
 import { useState, useEffect } from "react";
-import { Search, Bell, Check } from "react-feather";
+import { Search, Bell } from "react-feather"; // removed Check
 import MessagePanel from "./MessagePanel";
 import "./index.css";
 
@@ -28,7 +28,7 @@ const Navbar = ({ showSearchButtons }) => {
     const { data } = await axios.get(`${apiUrl}/users/${user._id}/messages/received`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
-    console.log(data);
+    //console.log(data);
     const messages = data
       .filter(m => !m.hasRead)
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -37,18 +37,22 @@ const Navbar = ({ showSearchButtons }) => {
 
   const readMessage = async messageId => {
     if (!accessToken) return;
-    const { data } = await axios.patch(
+    //const { data } = 
+    await axios.patch(
       `${apiUrl}/users/${user._id}/messages/${messageId}/remove`,
       {},
       {
         headers: { Authorization: `Bearer ${accessToken}` },
       }
     );
-    console.log(data);
+    //console.log(data);
     getMessages();
   };
 
-  useEffect(getMessages, [accessToken]);
+  useEffect(() => {
+    getMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessToken]);
 
   return (
     <nav className=" bg-gray-800 bg-opacity-50 z-20 py-5 shadow-lg backdrop-filter backdrop-blur-sm sticky top-0">
@@ -66,7 +70,12 @@ const Navbar = ({ showSearchButtons }) => {
               history.push("/search");
             }}
           >
-            <input className="" type="search" placeholder="Search" onChange={searchValueOnChange} />
+            <input
+              className="w-96"
+              type="search"
+              placeholder="Search"
+              onChange={searchValueOnChange}
+            />
           </form>
 
           {showSearchButtons && (
@@ -153,7 +162,7 @@ const Navbar = ({ showSearchButtons }) => {
             <li className="ml-auto">
               <Link
                 to="/register"
-                className="text-gray-900 font-semibold bg-gradient-to-br from-fuchsia-500 to-fuchsia-700 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm"
+                className="text-gray-900 font-semibold bg-gradient-to-br from-rose-300 to-rose-500 rounded-sm hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm"
               >
                 Sign Up
               </Link>

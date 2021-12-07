@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react"; // removed useRef 
 import { Link, useParams } from "react-router-dom";
-//NOTE: replace with API calls
 
 import { useSelector } from "react-redux";
 import { useScrollToTop } from "../hooks/useScrollToTop";
@@ -21,12 +20,7 @@ const PortfolioPage = () => {
   const { isPublic } = useSelector(state => state.general);
   const { accessToken, user } = useSelector(state => state.authentication);
 
-  // const user = users.find(user => user.username === username);
-  // will get user from backend
-
   useScrollToTop();
-
-  //phase2: create method here for API call to contact the owner of the profile
 
   const [portfolio, setPortfolio] = useState(null);
 
@@ -39,12 +33,15 @@ const PortfolioPage = () => {
     }
   };
 
-  useEffect(getPortfolio, [username]);
+  useEffect(() => {
+    getPortfolio();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [username]);
 
   // from css tricks https://css-tricks.com/snippets/javascript/lighten-darken-color/
   const lightenDarkenColor = (col, amt) => {
     let usePound = false;
-    if (col[0] == "#") {
+    if (col[0] === "#") {
       col = col.slice(1);
       usePound = true;
     }

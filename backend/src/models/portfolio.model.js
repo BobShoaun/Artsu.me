@@ -52,6 +52,7 @@ const portfolio = new Schema(
     },
     section: {
       hero: {
+        layoutId: { type: Number },
         heading: { type: String },
         subtitle: { type: String },
         isVisible: { type: Boolean, required: true, default: true },
@@ -92,7 +93,6 @@ const portfolio = new Schema(
         isVisible: { type: Boolean, required: true, default: true },
       },
       contact: {
-        email: { type: String },
         isVisible: { type: Boolean, required: true, default: true },
       },
     },

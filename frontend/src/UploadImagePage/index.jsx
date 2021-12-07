@@ -1,6 +1,5 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom"; // removed useParams as it was unused
 import { useRef, useState } from "react";
-import { users } from "../users.json"; //phase2: add API call to get information
 import { useAuthentication } from "../hooks/useAuthentication";
 
 import ArtsumeModal from "../components/ArtsumeModal";
@@ -12,8 +11,6 @@ const UploadImagePage = () => {
   const titleRef = useRef(null);
   const descriptionRef = useRef(null);
   const [acccessToken, user] = useAuthentication();
-  // const { username } = useParams();
-  // const user = users.find(user => user.username === username); //phase2: add API call to get information
 
   const [fileError, setFileError] = useState("");
   const [titleError, setTitleError] = useState("");

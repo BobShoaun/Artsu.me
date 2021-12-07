@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom"; // removed useParams
 
 const ExperienceSection = ({ portfolio }) => {
   const experiences = portfolio.section.experience.experiences;

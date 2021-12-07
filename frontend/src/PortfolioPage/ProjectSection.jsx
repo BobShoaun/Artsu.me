@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"; // removed useParams
 
 const ProjectSection = ({ portfolio, primary, secondary }) => {
-  const layoutId = 0;
+  const layoutId = portfolio.section.project.layoutId ?? 0;
   const artworks = portfolio.section.project.artworks;
 
   // from stack overflow: https://stackoverflow.com/questions/1199352/smart-way-to-truncate-long-strings

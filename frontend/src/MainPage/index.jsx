@@ -46,7 +46,7 @@ const MainPage = () => {
   const getArtworks = useCallback(async () => {
     try {
       const { data } = await axios.get(`${apiUrl}/artworks?limit=14`);
-      setArtworks(data);
+      setArtworks(data.filter(artwork => !artwork.isBanned));
     } catch (e) {
       console.log(e);
     }

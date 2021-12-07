@@ -1,5 +1,5 @@
 const HeroSection = ({ portfolio }) => {
-  const layoutId = 2;
+  const layoutId = portfolio.section.hero.layoutId;
 
   const displayHero = () => {
     switch (layoutId) {

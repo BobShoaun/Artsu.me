@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { Maximize } from "react-feather";
 import "./index.css";
 import { useAuthentication } from "../hooks/useAuthentication";
+import ArtsumeBanner from "../components/ArtsumeBanner";
 
 import { Heart, Flag } from "react-feather";
 import Loading from "../components/Loading";
@@ -86,7 +87,7 @@ const ArtworkPage = () => {
   const hasLiked = isLoggedIn ? likes.includes(user._id) : false;
 
   return (
-    <main className="bg-gray-900 min-h-screen">
+    <main className="bg-gray-900 min-h-screen pt-20">
       <Navbar />
 
       {showReport && <ReportModal artwork={artwork} onClose={() => setShowReport(false)} />}
@@ -176,6 +177,8 @@ const ArtworkPage = () => {
           </div>
         </aside>
       </div>
+      <ArtsumeBanner></ArtsumeBanner>
+
       <Footer />
     </main>
   );

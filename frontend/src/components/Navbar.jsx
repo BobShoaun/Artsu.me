@@ -101,6 +101,11 @@ const Navbar = ({ onSearch, searchInput }) => {
                     </Link>
                   </li>
                   <li>
+                    <Link className="py-2 px-5 hover:bg-gray-800 transition block" to="/artworks">
+                      Artworks
+                    </Link>
+                  </li>
+                  <li>
                     <Link
                       className="py-2 px-5 hover:bg-gray-800 transition block"
                       to={`/portfolio/${user.username}`}

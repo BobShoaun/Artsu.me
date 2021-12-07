@@ -1,8 +1,8 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { Link, useParams } from "react-router-dom"; // removed useHistory 
 import ImageStage from "../components/ImageStage";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Maximize } from "react-feather";
 import "./index.css";
 import { useAuthentication } from "../hooks/useAuthentication";
@@ -25,9 +25,9 @@ const ArtworkPage = () => {
   const [showReport, setShowReport] = useState(false);
 
   const { isLoggedIn, accessToken, user, redirectToLogin } = useAuthentication();
-  const history = useHistory();
+  //const history = useHistory();
 
-  const getArtwork = async () => {
+  const getArtwork = useCallback(async () => {
     try {
       const { data: artwork } = await axios.get(`${apiUrl}/artworks/${id}`);
       setArtwork(artwork);
@@ -44,9 +44,9 @@ const ArtworkPage = () => {
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [id]);
 
-  useEffect(() => getArtwork(), [id]);
+  useEffect(() => getArtwork(), [getArtwork, id]);
 
   const likeArtwork = async () => {
     if (!isLoggedIn) {

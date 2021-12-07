@@ -27,7 +27,7 @@ const UploadArtworkModal = ({ onClose }) => {
     }
   };
 
-  useEffect(() => getTags(), [apiUrl]);
+  useEffect(() => getTags(), []);
 
   const upload = async e => {
     e.preventDefault();

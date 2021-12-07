@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useHistory } from "react-router";
 
 import { apiUrl } from "../config";
@@ -51,16 +51,7 @@ const SearchPage = () => {
     }
   };
 
-  useEffect(() => {
-    getTags();
-    const params = new URLSearchParams(history.location.search);
-    type.current = params.get("type") || "artwork";
-    query.current = params.get("query") || "";
-    tagId.current = params.get("tag") || "";
-    search();
-  }, [history]);
-
-  const search = () => {
+  const search = useCallback( () => {
     if (type.current === "user") getUsers();
     else getArtworks();
     const params = new URLSearchParams();
@@ -68,7 +59,16 @@ const SearchPage = () => {
     params.set("type", type.current);
     params.set("tag", tagId.current);
     history.push(`/search?${params}`);
-  };
+  }, [history]);
+
+  useEffect(() => {
+    getTags();
+    const params = new URLSearchParams(history.location.search);
+    type.current = params.get("type") || "artwork";
+    query.current = params.get("query") || "";
+    tagId.current = params.get("tag") || "";
+    search();
+  }, [search, history]);
 
   const numResults = type.current === "user" ? users.length : artworks.length;
 

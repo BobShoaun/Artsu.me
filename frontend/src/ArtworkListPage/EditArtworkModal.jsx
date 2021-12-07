@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { apiUrl } from "../config";
 import { useAuthentication } from "../hooks/useAuthentication";
 import axios from "axios";
@@ -14,7 +14,7 @@ const EditArtworkModal = ({ onClose, artwork }) => {
   const [summaryError, setSummaryError] = useState("");
   const [tags, setTags] = useState([]);
 
-  const getTags = async () => {
+  const getTags = useCallback(async () => {
     try {
       const { data: tags } = await axios.get(`${apiUrl}/tags`);
 
@@ -27,9 +27,9 @@ const EditArtworkModal = ({ onClose, artwork }) => {
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [artwork]);
 
-  useEffect(() => getTags(), [apiUrl]);
+  useEffect(() => getTags(), [getTags]);
 
   const edit = async e => {
     e.preventDefault();

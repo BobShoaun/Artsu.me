@@ -1,10 +1,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useEffect, useState, useRef } from "react";
-import { setIsPublic } from "../store/generalSlice";
-import { useScrollToTop } from "../hooks/useScrollToTop";
+import { useEffect, useState, useCallback } from "react";
 import UploadArtworkModal from "./UploadArtworkModal";
 import { useAuthentication } from "../hooks/useAuthentication";
 
@@ -12,23 +9,20 @@ import Loading from "../components/Loading";
 import axios from "axios";
 import { apiUrl } from "../config";
 
-import ArtsumeBanner from "../components/ArtsumeBanner";
 import Unauthenticated from "../components/Unauthenticated";
-import ArtworkPreview from "../components/ArtworkPreview";
 import EditArtworkModal from "./EditArtworkModal";
 
-import { useHistory } from "react-router";
 import { Edit, Eye } from "react-feather";
 
 const ArtworkListPage = () => {
-  const { isLoggedIn, accessToken, user, redirectToLogin, login } = useAuthentication();
+  const { isLoggedIn, user, redirectToLogin } = useAuthentication();
   const [artworks, setArtworks] = useState([]);
   const [showArtworkModal, setShowArtworkModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const [editingArtwork, setEditingArtwork] = useState(null);
 
-  const getArtworks = async () => {
+  const getArtworks = useCallback(async () => {
     try {
       const { data } = await axios.get(`${apiUrl}/users/${user._id}/artworks`);
       setArtworks(data);
@@ -36,7 +30,7 @@ const ArtworkListPage = () => {
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -44,7 +38,7 @@ const ArtworkListPage = () => {
       return;
     }
     getArtworks();
-  }, [isLoggedIn]);
+  }, [isLoggedIn, redirectToLogin, getArtworks]);
 
   if (!isLoggedIn) return <Unauthenticated />;
 

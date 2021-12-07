@@ -51,7 +51,7 @@ const UploadArtworkModal = ({ onClose }) => {
     formData.append("name", title);
     formData.append("summary", summary);
     formData.append("description", description);
-    formData.append("tagIds",JSON.stringify(tagIds));
+    formData.append("tagIds", JSON.stringify(tagIds));
     
     try {
       const response = await axios.post(`${apiUrl}/users/${user._id}/artworks`, formData, {

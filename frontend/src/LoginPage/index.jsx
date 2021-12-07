@@ -22,7 +22,7 @@ const LoginPage = () => {
       history.push("/");
       return;
     }
-  }, []);
+  }, [accessToken, history, user]);
 
   const login = async e => {
     e.preventDefault();

@@ -18,5 +18,6 @@ export const validateIdParam = (req, res, next, id) => {
 
 export const mongoHandler = (err, req, res, next) => {
   if (isMongoError(err)) return res.sendStatus(500);
-  res.sendStatus(400);
+  next(err);
+  // res.sendStatus(400);
 };

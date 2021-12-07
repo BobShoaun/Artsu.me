@@ -1,8 +1,8 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Link, useParams, useHistory } from "react-router-dom";
+import { Link, useParams } from "react-router-dom"; // removed useHistory 
 import ImageStage from "../components/ImageStage";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Maximize } from "react-feather";
 import "./index.css";
 import { useAuthentication } from "../hooks/useAuthentication";
@@ -25,9 +25,9 @@ const ArtworkPage = () => {
   const [showReport, setShowReport] = useState(false);
 
   const { isLoggedIn, accessToken, user, redirectToLogin } = useAuthentication();
-  const history = useHistory();
+  //const history = useHistory();
 
-  const getArtwork = async () => {
+  const getArtwork = useCallback(async () => {
     try {
       const { data: artwork } = await axios.get(`${apiUrl}/artworks/${id}`);
       setArtwork(artwork);
@@ -44,9 +44,9 @@ const ArtworkPage = () => {
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [id]);
 
-  useEffect(() => getArtwork(), [id]);
+  useEffect(() => getArtwork(), [getArtwork, id]);
 
   const likeArtwork = async () => {
     if (!isLoggedIn) {
@@ -93,7 +93,7 @@ const ArtworkPage = () => {
       {showReport && <ReportModal artwork={artwork} onClose={() => setShowReport(false)} />}
 
       <div className="container pt-20 py-32 mx-auto flex gap-14">
-        <main>
+        <main className="flex-1">
           <div
             onClick={() => setFullscreen(true)}
             className="bg-black mb-8 cursor-zoom-in shadow-inner"
@@ -154,7 +154,8 @@ const ArtworkPage = () => {
                   {artworkTags.map(tag => (
                     <Link key={tag._id} to={`/search?tag=${tag._id}`}>
                       <p
-                        className={`text-gray-900 cursor-pointer font-semibold text-xs bg-${tag.color} rounded-sm px-2 py-1`}
+                        style={{ background: tag.color }}
+                        className={`text-gray-900 cursor-pointer font-semibold text-sm rounded-sm px-2 py-1`}
                       >
                         #{tag.label}
                       </p>
@@ -167,11 +168,15 @@ const ArtworkPage = () => {
           </section>
         </main>
         <aside className="flex-none">
-          <h3 className="font-semibold text-white mb-8">More from {artwork.user.username}:</h3>
-          <div className="mx-auto grid place-items-center gap-8">
+          <h3 className="font-light text-gray-100 mb-4">More from {artwork.user.username}:</h3>
+          <div className="mx-auto grid place-items-center gap-4">
             {otherArtworks.map(otherArt => (
-              <Link key={otherArt.id} to={`/artwork/${otherArt.id}`} className="hover:bg-gray-800">
-                <img className="shadow-lg w-36" src={otherArt.imageUrl} alt={otherArt.name} />
+              <Link
+                key={otherArt.id}
+                to={`/artwork/${otherArt.id}`}
+                className="hover:bg-gray-800 hover:scale-105 transform transition-transform"
+              >
+                <img className="shadow-lg w-48" src={otherArt.imageUrl} alt={otherArt.name} />
               </Link>
             ))}
           </div>

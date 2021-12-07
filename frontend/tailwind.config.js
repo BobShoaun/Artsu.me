@@ -4,9 +4,6 @@ delete colors["lightBlue"];
 module.exports = {
   purge: {
     content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
-    options: {
-      safelist: [/(bg)-(.*)-(\\d{1}0{1,2})/],
-    },
   },
   darkMode: "class",
   theme: {

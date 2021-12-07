@@ -46,15 +46,15 @@ const portfolio = new Schema(
   {
     userId: { type: Schema.ObjectId, required: true, ref: "users", unique: true, immutable: true },
     color: {
-      primary: { type: String, required: true, default: "#ffffff" },
-      secondary: { type: String, required: true, default: "#ffffff" },
-      highlight: { type: String, required: true, default: "#ffffff" },
+      primary: { type: String, required: true, default: "#FB7185" },
+      secondary: { type: String, required: true, default: "#14B8A6" },
+      highlight: { type: String, required: true, default: "#F59E0B" },
     },
     section: {
       hero: {
-        layoutId: { type: Number },
-        heading: { type: String },
-        subtitle: { type: String },
+        layoutId: { type: Number, default: 0 },
+        heading: { type: String, default: "" },
+        subtitle: { type: String, default: "" },
         isVisible: { type: Boolean, required: true, default: true },
       },
       about: {
@@ -62,7 +62,7 @@ const portfolio = new Schema(
         isVisible: { type: Boolean, required: true, default: true },
       },
       experience: {
-        layoutId: { type: Number },
+        layoutId: { type: Number, default: 0 },
         experiences: [
           {
             company: { type: String },
@@ -82,7 +82,7 @@ const portfolio = new Schema(
         isVisible: { type: Boolean, required: true, default: false },
       },
       project: {
-        layoutId: Number,
+        layoutId: {Number, default: 0 },
         artworkIds: [
           {
             type: Schema.ObjectId,

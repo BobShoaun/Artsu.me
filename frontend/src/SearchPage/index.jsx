@@ -1,11 +1,12 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useHistory } from "react-router";
 
 import { apiUrl } from "../config";
 import axios from "axios";
+import { useScrollToTop } from "../hooks/useScrollToTop";
 import ArtsumeBanner from "../components/ArtsumeBanner";
 
 const SearchPage = () => {
@@ -50,6 +51,17 @@ const SearchPage = () => {
       console.log(e);
     }
   };
+  useScrollToTop();
+
+  const search = useCallback( () => {
+    if (type.current === "user") getUsers();
+    else getArtworks();
+    const params = new URLSearchParams();
+    params.set("query", query.current);
+    params.set("type", type.current);
+    params.set("tag", tagId.current);
+    history.push(`/search?${params}`);
+  }, [history]);
 
   useEffect(() => {
     getTags();
@@ -58,17 +70,7 @@ const SearchPage = () => {
     query.current = params.get("query") || "";
     tagId.current = params.get("tag") || "";
     search();
-  }, [history]);
-
-  const search = () => {
-    if (type.current === "user") getUsers();
-    else getArtworks();
-    const params = new URLSearchParams();
-    params.set("query", query.current);
-    params.set("type", type.current);
-    params.set("tag", tagId.current);
-    history.push(`/search?${params}`);
-  };
+  }, [search, history]);
 
   const numResults = type.current === "user" ? users.length : artworks.length;
 
@@ -90,7 +92,8 @@ const SearchPage = () => {
                 tagId.current = tag._id;
                 search();
               }}
-              className={`text-gray-900 cursor-pointer font-semibold text-sm bg-${tag.color} rounded-sm px-2 py-1`}
+              style={{ background: tag.color }}
+              className={`text-gray-900 cursor-pointer font-semibold text-sm rounded-sm px-2 py-1`}
             >
               #{tag.label}
             </button>
@@ -152,7 +155,7 @@ const SearchPage = () => {
                   className="hover:bg-gray-800 rounded-md transition-colors p-6 mx-3"
                 >
                   <img
-                    className="h-52 shadow-xl mb-3 mx-auto"
+                    className="w-48 h-48 object-cover shadow-xl mb-3 mx-auto"
                     src={user.avatarUrl}
                     alt={`${user._id}`}
                   />

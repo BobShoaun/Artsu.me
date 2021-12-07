@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"; // removed useParams
 const ExperienceSection = ({ portfolio }) => {
   const experiences = portfolio.section.experience.experiences;
 
-  const layoutId = 0;
+  const layoutId = portfolio.section.experience.layoutId ?? 0;
 
   const displayExperience = experience => {
     switch (layoutId) {

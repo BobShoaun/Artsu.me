@@ -1,68 +1,68 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import { apiUrl } from "../config";
 import { useAuthentication } from "../hooks/useAuthentication";
 import axios from "axios";
 
-const UploadArtworkModal = ({ onClose }) => {
-  const { accessToken, user } = useAuthentication();
+const EditArtworkModal = ({ onClose, artwork }) => {
+  const { accessToken } = useAuthentication();
 
-  const [imageUrl, setImageUrl] = useState("");
-  const imageInput = useRef(null);
   const titleInput = useRef(null);
   const summaryInput = useRef(null);
   const descriptionInput = useRef(null);
 
-  const [imageError, setImageError] = useState("");
   const [titleError, setTitleError] = useState("");
   const [summaryError, setSummaryError] = useState("");
   const [tags, setTags] = useState([]);
 
-  const getTags = async () => {
+  const getTags = useCallback(async () => {
     try {
       const { data: tags } = await axios.get(`${apiUrl}/tags`);
-      setTags(tags);
-      console.log(tags);
+
+      setTags(
+        tags.map(tag => {
+          if (artwork.tagIds.includes(tag._id)) tag.selected = true;
+          return tag;
+        })
+      );
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [artwork]);
 
-  useEffect(() => getTags(), []);
+  useEffect(() => getTags(), [getTags]);
 
-  const upload = async e => {
+  const edit = async e => {
     e.preventDefault();
 
-    setImageError("");
     setTitleError("");
     setSummaryError("");
 
-    const image = imageInput.current?.files?.[0];
     const title = titleInput.current.value;
     const summary = summaryInput.current.value;
     const description = descriptionInput.current.value;
     const tagIds = tags.filter(tag => tag.selected).map(tag => tag._id);
 
-    if (!image) return setImageError("no image selected");
     if (!title) return setTitleError("cannot be empty");
     if (!summary) return setTitleError("cannot be empty");
 
-    const formData = new FormData();
-    formData.append("image", imageInput.current.files[0]);
-    formData.append("name", title);
-    formData.append("summary", summary);
-    formData.append("description", description);
-    formData.append("tagIds", JSON.stringify(tagIds));
-    
     try {
-      const response = await axios.post(`${apiUrl}/users/${user._id}/artworks`, formData, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+      const response = await axios.patch(
+        `${apiUrl}/artworks/${artwork._id}`,
+        [
+          { op: "replace", path: "/name", value: title },
+          { op: "replace", path: "/summary", value: summary },
+          { op: "replace", path: "/description", value: description },
+          { op: "replace", path: "/tagIds", value: tagIds },
+        ],
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }
+      );
 
-      console.log("UPLOADED", response);
+      console.log("EDITED", response);
       onClose();
       // TODO show loading success prompt
     } catch (e) {
-      setImageError("failed to upload artwork");
       console.log(e);
     }
   };
@@ -74,24 +74,11 @@ const UploadArtworkModal = ({ onClose }) => {
     >
       <form
         onClick={e => e.stopPropagation()}
-        onSubmit={upload}
+        onSubmit={edit}
         className="bg-gray-700 p-8 m-auto max-w-4xl flex gap-8 shadow-lg rounded-md cursor-auto"
       >
         <div className="" style={{ flexBasis: "45%" }}>
-          <img className="mb-5" src={imageUrl} alt={""} />
-          <label className="dark:text-gray-200 text-sm text-right mb-2">Image:</label>
-          {imageError && <em className="text-rose-400 text-sm float-right">*{imageError}</em>}
-          <input
-            ref={imageInput}
-            onChange={e => {
-              const reader = new FileReader();
-              reader.onload = e => setImageUrl(e.target.result);
-              reader.readAsDataURL(e.target.files[0]);
-            }}
-            type="file"
-            accept="image/*"
-            className="py-1 mb-8 w-full text-sm text-gray-300"
-          />
+          <img className="mb-5" src={artwork.imageUrl} alt={artwork.name} />
 
           <label className="dark:text-gray-200 text-sm text-right mb-2">Tags:</label>
 
@@ -118,20 +105,35 @@ const UploadArtworkModal = ({ onClose }) => {
         <div className="" style={{ flexBasis: "55%" }}>
           <label className="dark:text-gray-200 text-sm text-right mb-2">Title:</label>
           {titleError && <em className="text-rose-400 text-sm float-right">*{titleError}</em>}
-          <input ref={titleInput} className="px-2 py-1 mb-8 w-full" type="text" />
+          <input
+            ref={titleInput}
+            defaultValue={artwork.name}
+            className="px-2 py-1 mb-8 w-full"
+            type="text"
+          />
 
           <label className="dark:text-gray-200 text-sm text-right mb-2">Summary:</label>
           {summaryError && <em className="text-rose-400 text-sm float-right">*{summaryError}</em>}
-          <input ref={summaryInput} className="px-2 py-1 mb-8 w-full" type="text" />
+          <input
+            ref={summaryInput}
+            defaultValue={artwork.summary}
+            className="px-2 py-1 mb-8 w-full"
+            type="text"
+          />
 
           <label className="dark:text-gray-200 text-sm text-right mb-2">Description:</label>
-          <textarea className="px-2 py-1 mb-8 w-full" ref={descriptionInput} rows="5"></textarea>
+          <textarea
+            className="px-2 py-1 mb-8 w-full"
+            defaultValue={artwork.description}
+            ref={descriptionInput}
+            rows="5"
+          ></textarea>
 
           <button
             type="submit"
             className="text-white tracking-wider py-2.5 text-sm rounded-sm shadow-lg font-semibold bg-gradient-to-r from-rose-400 to-teal-500 hover:to-teal-400 hover:from-rose-400 block w-full"
           >
-            UPLOAD
+            EDIT
           </button>
         </div>
       </form>
@@ -139,4 +141,4 @@ const UploadArtworkModal = ({ onClose }) => {
   );
 };
 
-export default UploadArtworkModal;
+export default EditArtworkModal;

@@ -14,8 +14,6 @@ import SearchPage from "./SearchPage";
 import AdminPanel from "./AdminPanel";
 import AdminProfileViewer from "./AdminProfileViewer";
 import AdminArtworkViewer from "./AdminArtworkViewer";
-import UploadImagePage from "./UploadImagePage";
-import UploadAvatarPage from "./UploadAvatarPage";
 import ArtworkListPage from "./ArtworkListPage";
 
 const App = () => {

@@ -1,6 +1,6 @@
 import express from "express";
 import { Artwork } from "../models/index.js";
-import { authenticate } from "../middlewares/user.middleware.js";
+import { authenticate, authorize } from "../middlewares/user.middleware.js";
 import { executeJsonPatch } from "../middlewares/general.middleware.js";
 import {
   checkDatabaseConn,
@@ -8,6 +8,9 @@ import {
   validateIdParam,
 } from "../middlewares/mongo.middleware.js";
 import { uploadImage, deleteImage } from "../middlewares/image.middleware.js";
+import connectMultiparty from "connect-multiparty";
+
+const multipart = connectMultiparty();
 
 const router = express.Router();
 
@@ -18,33 +21,39 @@ router.param("artworkId", validateIdParam);
 /**
  * Post a new artwork
  */
-router.post("/users/:userId/artworks", authenticate, uploadImage, async (req, res, next) => {
-  const { userId } = req.params;
-  if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403);
-
-  const name = req.body.name;
-  const summary = req.body.summary;
-  const description = req.body.description;
-  const tagIds = req.body.tagIds;
-
-  if (!name) return res.sendStatus(400);
-
-  try {
-    const artwork = new Artwork({
-      name,
-      summary,
-      description,
-      userId,
-      imageId: req.imageId,
-      imageUrl: req.imageUrl,
-      tagIds,
-    });
-    await artwork.save();
-    res.status(201).send(artwork);
-  } catch (e) {
-    next(e);
+router.post(
+  "/users/:userId/artworks",
+  authenticate,
+  authorize,
+  multipart,
+  (req, res, next) => {
+    if (!req.body.name || !req.body.summary) return res.sendStatus(400);
+    next();
+  },
+  uploadImage,
+  async (req, res, next) => {
+    const { userId } = req.params;
+    const name = req.body.name;
+    const summary = req.body.summary;
+    const description = req.body.description;
+    const tagIds = JSON.parse(req.body.tagIds);
+    try {
+      const artwork = new Artwork({
+        name,
+        summary,
+        description,
+        userId,
+        imageId: req.imageId,
+        imageUrl: req.imageUrl,
+        tagIds,
+      });
+      await artwork.save();
+      res.status(201).send(artwork);
+    } catch (e) {
+      next(e);
+    }
   }
-});
+);
 
 /**
  * Delete artwork
@@ -52,9 +61,9 @@ router.post("/users/:userId/artworks", authenticate, uploadImage, async (req, re
 router.delete(
   "/users/:userId/artworks/:artworkId",
   authenticate,
+  authorize,
   async (req, res, next) => {
     const { userId, artworkId } = req.params;
-    if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403);
     try {
       const artwork = await Artwork.findOneAndRemove({ _id: artworkId, userId });
       if (!artwork) return res.sendStatus(404);
@@ -105,7 +114,7 @@ router.get("/artworks", async (req, res, next) => {
  * Get artwork by Id
  */
 router.get("/artworks/:artworkId", async (req, res, next) => {
-  const artworkId = req.params.artworkId;
+  const { artworkId } = req.params;
   try {
     const artwork = await Artwork.findById(artworkId).populate("user").populate("tags");
     if (!artwork) return res.sendStatus(404);
@@ -128,7 +137,7 @@ router.patch(
       if (!artwork) return res.sendStatus(404);
 
       // user should edit their own work only
-      if (artwork.userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403);
+      if (!artwork.userId.equals(req.user._id) && !req.user.isAdmin) return res.sendStatus(403);
 
       req.allowedPaths = ["/name", "/summary", "/description", "/tagIds"];
       if (req.user.isAdmin)

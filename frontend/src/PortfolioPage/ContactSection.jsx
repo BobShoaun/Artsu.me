@@ -69,14 +69,14 @@ const ContactSection = ({ portfolio }) => {
         <form className="grid gap-x-10 gap-y-7 mb-5 contact-form">
           <label className="dark:text-gray-200 text-sm text-right mt-2">Subject:</label>
           <input
-            value={subject}
+            value={subject == null ? "" : subject}
             onChange={e => setSubject(e.target.value)}
             className="px-2 py-1"
             type="text"
           />
           <label className="dark:text-gray-200 text-sm text-right mt-2">Message:</label>
           <textarea
-            value={body}
+            value={body== null ? "" : body}
             onChange={e => setBody(e.target.value)}
             className="px-2 py-1"
             cols="30"

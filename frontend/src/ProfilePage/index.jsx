@@ -4,7 +4,7 @@ import "./index.css";
 
 import { Link } from "react-router-dom"; // removed useParams as it is unused
 import UploadAvatarModal from "./UploadAvatarModal";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react"; // removed useEffect
 
 import { useAuthentication } from "../hooks/useAuthentication";
 import axios from "axios";
@@ -13,7 +13,7 @@ import { apiUrl } from "../config";
 import Unauthenticated from "../components/Unauthenticated";
 
 const ProfilePage = () => {
-  const { isLoggedIn, accessToken, user, redirectToLogin, login } = useAuthentication();
+  const { isLoggedIn, accessToken, user, login } = useAuthentication(); // removed redirectToLogin
   const [showAvatarModal, setShowAvatarModal] = useState(false);
 
   const nameInput = useRef(null);
@@ -155,7 +155,7 @@ const ProfilePage = () => {
           <h1 className="text-white text-xl font-bold mb-3">Portfolio</h1>
           <Link
             to="/portfolio/editor"
-            className="text-gray-900 block text-center w-full bg-gray-300 hover:bg-gray-400 py-1.5 px-3 mb-5 text-sm rounded-sm shadow-lg font-medium transition"
+            className="text-gray-900 ml-5 block text-center bg-gray-300 hover:bg-gray-400 py-1.5 px-3 mb-5 text-sm rounded-sm shadow-lg font-medium transition"
           >
             Go to Portfolio editor
           </Link>

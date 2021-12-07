@@ -102,7 +102,9 @@ const MainPage = () => {
         </div>
       </aside>
 
-      <h2 className="text-gray-200 text-lg mx-auto container font-light py-2 mb-2">Top Artworks:</h2>
+      <div className="container mx-auto mb-2">
+        <h2 className="text-gray-200 text-lg font-light py-2">Top Artworks:</h2>
+      </div>
 
       <div className="overflow-hidden py-3">
         <section className="flex gap-3 justify-center mb-3">
@@ -116,7 +118,7 @@ const MainPage = () => {
             </Link>
           ))}
         </section>
-        <section className="flex gap-3 justify-center mb-16">
+        <section className="flex gap-3 justify-center mb-8">
           {artworks.slice(7).map(artwork => (
             <Link className="flex-shrink-0" key={artwork._id} to={`/artwork/${artwork._id}`}>
               <img
@@ -129,7 +131,18 @@ const MainPage = () => {
         </section>
       </div>
 
-      <h2 className="text-gray-200 text-lg mx-auto container font-light py-2 mb-5">Top Artists / Users:</h2>
+      <div className="text-center mb-16">
+        <button
+          onClick={() => history.push("/search?type=artwork")}
+          className="text-gray-100 bg-teal-600 hover:bg-teal-700 shadown-md transition-colors font-semibold text-md px-4 py-2 rounded-md"
+        >
+          Show More Artworks
+        </button>
+      </div>
+
+      <h2 className="text-gray-200 text-lg mx-auto container font-light py-2 mb-5">
+        Top Artists / Users:
+      </h2>
       <section className="mb-14 container mx-auto flex flex-wrap items-center justify-evenly gap-y-3 gap-x-1">
         {users.map(user => (
           <Link
@@ -166,7 +179,7 @@ const MainPage = () => {
           onClick={() => history.push("/search?type=user")}
           className="text-gray-100 bg-rose-600 hover:bg-rose-700 shadown-md transition-colors font-semibold text-md px-4 py-2 rounded-md"
         >
-          Show More
+          Show More Users
         </button>
       </div>
 

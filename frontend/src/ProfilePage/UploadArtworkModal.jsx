@@ -56,12 +56,12 @@ const UploadArtworkModal = ({ onClose }) => {
   return (
     <main
       onClick={onClose}
-      className="fixed inset-0 z-30 overflow-auto bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm flex"
+      className="cursor-pointer fixed inset-0 z-30 overflow-auto bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm flex"
     >
       <form
         onClick={e => e.stopPropagation()}
         onSubmit={upload}
-        className="bg-gray-700 p-8 m-auto max-w-4xl flex gap-8 shadow-lg rounded-md"
+        className="bg-gray-700 p-8 m-auto max-w-4xl flex gap-8 shadow-lg rounded-md cursor-auto"
       >
         <div className="" style={{ flexBasis: "45%" }}>
           <img className="mb-5" src={imageUrl} alt={""} />

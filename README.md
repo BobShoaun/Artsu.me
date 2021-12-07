@@ -30,6 +30,28 @@ cd backend
 npm install
 ```
 
+Add .env files:
+
+Frontend
+
+```
+REACT_APP_API_URL=http://localhost:3001
+```
+
+Backend
+
+```
+MONGO_USERNAME=user
+MONGO_PASSWORD=1gmj6YB5EnsCnPfJ
+MONGO_DATABASE=artsume
+CLOUDINARY_NAME=artsu-me
+CLOUDINARY_API_KEY=853874317566352
+CLOUDINARY_API_SECRET=8CyIIYxpIV7wPR4Zy-crkHdySPc
+ACCESS_TOKEN_SECRET=cc882d877177534c708dbd7a93b3bf235bf3c35c4b19c9d239ff9a7b649e7db33a57a536dcdacd591c7815daede48ad59f258e74871f250dd47bfb45bcf33743
+```
+
+The frontend will then be hosted on localhost:3000 and the backend will be hosted on localhost:3001
+
 ## Run development environment
 
 Run frontend `npm run frontend`
@@ -41,16 +63,6 @@ Run backend `npm run backend`
 - Jessica Hypatia Boritz (1006163189)
 - Ran Shi (1004793495)
 - Louis Scheffer V (1005879284)
-
-# Setup Instructions
-
-The frontend is scaffolded using Create React App
-
-1. `cd frontend`
-2. `yarn install`
-3. `yarn start`
-
-The app will then be hosted on localhost:3000
 
 # External Libraries Used
 

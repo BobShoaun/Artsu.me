@@ -52,6 +52,7 @@ const portfolio = new Schema(
     },
     section: {
       hero: {
+        layoutId: { type: Number },
         heading: { type: String },
         subtitle: { type: String },
         isVisible: { type: Boolean, required: true, default: true },
@@ -78,7 +79,7 @@ const portfolio = new Schema(
             ],
           },
         ],
-        isVisible: { type: Boolean, required: true, default: true },
+        isVisible: { type: Boolean, required: true, default: false },
       },
       project: {
         layoutId: Number,
@@ -89,10 +90,9 @@ const portfolio = new Schema(
             validate: [artworkExistValidator, artworkArtistValidator],
           },
         ],
-        isVisible: { type: Boolean, required: true, default: true },
+        isVisible: { type: Boolean, required: true, default: false },
       },
       contact: {
-        email: { type: String },
         isVisible: { type: Boolean, required: true, default: true },
       },
     },

@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom"; // removed useParams
 
 const ExperienceSection = ({ portfolio }) => {
   const experiences = portfolio.section.experience.experiences;
@@ -69,6 +69,8 @@ const ExperienceSection = ({ portfolio }) => {
             </div>
           </div>
         );
+      default:
+        console.log("bad layout id");
     }
   };
 

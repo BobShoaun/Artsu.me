@@ -1,4 +1,5 @@
-import { Search, Bell, Check } from "react-feather";
+import { Check } from "react-feather"; // removed Search, Bell
+import { Link } from "react-router-dom";
 
 import { formatRelative } from "date-fns";
 
@@ -9,23 +10,26 @@ const MessagePanel = ({ messages, onReadMessage }) => {
       {messages.length > 0 ? (
         <main className="max-h-96 overflow-auto">
           {messages.map(message => (
-            <div key={message._id} className="bg-gray-800 p-3 flex items-center m-2">
+            <div key={message._id} className="bg-gray-800 p-3 flex items-center gap-1 m-2">
               <div>
-                <div className="flex items-center gap-3 mb-3" key={message._id}>
+                <Link
+                  className="flex items-center gap-3 mb-3"
+                  to={`/portfolio/${message.sender.username}`}
+                >
                   <img
                     className="rounded-full w-8 h-8 object-cover"
                     src={message.sender.avatarUrl}
                     alt={message.sender.name}
                   />
                   <div>
-                    <p className="text-gray-100 font-medium text-sm">{message.sender.name}</p>
+                    <p className="text-gray-100 font-semibold text-sm">{message.sender.name}</p>
                     <p className="text-gray-300 text-xs">
                       {formatRelative(new Date(message.createdAt), new Date())}
                     </p>
                   </div>
-                </div>
-                <h3 className="text-gray-100 text-sm">{message.subject}</h3>
-                <p className="text-gray-300 text-xs">{message.body}</p>
+                </Link>
+                <h3 className="text-white font-medium mb-0.5">{message.subject}</h3>
+                <p className="text-gray-200 text-sm font-light">{message.body}</p>
               </div>
               <button
                 onClick={() => onReadMessage(message._id)}

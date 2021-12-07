@@ -23,14 +23,9 @@ router.get("/users", async (req, res, next) => {
   const offset = parseInt(req.query.offset);
 
   try {
-    const users = await (query
-      ? User.aggregate([{ $search: { index: "fuzzy", text: { query, path: { wildcard: "*" } } } }])
-      : User.find()
-    )
+    const users = await (query ? User.find({ $text: { $search: query } }) : User.find())
       .skip(offset > 0 ? offset : 0)
       .limit(limit > 0 ? limit : 0);
-
-    for (const user of users) delete user.password; // mainly for aggregate query not removing password
 
     res.send(users);
   } catch (e) {

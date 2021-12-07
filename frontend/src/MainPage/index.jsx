@@ -1,28 +1,67 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { users } from "../users.json";
 import { Link } from "react-router-dom";
-import { tags } from "../tags.json";
 import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { setIsPublic } from "../store/generalSlice";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import "./index.css";
-// API calls to read users and tags
+
+import Loading from "../components/Loading";
+import axios from "axios";
+import { apiUrl } from "../config";
+
+import ArtsumeBanner from "../components/ArtsumeBanner";
+
+import { useHistory } from "react-router";
 
 const MainPage = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  const [users, setUsers] = useState([]);
+  const [tags, setTags] = useState([]);
+
+  const searchInput = useRef(null);
+
+  const getUsers = async () => {
+    try {
+      const { data } = await axios.get(`${apiUrl}/users`);
+      setUsers(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getTags = async () => {
+    try {
+      const { data: tags } = await axios.get(`${apiUrl}/tags`);
+      setTags(tags);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   useEffect(() => {
     dispatch(setIsPublic({ isPublic: false }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    getUsers();
+    getTags();
+  }, [dispatch]);
 
   useScrollToTop();
 
+  if (users.length <= 0) return <Loading />;
+
   return (
-    <main className="dark:bg-gray-900">
-      <Navbar />
+    <main className="bg-gray-900 pt-20">
+      <Navbar
+        onSearch={() => {
+          const params = new URLSearchParams();
+          params.set("query", searchInput.current.value);
+          history.push(`/search?${params}`);
+        }}
+        searchInput={searchInput}
+      />
       <div className="relative">
         <div className="absolute inset-0 container flex">
           <div className="my-auto pl-5 bg-opacity-10 backdrop-filter backdrop-blur-sm p-5">
@@ -32,15 +71,15 @@ const MainPage = () => {
         </div>
         <img
           className="max-h-72 object-cover w-full"
-          src="https://www.juegostudio.com/wp-content/uploads/2016/11/lowPoly-art-img-5.jpg"
+          src="http://res.cloudinary.com/artsu-me/image/upload/v1638819783/kwzo6zl0a3nvh6narndx.jpg"
           alt="low poly lion"
         />
       </div>
-      <div className="container mx-auto py-20">
+      <div className="container mx-auto py-14">
         <aside className="mb-10 mx-10">
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap justify-center gap-3">
             {tags.map(tag => (
-              <Link key={tag.id} to={`/search/&tag=${tag.label}`}>
+              <Link key={tag._id} to={`/search?&tag=${tag._id}`}>
                 <p
                   className={`text-gray-900 -text-white cursor-pointer font-semibold text-sm  bg-${tag.color} rounded-sm px-2 py-1`}
                 >
@@ -50,18 +89,19 @@ const MainPage = () => {
             ))}
           </div>
         </aside>
+
         <section className="flex-1 grid md:grid-cols-2 lg:grid-cols-3 items-center justify-center gap-y-8 gap-x-3">
           {users.map(user => (
             <Link
               to={`/portfolio/${user.username}`}
-              key={user.id}
+              key={user._id}
               className={`mx-auto ${
                 user.featured
                   ? "bg-gradient-to-br hover:from-fuchsia-500 hover:to-emerald-500"
                   : "hover:bg-gray-800"
               }  rounded-lg transition-all p-5 cursor-pointer`}
             >
-              {user.featured && (
+              {user.isFeatured && (
                 <h3 className="underline-offset text-white text-sm font-semibold underline mb-2">
                   Featured
                 </h3>
@@ -69,36 +109,19 @@ const MainPage = () => {
               <div className="mb-2">
                 <img
                   className="main-page-avatar shadow-lg rounded-sm w-48 h-48 object-cover"
-                  src={user.avatar}
+                  src={user.avatarUrl}
                   alt={`${user.name} avatar`}
                 />
               </div>
               <div className="px-2">
-                <h2 className="dark:text-white font-semibold text-lg">
-                  {user.name}
-                </h2>
-                <p className="dark:text-gray-200 text-sm">
-                  {user.portfolioSettings.heading}
-                </p>
+                <h2 className="dark:text-white font-semibold text-lg">{user.name}</h2>
+                <p className="dark:text-gray-200 text-sm">{user.username}</p>
               </div>
             </Link>
           ))}
         </section>
       </div>
-      <div className="relative">
-        <div className="absolute inset-0 container flex">
-          <div className="m-auto">
-            <h1 className="text-white text-4xl font-bold p-5 -bg-gray-900 bg-opacity-10 backdrop-filter backdrop-blur-sm">
-              Make your Artsume today
-            </h1>
-          </div>
-        </div>
-        <img
-          className="max-h-72 object-cover w-full"
-          src="https://mir-s3-cdn-cf.behance.net/project_modules/1400/1b23c832616941.568cab27a6aad.jpg"
-          alt="low poly lighthouse"
-        />
-      </div>
+      <ArtsumeBanner></ArtsumeBanner>
 
       <Footer />
     </main>

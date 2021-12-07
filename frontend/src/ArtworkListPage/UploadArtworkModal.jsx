@@ -1,21 +1,33 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { apiUrl } from "../config";
 import { useAuthentication } from "../hooks/useAuthentication";
 import axios from "axios";
 
 const UploadArtworkModal = ({ onClose }) => {
-  const [accessToken, user] = useAuthentication();
+  const { accessToken, user } = useAuthentication();
 
   const [imageUrl, setImageUrl] = useState("");
   const imageInput = useRef(null);
   const titleInput = useRef(null);
   const summaryInput = useRef(null);
   const descriptionInput = useRef(null);
-  const tagsInput = useRef(null);
 
   const [imageError, setImageError] = useState("");
   const [titleError, setTitleError] = useState("");
   const [summaryError, setSummaryError] = useState("");
+  const [tags, setTags] = useState([]);
+
+  const getTags = async () => {
+    try {
+      const { data: tags } = await axios.get(`${apiUrl}/tags`);
+      setTags(tags);
+      console.log(tags);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => getTags(), [apiUrl]);
 
   const upload = async e => {
     e.preventDefault();
@@ -28,6 +40,7 @@ const UploadArtworkModal = ({ onClose }) => {
     const title = titleInput.current.value;
     const summary = summaryInput.current.value;
     const description = descriptionInput.current.value;
+    const tagIds = tags.filter(tag => tag.selected).map(tag => tag._id);
 
     if (!image) return setImageError("no image selected");
     if (!title) return setTitleError("cannot be empty");
@@ -38,6 +51,7 @@ const UploadArtworkModal = ({ onClose }) => {
     formData.append("name", title);
     formData.append("summary", summary);
     formData.append("description", description);
+    formData.append("tagIds", tagIds);
 
     try {
       const response = await axios.post(`${apiUrl}/users/${user._id}/artworks`, formData, {
@@ -56,15 +70,15 @@ const UploadArtworkModal = ({ onClose }) => {
   return (
     <main
       onClick={onClose}
-      className="fixed inset-0 z-30  overflow-auto bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm flex"
+      className="cursor-pointer fixed inset-0 z-30 overflow-auto bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm flex"
     >
       <form
         onClick={e => e.stopPropagation()}
         onSubmit={upload}
-        className="bg-gray-700 p-8 m-auto max-w-4xl flex gap-8 shadow-lg rounded-md"
+        className="bg-gray-700 p-8 m-auto max-w-4xl flex gap-8 shadow-lg rounded-md cursor-auto"
       >
         <div className="" style={{ flexBasis: "45%" }}>
-          <img className="mb-5" src={imageUrl} />
+          <img className="mb-5" src={imageUrl} alt={""} />
           <label className="dark:text-gray-200 text-sm text-right mb-2">Image:</label>
           {imageError && <em className="text-rose-400 text-sm float-right">*{imageError}</em>}
           <input
@@ -80,7 +94,25 @@ const UploadArtworkModal = ({ onClose }) => {
           />
 
           <label className="dark:text-gray-200 text-sm text-right mb-2">Tags:</label>
-          <textarea className="px-2 py-1 w-full" ref={tagsInput} rows="3"></textarea>
+
+          <div>
+            {tags?.map((tag, index) => (
+              <button
+                key={tag._id}
+                onClick={e => {
+                  e.preventDefault();
+                  const tagsCpy = [...tags];
+                  tagsCpy[index].selected = !tagsCpy[index].selected;
+                  setTags(tagsCpy);
+                }}
+                className={`${
+                  tag.selected ? "bg-teal-500 hover:bg-teal-600" : "bg-gray-400 hover:bg-gray-500"
+                } text-gray-900 font-semibold text-xs m-1 px-2 py-1 rounded-md`}
+              >
+                {tag.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div className="" style={{ flexBasis: "55%" }}>

@@ -11,9 +11,8 @@ const PortfolioEditorPageStyles = () => {
   const history = useHistory();
   const { username } = useParams();
   const user = users.find(user => user.username === username);
-  const [, loggedInUser, , _logout] = useAuthentication();
-  let themeColor = user.portfolioSettings.themeColor;
-  // let themeColor = JSON.parse(JSON.stringify(user.portfolioSettings.themeColor));
+  const { user: loggedInUser, logout: _logout } = useAuthentication();
+  let themeColor = JSON.parse(JSON.stringify(user.portfolioSettings.themeColor));
   let layoutId = user.portfolioSettings.layoutId;
 
   const [layout, setlayout] = useState(layoutId);

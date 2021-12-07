@@ -91,12 +91,7 @@ router.get("/artworks", async (req, res, next) => {
   const offset = parseInt(req.query.offset);
 
   try {
-    const artworks = await (query
-      ? Artwork.aggregate([
-          { $search: { index: "fuzzy", text: { query, path: { wildcard: "*" } } } },
-        ])
-      : Artwork.find()
-    )
+    const artworks = await (query ? Artwork.find({ $text: { $search: query } }) : Artwork.find())
       .skip(offset > 0 ? offset : 0)
       .limit(limit > 0 ? limit : 0);
 
@@ -116,7 +111,6 @@ router.get("/artworks/:artworkId", async (req, res, next) => {
     if (!artwork) return res.sendStatus(404);
     res.json(artwork);
   } catch (e) {
-    console.log(e);
     next(e);
   }
 });
@@ -134,7 +128,7 @@ router.patch(
       if (!artwork) return res.sendStatus(404);
 
       // user should edit their own work only
-      if (artwork.userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403);
+      if (!artwork.userId.equals(req.user._id) && !req.user.isAdmin) return res.sendStatus(403);
 
       req.allowedPaths = ["/name", "/summary", "/description", "/tagIds"];
       if (req.user.isAdmin)
@@ -190,22 +184,17 @@ router.post("/artworks/:artworkId/reports", authenticate, async (req, res, next)
 /**
  * Allows a user to like a piece of artwork
  */
-router.post("/artworks/:artworkId/likes", authenticate, async (req, res, next) => {
+router.post("/artworks/:artworkId/like", authenticate, async (req, res, next) => {
   const artworkId = req.params.artworkId;
   const userId = req.user._id;
 
   try {
     const artwork = await Artwork.findById(artworkId);
-    // user should edit their own work only
-    if (!artwork) {
-      return res.sendStatus(404);
-    }
+    if (!artwork) return res.sendStatus(404);
+
     //checking if they have liked the artwork already
-    if (!artwork.likes.includes(userId)) {
-      artwork.likes.push(userId);
-    } else {
-      return res.status(200).send(artwork);
-    }
+    if (artwork.likes.includes(userId)) return res.status(200).send(artwork);
+    artwork.likes.push(userId);
     await artwork.save();
     res.status(201).send(artwork);
   } catch (e) {
@@ -214,8 +203,25 @@ router.post("/artworks/:artworkId/likes", authenticate, async (req, res, next) =
 });
 
 /**
- * Update likes of an artwork
+ * Allows a user to unlike a piece of artwork
  */
+router.delete("/artworks/:artworkId/unlike", authenticate, async (req, res, next) => {
+  const artworkId = req.params.artworkId;
+  const userId = req.user._id;
+
+  try {
+    const artwork = await Artwork.findById(artworkId);
+    if (!artwork) return res.sendStatus(404);
+
+    //checking if they have liked the artwork already
+    if (!artwork.likes.includes(userId)) return res.status(200).send(artwork);
+    artwork.likes.splice(artwork.likes.indexOf(userId), 1);
+    await artwork.save();
+    res.status(201).send(artwork);
+  } catch (e) {
+    next(e);
+  }
+});
 
 router.use(mongoHandler);
 

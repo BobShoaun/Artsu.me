@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom"; // removed useParams
 
 const ProjectSection = ({ portfolio, primary, secondary }) => {
   const layoutId = 0;
@@ -91,6 +91,8 @@ const ProjectSection = ({ portfolio, primary, secondary }) => {
             ))}
           </div>
         );
+      default:
+        console.log("bad layout id");
     }
   };
 

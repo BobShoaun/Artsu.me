@@ -4,6 +4,8 @@
  * req.patchDoc is the document/object to patch
  * req.allowedOperations are operations that are allowed
  * req.allowedPaths are paths that are allowed to be modified
+ *
+ * some example of valid paths: /hello/world, /hello/world/0/foo, /hello/world/-
  */
 export const executeJsonPatch = (req, res, next) => {
   const actions = req.body;
@@ -91,7 +93,7 @@ export const executeJsonPatch = (req, res, next) => {
       case "add": {
         if (!Array.isArray(patchDoc)) return res.sendStatus(400);
         if (lastKey === "-") {
-          // - means insert at the end
+          // - means insert at the end of array
           patchDoc.push(action.value);
           break;
         }

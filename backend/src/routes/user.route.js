@@ -1,13 +1,16 @@
 import express from "express";
 import { User } from "../models/index.js";
-import { authenticate, usernameHandler } from "../middlewares/user.middleware.js";
+import { authenticate, authorize, usernameHandler } from "../middlewares/user.middleware.js";
 import { executeJsonPatch } from "../middlewares/general.middleware.js";
 import {
   checkDatabaseConn,
   mongoHandler,
   validateIdParam,
 } from "../middlewares/mongo.middleware.js";
-import { uploadImage } from "../middlewares/image.middleware.js";
+import { deleteImage, uploadImage } from "../middlewares/image.middleware.js";
+import connectMultiparty from "connect-multiparty";
+
+const multipart = connectMultiparty();
 
 const router = express.Router();
 
@@ -50,9 +53,9 @@ router.get("/users/:userId", async (req, res, next) => {
 router.patch(
   "/users/:userId",
   authenticate,
+  authorize,
   async (req, res, next) => {
     const { userId } = req.params;
-    if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403); // can only edit yourself, unless admin
     try {
       const user = await User.findById(userId);
       if (!user) return res.sendStatus(404);
@@ -94,20 +97,72 @@ router.delete("/users/:userId", authenticate, async (req, res, next) => {
   }
 });
 
-router.put("/users/:userId/avatar", authenticate, uploadImage, async (req, res, next) => {
-  const { userId } = req.params;
-  if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403);
-  try {
-    const user = await User.findById(userId);
-    if (!user) return res.sendStatus(404);
+router.put(
+  "/users/:userId/avatar",
+  authenticate,
+  authorize,
+  async (req, res, next) => {
+    const { userId } = req.params;
+    try {
+      const user = await User.findById(userId);
+      if (!user) return res.sendStatus(404);
+      req.editingUser = user;
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  multipart,
+  uploadImage, // upload new avatar
+  async (req, res, next) => {
+    const user = req.editingUser;
+    const oldAvatarId = user.avatarId;
     user.avatarUrl = req.imageUrl;
     user.avatarId = req.imageId;
-    await user.save();
-    res.send(user);
-  } catch (e) {
-    next(e);
+    req.imageId = oldAvatarId;
+    try {
+      await user.save();
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  deleteImage, // delete old avatar
+  (req, res) => res.send(req.editingUser)
+);
+
+/**
+ * Deleteing a user's avatar
+ */
+router.delete(
+  "/users/:userId/avatar",
+  authenticate,
+  authorize,
+  async (req, res, next) => {
+    const { userId } = req.params;
+    try {
+      const user = await User.findById(userId);
+      if (!user) return res.sendStatus(404);
+      req.imageId = user.avatarId;
+      req.editingUser = user;
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  deleteImage, // delete avatar from cloudinary
+  async (req, res) => {
+    const user = req.editingUser;
+    user.avatarId = "";
+    user.avatarUrl = "";
+    try {
+      await user.save();
+      res.send(user);
+    } catch (e) {
+      next(e);
+    }
   }
-});
+);
 
 router.use(mongoHandler);
 

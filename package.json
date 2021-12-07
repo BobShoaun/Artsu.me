@@ -5,7 +5,11 @@
   "main": "index.js",
   "scripts": {
     "frontend": "cd frontend && yarn start",
-    "backend": "cd backend && npm run dev"
+    "backend": "cd backend && npm run dev",
+    "frontend:init": "cd frontend && yarn install",
+    "backend:init": "cd backend && npm install",
+    "frontend:deploy": "cd frontend && npm run build && firebase deploy",
+    "backend:deploy": "git push heroku main"
   },
   "repository": {
     "type": "git",

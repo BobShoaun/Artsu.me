@@ -8,7 +8,7 @@ import { useState, useRef } from "react"; // removed useEffect
 
 import { useAuthentication } from "../hooks/useAuthentication";
 import axios from "axios";
-import { apiUrl } from "../config";
+import { apiUrl, defaultAvatarUrl } from "../config";
 
 import Unauthenticated from "../components/Unauthenticated";
 
@@ -93,7 +93,8 @@ const ProfilePage = () => {
         <aside className="ml-auto mt-5">
           <img
             className="mx-auto shadow-lg rounded-lg mb-4 w-52"
-            src={user.avatarUrl}
+            src={user.avatarUrl || defaultAvatarUrl}
+            onError={e => (e.target.src = defaultAvatarUrl)}
             alt={`${user.name} avatar`}
           />
 

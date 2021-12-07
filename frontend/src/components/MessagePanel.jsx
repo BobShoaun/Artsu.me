@@ -1,6 +1,6 @@
 import { Check } from "react-feather"; // removed Search, Bell
 import { Link } from "react-router-dom";
-
+import { defaultAvatarUrl } from "../config";
 import { formatRelative } from "date-fns";
 
 const MessagePanel = ({ messages, onReadMessage }) => {
@@ -18,7 +18,8 @@ const MessagePanel = ({ messages, onReadMessage }) => {
                 >
                   <img
                     className="rounded-full w-8 h-8 object-cover"
-                    src={message.sender.avatarUrl}
+                    src={message.sender.avatarUrl || defaultAvatarUrl}
+                    onError={e => (e.target.src = defaultAvatarUrl)}
                     alt={message.sender.name}
                   />
                   <div>

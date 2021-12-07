@@ -9,7 +9,7 @@ import "./index.css";
 
 import Loading from "../components/Loading";
 import axios from "axios";
-import { apiUrl } from "../config";
+import { apiUrl, defaultAvatarUrl } from "../config";
 
 import ArtsumeBanner from "../components/ArtsumeBanner";
 
@@ -162,7 +162,8 @@ const MainPage = () => {
             <div className="mb-2">
               <img
                 className="main-page-avatar shadow-lg rounded-sm w-48 h-48 object-cover"
-                src={user.avatarUrl}
+                src={user.avatarUrl || defaultAvatarUrl}
+                onError={e => (e.target.src = defaultAvatarUrl)}
                 alt={`${user.name} avatar`}
               />
             </div>

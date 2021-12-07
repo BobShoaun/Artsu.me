@@ -80,7 +80,7 @@ const PortfolioEditorPage = () => {
   // if no value
   if (experiences.length === 0 && experiences != portfolio.section.experience.experiences)setExperiences(portfolio.section.experience.experiences)
   if (projects.length ===0 && projects != project.artworkIds) setProjects(project.artworkIds)
-  if (!heroLayout && heroLayout != hero.layoutId) setHeroLayout(hero.layoutId + 1)
+  if (!heroLayout && heroLayout != hero.layoutId) setHeroLayout(hero.layoutId)
   if (!projectLayout && projectLayout != project.layoutId) setProjectLayout(project.layoutId)
   if (!experienceLayout && experienceLayout != portfolio.section.experience.layoutId) setExperienceLayout(portfolio.section.experience.layoutId)
 
@@ -265,10 +265,9 @@ const PortfolioEditorPage = () => {
           </div>
           <h3 className="mt-10">Select a layout:</h3>
           <div className="container mx-auto flex flex-wrap item-center gap-20 py-5">
-            <div className={`${1 === heroLayout ? "bg-gray-700" : "hover:bg-gray-800"}`}
+            <div className={`${0 === heroLayout ? "bg-gray-700" : "hover:bg-gray-800"}`}
                  onClick={() => {
-                   setHeroLayout(1)
-                   console.log(heroLayout)
+                   setHeroLayout(0)
                  }} >
               <div className="portfolio-editor-layout-div">
                 <img
@@ -279,8 +278,8 @@ const PortfolioEditorPage = () => {
                 layout 1
               </div>
             </div>
-            <div className={`${2 === heroLayout ? "bg-gray-700" : "hover:bg-gray-800"}`}
-                onClick={() => setHeroLayout(2)}>
+            <div className={`${1 === heroLayout ? "bg-gray-700" : "hover:bg-gray-800"}`}
+                onClick={() => setHeroLayout(1)}>
               <div className="portfolio-editor-layout-div">
                 <img
                   className="cursor-pointer mx-1 my-5 h-20"
@@ -290,8 +289,8 @@ const PortfolioEditorPage = () => {
                 layout 2
               </div>
             </div>
-            <div className={`${3 === heroLayout ? "bg-gray-700" : "hover:bg-gray-800"}`}
-                onClick={() => setHeroLayout(3)}>
+            <div className={`${2 === heroLayout ? "bg-gray-700" : "hover:bg-gray-800"}`}
+                onClick={() => setHeroLayout(2)}>
               <div className="portfolio-editor-layout-div">
                 <img
                   className=" cursor-pointer mx-2 my-5 h-20"
@@ -366,23 +365,24 @@ const PortfolioEditorPage = () => {
           <div className="flex flex-wrap mx-10 my-10">
             { artworks.map(artwork => {
               return (
-                <div className="w-48 mx-5" key={artwork._id}>
-                  <div className={`${projects.includes(artwork._id) ? "bg-gray-600" : "hover:bg-gray-700"}`}
+                <div className="w-52 mx-5" key={artwork._id}>
+                  <div className={`${projects.includes(artwork._id) ? "bg-gray-600 rounded-lg" : "hover:bg-gray-700 rounded-lg"}`}
                        onClick={() => {
                         if(projects.includes(artwork._id)) {setProjects(removeFromArray(artwork._id, projects))}
                         else {setProjects([...projects, artwork._id])}
                         project.artworkIds = projects
                   }}>
                   <img
-                    className="portfolio-content-artwork-img cursor-pointer"
+                    className="portfolio-content-artwork-img cursor-pointer py-5"
                     src={artwork.imageUrl}
                     alt={artwork.name}
                   /></div>
                   <div className="pl-3">
-                    <h2 className="dark:text-white text-lg font-semibold mb-1 text-center">
+                    <h2 className="dark:text-white text-lg font-semibold mt-5 mb-1 text-center">
                       {artwork.name}
                     </h2>
                   </div>
+                  
                 </div>
               );
             })}

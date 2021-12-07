@@ -55,7 +55,7 @@ const Navbar = ({ showSearchButtons }) => {
   }, [accessToken]);
 
   return (
-    <nav className=" bg-gray-800 bg-opacity-50 z-20 py-5 shadow-lg backdrop-filter backdrop-blur-sm sticky top-0">
+    <nav className=" bg-gray-800 bg-opacity-50 z-20 py-5 shadow-lg backdrop-filter backdrop-blur-sm fixed top-0 left-0 right-0">
       <ul className="flex items-center gap-8 container mx-auto">
         <li>
           <Link to="/" className="dark:text-white text-2xl font-semibold">

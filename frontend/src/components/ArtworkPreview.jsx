@@ -5,7 +5,7 @@ const ArtworkPreview = ({ artwork, primary, secondary }) => {
     <Link
       to={`/artwork/${artwork._id}`}
       key={artwork._id}
-      className={`bg-gradient-to-br from-transparent to-transparent hover:from-${primary.main} hover:to-${secondary.main} transition-all rounded-lg p-5 cursor-pointer hover:shadow-xl`}
+      className={`transition-all rounded-lg p-5 cursor-pointer hover:shadow-xl`}
     >
       <img
         className="artwork mb-5 shadow-xl mx-auto"

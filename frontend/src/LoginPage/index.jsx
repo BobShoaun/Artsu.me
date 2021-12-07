@@ -32,7 +32,6 @@ const LoginPage = () => {
     setPasswordError("");
 
     if (!username) return setUsernameError("username cannot be empty");
-
     if (!password) return setPasswordError("password cannot be empty");
 
     try {

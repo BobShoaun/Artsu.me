@@ -40,7 +40,7 @@ const MainPage = () => {
   return (
     <main className="dark:bg-gray-900">
       <Navbar />
-      <div className="relative">
+      <div className="relative pt-20">
         <div className="absolute inset-0 container flex">
           <div className="my-auto pl-5 bg-opacity-10 backdrop-filter backdrop-blur-sm p-5">
             <h1 className="text-white text-5xl font-bold">Discover</h1>

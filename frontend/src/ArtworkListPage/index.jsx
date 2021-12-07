@@ -11,8 +11,7 @@ import { apiUrl } from "../config";
 
 import Unauthenticated from "../components/Unauthenticated";
 import EditArtworkModal from "./EditArtworkModal";
-
-import { Edit, Eye } from "react-feather";
+import { Edit, Eye, Trash2 } from "react-feather";
 
 const ArtworkListPage = () => {
   const { isLoggedIn, user, redirectToLogin } = useAuthentication();
@@ -39,6 +38,18 @@ const ArtworkListPage = () => {
     }
     getArtworks();
   }, [isLoggedIn, redirectToLogin, getArtworks]);
+
+  const deleteArtwork = async artwork => {
+    if (!window.confirm("Are you sure u want to delete " + artwork.name + "?")) return;
+    try {
+      const { data } = await axios.delete(`${apiUrl}/users/${user._id}/artworks/${artwork._id}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      getArtworks();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   if (!isLoggedIn) return <Unauthenticated />;
 
@@ -68,14 +79,14 @@ const ArtworkListPage = () => {
 
       <section className="container mx-auto py-10 mb-10">
         <h1 className="dark:text-gray-200 text-xl font-semibold mb-14">My Artworks</h1>
-        <div className="flex flex-wrap items-center justify-evely gap-7 mb-12">
+        <div className="flex flex-wrap items-center justify-evely gap-4 mb-12">
           {artworks.map(artwork => (
             <div
               key={artwork._id}
-              className={`transition-all bg-gray-800  rounded-lg p-5 shadow-lg`}
+              className={`transition-all bg-gray-800 rounded-lg p-5 shadow-lg`}
             >
               <img
-                className="artwork mb-5 shadow-xl mx-auto"
+                className="mb-5 shadow-xl mx-auto h-44"
                 src={artwork.imageUrl} // to keep old one working
                 alt={artwork.name}
               />
@@ -84,6 +95,12 @@ const ArtworkListPage = () => {
                 <p className="dark:text-gray-300 text-sm mb-3">{artwork.summary}</p>
               </div>
               <div className="flex items-center gap-2 justify-center">
+                <button
+                  onClick={() => deleteArtwork(artwork)}
+                  className="flex items-center text-sm font-medium shadow-md bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded-sm text-gray-100 gap-2"
+                >
+                  <Trash2 size={15} /> Delete
+                </button>
                 <button
                   onClick={() => setEditingArtwork(artwork)}
                   className="flex items-center text-sm font-medium shadow-md bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded-sm text-gray-100 gap-2"

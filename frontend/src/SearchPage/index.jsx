@@ -6,6 +6,7 @@ import { useHistory } from "react-router";
 
 import { apiUrl } from "../config";
 import axios from "axios";
+import { useScrollToTop } from "../hooks/useScrollToTop";
 import ArtsumeBanner from "../components/ArtsumeBanner";
 
 const SearchPage = () => {
@@ -50,6 +51,7 @@ const SearchPage = () => {
       console.log(e);
     }
   };
+  useScrollToTop();
 
   const search = useCallback( () => {
     if (type.current === "user") getUsers();
@@ -90,7 +92,8 @@ const SearchPage = () => {
                 tagId.current = tag._id;
                 search();
               }}
-              className={`text-gray-900 cursor-pointer font-semibold text-sm bg-${tag.color} rounded-sm px-2 py-1`}
+              style={{ background: tag.color }}
+              className={`text-gray-900 cursor-pointer font-semibold text-sm rounded-sm px-2 py-1`}
             >
               #{tag.label}
             </button>

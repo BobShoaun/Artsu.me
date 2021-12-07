@@ -1,10 +1,13 @@
 import express from "express";
 
 import { uploadImage, deleteImage } from "../middlewares/image.middleware.js";
+import connectMultiparty from "connect-multiparty";
+
+const multipart = connectMultiparty();
 
 const router = express.Router();
 
-router.post("/images", uploadImage, (req, res) => {
+router.post("/images", multipart, uploadImage, (req, res) => {
   res.send({ id: req.imageId, url: req.imageUrl });
 });
 

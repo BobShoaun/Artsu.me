@@ -16,12 +16,8 @@ const user = new Schema(
       },
     },
     password: { type: String, required: true, minlength: 1 },
-    avatarUrl: {
-      type: String,
-      default:
-        "http://res.cloudinary.com/artsu-me/image/upload/v1638716068/urx8b1kby9ig8v6wga6o.png",
-    },
-    avatarId: { type: String, default: "urx8b1kby9ig8v6wga6o" },
+    avatarUrl: { type: String },
+    avatarId: { type: String },
     followerIds: [{ type: Schema.ObjectId, required: true, ref: "users", immutable: true }],
     followingIds: [{ type: Schema.ObjectId, required: true, ref: "users", immutable: true }],
     isFeatured: { type: Boolean, default: false },

@@ -18,6 +18,12 @@ export const authenticate = async (req, res, next) => {
   }
 };
 
+export const authorize = async (req, res, next) => {
+  const { userId } = req.params;
+  if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403);
+  next();
+};
+
 export const usernameHandler = async (err, req, res, next) => {
   // check if duplicate key error
   if (err.code === 11000) return res.status(409).type("plain").send("Conflict: Username Taken");

@@ -73,7 +73,7 @@ router.post("/users/login", async (req, res, next) => {
 
 router.put("/users/:userId/password", authenticate, async (req, res, next) => {
   const { userId } = req.params;
-  if (userId !== req.user_id) return res.sendStatus(403);
+  if (userId !== req.user._id) return res.sendStatus(403);
   const password = req.body.password;
   if (!password) return res.sendStatus(400);
   try {

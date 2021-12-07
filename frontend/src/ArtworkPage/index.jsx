@@ -1,11 +1,12 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import ImageStage from "../components/ImageStage";
 import { useState, useEffect } from "react";
 import { Maximize } from "react-feather";
 import "./index.css";
 import { useAuthentication } from "../hooks/useAuthentication";
+import ArtsumeBanner from "../components/ArtsumeBanner";
 
 import { Heart, Flag } from "react-feather";
 import Loading from "../components/Loading";
@@ -23,14 +24,15 @@ const ArtworkPage = () => {
   const [likes, setLikes] = useState([]);
   const [showReport, setShowReport] = useState(false);
 
-  const [accessToken, user] = useAuthentication();
+  const { isLoggedIn, accessToken, user, redirectToLogin } = useAuthentication();
+  const history = useHistory();
 
   const getArtwork = async () => {
     try {
       const { data: artwork } = await axios.get(`${apiUrl}/artworks/${id}`);
       setArtwork(artwork);
       setLikes(artwork.likes);
-      setArtworkTags(artwork.tags)
+      setArtworkTags(artwork.tags);
 
       const { data: otherArtworks } = await axios.get(`${apiUrl}/users/${artwork.userId}/artworks`);
       setOtherArtworks(
@@ -44,13 +46,13 @@ const ArtworkPage = () => {
     }
   };
 
-  useEffect(() => {
-    getArtwork();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useEffect(() => getArtwork(), [id]);
 
   const likeArtwork = async () => {
-    if (!accessToken) return;
+    if (!isLoggedIn) {
+      redirectToLogin();
+      return;
+    }
     try {
       const { data } = await axios.post(`${apiUrl}/artworks/${id}/like`, null, {
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -62,7 +64,7 @@ const ArtworkPage = () => {
   };
 
   const unlikeArtwork = async () => {
-    if (!accessToken) return;
+    if (!isLoggedIn) return;
     try {
       const { data } = await axios.delete(`${apiUrl}/artworks/${id}/unlike`, {
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -82,10 +84,10 @@ const ArtworkPage = () => {
       <ImageStage onClose={() => setFullscreen(false)} src={artwork.imageUrl} alt={artwork.name} />
     );
 
-  const hasLiked = user ? likes.includes(user._id): false;
+  const hasLiked = isLoggedIn ? likes.includes(user._id) : false;
 
   return (
-    <main className="bg-gray-900 min-h-screen">
+    <main className="bg-gray-900 min-h-screen pt-20">
       <Navbar />
 
       {showReport && <ReportModal artwork={artwork} onClose={() => setShowReport(false)} />}
@@ -102,8 +104,8 @@ const ArtworkPage = () => {
               alt={artwork.name}
             />
           </div>
-          <div className="relative border-gray-400 mb-10" style={{ borderBottomWidth: "1px" }}>
-            <div className="absolute right-0 flex items-center gap-3">
+          <div className="border-gray-400 mb-10" style={{ borderBottomWidth: "1px" }}>
+            <div className="float-right flex items-center gap-x-2">
               <button
                 onClick={hasLiked ? unlikeArtwork : likeArtwork}
                 className="text-white flex gap-2 items-center hover:bg-gray-800 px-2 py-1 rounded-sm"
@@ -112,11 +114,11 @@ const ArtworkPage = () => {
                   className={` ${hasLiked ? "text-rose-400 fill-current" : "text-white"} `}
                   size={20}
                 />
-                {likes.length} Like{likes.length === 1 ? "" : "s" }
+                {likes.length} Like{likes.length === 1 ? "" : "s"}
               </button>
 
               <button
-                onClick={() => setShowReport(true)}
+                onClick={() => (isLoggedIn ? setShowReport(true) : redirectToLogin())}
                 className="text-white hover:bg-gray-800 px-2 py-1 flex gap-2 items-center rounded-sm"
               >
                 <Flag className="text-white" size={20} />
@@ -131,9 +133,10 @@ const ArtworkPage = () => {
                 Fullscreen
               </button>
             </div>
-
-            <h1 className="text-white text-left text-2xl font-bold mb-1">{artwork.name}</h1>
-            <p className="text-left text-gray-300 font mb-4">{artwork.summary}</p>
+            <div>
+              <h1 className="text-white text-left text-2xl font-bold mb-1">{artwork.name}</h1>
+              <p className="text-left text-gray-300 font mb-4">{artwork.summary}</p>
+            </div>
           </div>
 
           <section className="flex gap-8">
@@ -149,7 +152,7 @@ const ArtworkPage = () => {
               {artworkTags.length > 0 && (
                 <div className="flex flex-wrap gap-3 mb-5">
                   {artworkTags.map(tag => (
-                    <Link key={tag._id} to={`/search/&tag=${tag.label}`}>
+                    <Link key={tag._id} to={`/search?tag=${tag._id}`}>
                       <p
                         className={`text-gray-900 cursor-pointer font-semibold text-xs bg-${tag.color} rounded-sm px-2 py-1`}
                       >
@@ -174,6 +177,8 @@ const ArtworkPage = () => {
           </div>
         </aside>
       </div>
+      <ArtsumeBanner></ArtsumeBanner>
+
       <Footer />
     </main>
   );

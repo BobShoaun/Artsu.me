@@ -11,7 +11,7 @@ const RegisterPage = () => {
   const history = useHistory();
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
-  const [jwt, , _login] = useAuthentication();
+  const { accessToken: jwt, login: _login } = useAuthentication();
 
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");

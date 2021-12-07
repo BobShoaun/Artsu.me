@@ -1,169 +1,187 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useHistory } from "react-router";
 
 import { apiUrl } from "../config";
 import axios from "axios";
+import ArtsumeBanner from "../components/ArtsumeBanner";
 
 const SearchPage = () => {
-  // link from navbar file
-  const urlParams = new URLSearchParams(window.location.pathname)
-  const art = urlParams.get('art')
-  const user = urlParams.get('usr')
-  const tag = urlParams.get('tag')
+  const history = useHistory();
 
   const [artworks, setArtworks] = useState([]);
-  const [users, setUsers] = useState([])
-  // const [portfolios, updatePortfolios] = useState([])
-  const [tags, setTags] = useState([])
+  const [users, setUsers] = useState([]);
+  const [tags, setTags] = useState([]);
 
-  let length;
+  const type = useRef("artwork");
+  const query = useRef("");
+  const tagId = useRef("");
 
-  const getSearchResult = async() => {
+  const searchInput = useRef(null);
+
+  const getTags = async () => {
     try {
-      // set up tags to display
-      const { data: tags } = await axios.get(`${apiUrl}/tags`)
-      setTags(tags)
-
-      if (art !== null) {
-        const { data: artworks } = await axios.get(`${apiUrl}/artworks?query=${art}&limit=1000`);
-        setArtworks(artworks)
-        console.log(artworks)
-      }
-      else if (user !== null) {
-        const { data: users } = await axios.get(`${apiUrl}/users?query=${user}&limit=1000`);
-        /* for (const user of users) {
-          const { data: portfolio } = await axios.get(`${apiUrl}/users/${user._id}/portfolio`)
-          updatePortfolios( portfolios => [...portfolios, portfolio])
-        } */
-        setUsers(users)
-      }
-      else if (tag !== null) {
-        let { data: artworks } = await axios.get(`${apiUrl}/artworks`);
-        artworks = artworks.filter(artwork => tag in artwork.tagIds)
-        setArtworks(artworks)
-      }
-      else {
-        const { data: artworks } = await axios.get(`${apiUrl}/artworks`);
-        setArtworks(artworks)
-      }
-    } catch(e) {
+      const { data: tags } = await axios.get(`${apiUrl}/tags`);
+      setTags(tags);
+    } catch (e) {
       console.log(e);
     }
-  }
-  
+  };
+
+  const getUsers = async () => {
+    try {
+      const { data: users } = await axios.get(`${apiUrl}/users?query=${query.current}`);
+      setUsers(users);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getArtworks = async () => {
+    try {
+      const { data } = await axios.get(`${apiUrl}/artworks?query=${query.current}`);
+      const artworks = tagId.current
+        ? data.filter(art => art.tagIds.includes(tagId.current))
+        : data;
+      setArtworks(artworks);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   useEffect(() => {
-    getSearchResult();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [art, user, tag]);
+    getTags();
+    const params = new URLSearchParams(history.location.search);
+    type.current = params.get("type") || "artwork";
+    query.current = params.get("query") || "";
+    tagId.current = params.get("tag") || "";
+    search();
+  }, [history]);
 
-  let msg = "results";
-  if (length <= 1) {
-    msg = "result";
-  }
+  const search = () => {
+    if (type.current === "user") getUsers();
+    else getArtworks();
+    const params = new URLSearchParams();
+    params.set("query", query.current);
+    params.set("type", type.current);
+    params.set("tag", tagId.current);
+    history.push(`/search?${params}`);
+  };
 
-  function displaySearchResult() {
-    if (user != null) {
-      console.log(users)
-      length = users.length
-      return (
-        <div>
-          <div className="ml-20 w-full mb-10">
-            <p className="dark:text-white float-left mr-10">
-              Displaying {length} {msg}
-            </p>
+  const numResults = type.current === "user" ? users.length : artworks.length;
+
+  return (
+    <main className="bg-gray-900 pt-20">
+      <Navbar
+        onSearch={() => {
+          query.current = searchInput.current.value;
+          search();
+        }}
+        searchInput={searchInput}
+      />
+      <div className="container mx-auto mb-20 py-10 gap-8">
+        <div className="flex flex-wrap gap-3 mx-auto my-10 justify-center">
+          {tags.map(tag => (
+            <button
+              key={tag._id}
+              onClick={() => {
+                tagId.current = tag._id;
+                search();
+              }}
+              className={`text-gray-900 cursor-pointer font-semibold text-sm bg-${tag.color} rounded-sm px-2 py-1`}
+            >
+              #{tag.label}
+            </button>
+          ))}
+        </div>
+        <div className="flex items-center mb-10">
+          <p className="dark:text-white text-sm font-light">Showing {numResults} results</p>
+          <div className="text-center ml-auto text-sm text-white">
+            <button
+              onClick={() => {
+                query.current = "";
+                tagId.current = "";
+                searchInput.current.value = "";
+                search();
+              }}
+              className="mr-6 hover:underline"
+            >
+              Clear search
+            </button>
+            <button
+              onClick={() => {
+                type.current = "artwork";
+                search();
+              }}
+              className={`${
+                type.current === "artwork" ? "bg-gray-600 shadow-inner" : "bg-gray-800"
+              } px-3 py-1 mr-px rounded-l-sm hover:bg-gray-600`}
+            >
+              Artworks
+            </button>
+            <button
+              onClick={() => {
+                type.current = "user";
+                search();
+              }}
+              className={`${
+                type.current === "user" ? "bg-gray-600" : "bg-gray-800"
+              } px-3 py-1 rounded-r-sm hover:bg-gray-600`}
+            >
+              Artists
+            </button>
           </div>
-          <div className="flex flex-wrap gap-x-5 gap-y-5">
-            {users.map(user => {
-              // const portfolio = portfolios.find( portfolio => Portfolio.userId === user._id )
-              return (
+        </div>
+
+        {numResults <= 0 && (
+          <div className="mt-32 mb-20">
+            <h2 className="text-gray-400 font-bold text-center">
+              Looks like there are no results for your query.
+            </h2>
+          </div>
+        )}
+
+        <div className="flex flex-wrap gap-x-2 gap-y-8 justify-evenly">
+          {type.current === "user"
+            ? users.map(user => (
                 <Link
                   to={`/portfolio/${user._id}`}
                   key={user._id}
-                  className="hover:bg-gray-800 rounded-lg transition-all p-5 
-                          cursor-pointer ml-5"
+                  className="hover:bg-gray-800 rounded-md transition-colors p-6 mx-3"
                 >
-                  <div className="mb-2 p-3">
-                    <img
-                      className="mb-5 max-w-xs shadow-xl mx-10 mt-5 w-36"
-                      src={user.avatarUrl}
-                      alt={`${user._id}`}
-                    />
+                  <img
+                    className="h-52 shadow-xl mb-3 mx-auto"
+                    src={user.avatarUrl}
+                    alt={`${user._id}`}
+                  />
+                  <div className="text-center mx-auto max-w-sm">
+                    <h2 className="dark:text-white text-lg font-semibold">{user.name}</h2>
+                    <p className="dark:text-gray-300 text-sm">{user.username}</p>
                   </div>
-                  <h2
-                    className="dark:text-white font-semibold text-lg ml-10 
-                              mb-5">
-                    {user.name}
-                  </h2>
-                  {/* <p className="dark:text-gray-200 text-sm ml-10">
-                    {user.portfolioSettings.heading}
-                  </p> */}
                 </Link>
-              );
-            })}
-          </div>
-        </div>
-      );
-    }
-    else {
-      length = artworks.length
-      return (
-        <div>
-          <div className="ml-20 w-full mb-10">
-            <p className="dark:text-white text-2l w-100% float-left mr-10">
-              Displaying {length} {msg}
-            </p>
-          </div>
-          <div className="flex flex-wrap justify-around gap-x-10 gap-y-10">
-            {artworks.map(artwork => {
-              return (
+              ))
+            : artworks.map(artwork => (
                 <Link
-                  to={`/artwork/${artwork.id}`}
-                  key={artwork.id}
-                  className={"hover:bg-gray-800"}>
-                  <img className="mb-5 max-w-xs shadow-xl mx-10 mt-5 max-w-20"
+                  to={`/artwork/${artwork._id}`}
+                  key={artwork._id}
+                  className={"hover:bg-gray-800 p-6 transition-colors rounded-md"}
+                >
+                  <img
+                    className="h-52 shadow-xl mb-3 mx-auto"
                     src={artwork.imageUrl}
-                    alt={artwork.name}/>
-                  <div className="pl-3">
-                    <h2 className="dark:text-white text-lg font-semibold mb-1 ml-10">
-                      {artwork.name}
-                    </h2>
-                    <p className="dark:text-gray-300 text-sm m-5 ml-10">
-                      {artwork.summary}
-                    </p>
+                    alt={artwork.name}
+                  />
+                  <div className="text-center mx-auto max-w-sm">
+                    <h2 className="dark:text-white text-lg font-semibold">{artwork.name}</h2>
+                    <p className="dark:text-gray-300 text-sm">{artwork.summary}</p>
                   </div>
                 </Link>
-              );
-            })}
-          </div>
+              ))}
         </div>
-      );
-    }
-  }
-
-  return (
-    <main className="dark:bg-gray-900">
-      <Navbar showSearchButtons />
-      <div className="container mx-auto mb-20 flex py-20 gap-8">
-        <aside className="search-tag-aside">
-          <h3 className="dark:text-gray-200 mb-3 font-semibold">Tags:</h3>
-          <div className=" flex-shrink-0 flex-wrap gap-3">
-            { tags.map(tag => {
-              return (
-                <Link to={`/search/&tag=${tag._id}`}
-                      key={tag._id}>
-                  <p className={`text-gray-700 cursor-pointer font-semibold 
-                              text-sm bg-${tag.color} rounded-sm px-2 py-2 my-5`}>
-                    #{tag.label}
-                  </p>
-                </Link>
-              );
-            }) }
-          </div>
-        </aside>
-        {displaySearchResult()}
       </div>
+      <ArtsumeBanner />
       <Footer />
     </main>
   );

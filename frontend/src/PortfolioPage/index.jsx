@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react"; // removed useRef 
+import { useEffect, useState } from "react"; // removed useRef
 import { Link, useParams } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 import { useScrollToTop } from "../hooks/useScrollToTop";
+import { useAuthentication } from "../hooks/useAuthentication";
 
 import axios from "axios";
 import { apiUrl } from "../config";
@@ -18,7 +19,7 @@ import Loading from "../components/Loading";
 const PortfolioPage = () => {
   const { username } = useParams();
   const { isPublic } = useSelector(state => state.general);
-  const { accessToken, user } = useSelector(state => state.authentication);
+  const { accessToken, user, isLoggedIn } = useAuthentication();
 
   useScrollToTop();
 
@@ -35,8 +36,7 @@ const PortfolioPage = () => {
 
   useEffect(() => {
     getPortfolio();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [username]);
+  }, [username, apiUrl]);
 
   // from css tricks https://css-tricks.com/snippets/javascript/lighten-darken-color/
   const lightenDarkenColor = (col, amt) => {
@@ -93,9 +93,9 @@ const PortfolioPage = () => {
               Back to Browse
             </Link>
           )}
-          {accessToken && user._id === portfolio.user._id && (
+          {isLoggedIn && user._id === portfolio.userId && (
             <Link
-              to={`/portfolio/edit/${portfolio.user.username}`}
+              to={`/portfolio/editor`}
               className="text-gray-200 text-sm hover:underline self-center"
             >
               Edit Portfolio
@@ -117,10 +117,8 @@ const PortfolioPage = () => {
       </header>
 
       {portfolio.section.hero.isVisible && <HeroSection portfolio={portfolio} />}
-
       {portfolio.section.experience.isVisible && <ExperienceSection portfolio={portfolio} />}
       {portfolio.section.project.isVisible && <ProjectSection portfolio={portfolio} />}
-
       {portfolio.section.contact.isVisible && <ContactSection portfolio={portfolio} />}
 
       <footer className="py-20 bg-gray-900">

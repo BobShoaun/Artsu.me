@@ -44,4 +44,6 @@ const user = new Schema(
   }
 );
 
+user.index({ name: "text", username: "text" });
+
 export default user;

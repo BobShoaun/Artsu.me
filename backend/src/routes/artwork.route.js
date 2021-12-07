@@ -91,7 +91,7 @@ router.get("/artworks", async (req, res, next) => {
   const offset = parseInt(req.query.offset);
 
   try {
-    const artworks = await (query ? Artwork.find({ name: query }) : Artwork.find())
+    const artworks = await (query ? Artwork.find({ $text: { $search: query } }) : Artwork.find())
       .skip(offset > 0 ? offset : 0)
       .limit(limit > 0 ? limit : 0);
 

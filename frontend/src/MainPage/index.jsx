@@ -77,7 +77,7 @@ const MainPage = () => {
         <div className="absolute inset-0 container flex">
           <div className="my-auto pl-5 bg-opacity-20 shadow-xl bg-gray-900 backdrop-filter backdrop-blur-sm p-5">
             <h1 className="text-white text-4xl font-bold">Discover</h1>
-            <p className="text-gray-100 text-xl font-medium">Great artwork & Talented artists</p>
+            <p className="text-gray-100 text-xl font-medium">Great Artwork & Talented Artists</p>
           </div>
         </div>
         <img

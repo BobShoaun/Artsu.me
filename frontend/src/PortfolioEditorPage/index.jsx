@@ -22,6 +22,7 @@ const PortfolioEditorPage = () => {
   const [heroLayout, setHeroLayout] = useState(null);
   const [experienceLayout, setExperienceLayout] = useState(null);
   const [projectLayout, setProjectLayout] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("")
 
   const getPortfolio = async () => {
     try {
@@ -54,8 +55,10 @@ const PortfolioEditorPage = () => {
   const savePortfolio = async e => {
     console.log(portfolio)
     e.preventDefault()
+    if (!checkExperienceCompletion()) return 
     portfolio.section.hero.layoutId = heroLayout
     portfolio.section.experience.layoutId = experienceLayout
+    portfolio.section.experience.experiences = experiences
     portfolio.section.project.layoutId = projectLayout
     portfolio.section.project.artworkIds = projects
     const userId = portfolio.userId
@@ -73,6 +76,24 @@ const PortfolioEditorPage = () => {
     alert("Portfolio saved successfully");
   }
 
+  const checkExperienceCompletion = () => {
+    // users shouldn't send empty experience
+    experiences.forEach( exp => {
+      if (!exp.company) {
+        setErrorMsg("* Company cannot be empty.")
+        return false
+      }
+      if(!exp.position) {
+        setErrorMsg("* Position cannot be empty.")
+        return false
+      }
+      if(!exp.description) {
+        setErrorMsg("* Description cannot be empty.")
+        return false
+      }
+    })
+  }
+
   useEffect(getPortfolio, [user._id])
   useEffect(getArtworks, [portfolio])
 
@@ -87,7 +108,6 @@ const PortfolioEditorPage = () => {
   console.log(portfolio)
   // if no value
   
-  console.log(heroLayout, projectLayout, experienceLayout)
   const emptyExperience = {
     company: '',
     position: '',
@@ -109,7 +129,7 @@ const PortfolioEditorPage = () => {
   function displayExperience(experience) {
     // return an existing experience
     return (
-      <div key={experience._id} className="transition-all bg-gray-800 rounded-lg p-5 shadow-lg">
+      <div key={experiences.indexOf(experience)} className="transition-all bg-gray-800 rounded-lg p-5 shadow-lg">
         <div id="portfolio-editor-experience-remove-button">
           <button className=" bg-rose-800 hover:bg-rose-600 text-white text-sm py-1 px-2 mb-10"
                   onClick={e => {
@@ -327,6 +347,7 @@ const PortfolioEditorPage = () => {
                   }} >
             Add Experience
           </button>
+          
 
           <h3 className="mt-10">Select a layout:</h3>
           <div className="container mx-auto flex item-center gap-20 py-5">
@@ -388,15 +409,6 @@ const PortfolioEditorPage = () => {
             })}
           </div>
         
-          <div className="flex container mx-auto my-10">
-          {/* <div className="m-auto">
-              <button 
-                onClick={() => setShowArtworkModal(true)}
-                className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
-                Upload New Artwork
-              </button>
-          </div> */}
-          </div>
           <h3 className="mt-10">Select a layout:</h3>
           <div className="container mx-auto flex item-center gap-20 py-5">
             <div className={`${0 === projectLayout ? "bg-gray-700" : "hover:bg-gray-800"}`}
@@ -428,6 +440,17 @@ const PortfolioEditorPage = () => {
             </div>
             
           </div>
+
+          
+          <div className="flex container mx-auto my-10">
+          <div className="m-auto">
+              <Link 
+                to={`/artworks`}
+                className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
+                Manage All Artworks
+              </Link>
+          </div>
+          </div>
         
         </section>
         
@@ -455,14 +478,21 @@ const PortfolioEditorPage = () => {
             </Link>
           </div>
           <div className="ml-auto mb-5 mr-5">
+            
             <button
             onClick={savePortfolio}
               className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5"
             >
               Save
             </button>
+            
           </div>
+          
         </div>
+        <div className="float-right mr-5">
+              {errorMsg && <em className="text-rose-400 text-sm float-left">{errorMsg}</em>}
+        </div>
+        <br/>
         <Footer />
       </main>
     );

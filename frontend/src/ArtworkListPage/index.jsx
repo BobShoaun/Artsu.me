@@ -42,7 +42,7 @@ const ArtworkListPage = () => {
   const deleteArtwork = async artwork => {
     if (!window.confirm("Are you sure u want to delete " + artwork.name + "?")) return;
     try {
-      const { data } = await axios.delete(`${apiUrl}/users/${user._id}/artworks/${artwork._id}`, {
+      await axios.delete(`${apiUrl}/users/${user._id}/artworks/${artwork._id}`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       getArtworks();

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"; // removed useRef
+import { useEffect, useState, useCallback } from "react"; // removed useRef
 import { Link, useParams } from "react-router-dom";
 
 import { useSelector } from "react-redux";
@@ -25,18 +25,18 @@ const PortfolioPage = () => {
 
   const [portfolio, setPortfolio] = useState(null);
 
-  const getPortfolio = async () => {
+  const getPortfolio = useCallback(async () => {
     try {
       const { data } = await axios.get(`${apiUrl}/users/username/${username}/portfolio`);
       setPortfolio(data);
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [username]);
 
   useEffect(() => {
     getPortfolio();
-  }, [username, apiUrl]);
+  }, [getPortfolio, username]);
 
   // from css tricks https://css-tricks.com/snippets/javascript/lighten-darken-color/
   const lightenDarkenColor = (col, amt) => {

@@ -1,6 +1,6 @@
 import { Link, useHistory } from "react-router-dom";
 import { useAuthentication } from "../hooks/useAuthentication";
-import { useState, useEffect } from "react"; // removed useRef
+import { useState, useEffect, useCallback } from "react"; // removed useRef
 import { Search, Bell } from "react-feather"; // removed Check
 import MessagePanel from "./MessagePanel";
 import "./index.css";
@@ -19,7 +19,7 @@ const Navbar = ({ onSearch, searchInput }) => {
     history.push("/");
   };
 
-  const getMessages = async () => {
+  const getMessages = useCallback(async () => {
     if (!isLoggedIn) return;
     const { data } = await axios.get(`${apiUrl}/users/${user._id}/messages/received`, {
       headers: { Authorization: `Bearer ${accessToken}` },
@@ -28,7 +28,7 @@ const Navbar = ({ onSearch, searchInput }) => {
       .filter(m => !m.hasRead)
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     setMessages(messages);
-  };
+  }, [accessToken, isLoggedIn, user]);
 
   const readMessage = async messageId => {
     if (!isLoggedIn) return;
@@ -44,7 +44,7 @@ const Navbar = ({ onSearch, searchInput }) => {
 
   useEffect(() => {
     getMessages();
-  }, [isLoggedIn]);
+  }, [getMessages, isLoggedIn]);
 
   return (
     <nav className=" bg-gray-800 bg-opacity-80 z-20 py-5 shadow-lg backdrop-filter backdrop-blur-lg fixed top-0 left-0 right-0">

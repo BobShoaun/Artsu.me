@@ -17,6 +17,7 @@ const SearchPage = () => {
   const [artworks, setArtworks] = useState([]);
   const [users, setUsers] = useState([]);
   const [tags, setTags] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const type = useRef("artwork");
   const query = useRef("");
@@ -35,8 +36,10 @@ const SearchPage = () => {
 
   const getUsers = useCallback(async () => {
     try {
+      setLoading(true);
       const { data: users } = await axios.get(`${apiUrl}/users?query=${query.current}`);
       setUsers(users);
+      setLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -44,11 +47,13 @@ const SearchPage = () => {
 
   const getArtworks = useCallback(async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(`${apiUrl}/artworks?query=${query.current}`);
       const artworks = tagId.current
         ? data.filter(art => art.tagIds.includes(tagId.current))
         : data;
       setArtworks(artworks);
+      setLoading(false);
     } catch (e) {
       console.log(e);
     }
@@ -75,7 +80,7 @@ const SearchPage = () => {
     search();
   }, [search, history, getTags]);
 
-  if ((!users.length && !artworks.length) || !tags.length) return <Loading />;
+  if (loading || !tags.length) return <Loading />;
 
   const numResults = type.current === "user" ? users.length : artworks.length;
 

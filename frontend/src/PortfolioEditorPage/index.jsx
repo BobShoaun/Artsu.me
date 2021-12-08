@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Footer from "../components/Footer";
 import { useAuthentication } from "../hooks/useAuthentication";
 import axios from "axios";
@@ -10,6 +10,7 @@ import "./index.css";
 import Navbar from "../components/Navbar";
 
 const PortfolioEditorPage = () => {
+  const history = useHistory();
   const { isLoggedIn, accessToken, user, redirectToLogin } = useAuthentication();
   const [portfolio, setPortfolio] = useState(null);
   const [experiences, setExperiences] = useState([]);

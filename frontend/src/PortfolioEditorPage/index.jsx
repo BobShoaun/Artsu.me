@@ -83,13 +83,13 @@ const PortfolioEditorPage = () => {
     let desFlag = true;
     experiences.forEach(exp => {
       if (!exp.company) {
-        setErrorMsg("* Company cannot be empty in experience.");
+        setErrorMsg("* Company cannot be empty.");
         companyFlag = false;
       } else if (!exp.position) {
-        setErrorMsg("* Position cannot be empty in experience.");
+        setErrorMsg("* Position cannot be empty.");
         posFlag = false;
       } else if (!exp.description) {
-        setErrorMsg("* Description cannot be empty in experience.");
+        setErrorMsg("* Description cannot be empty.");
         desFlag = false;
       }
     });
@@ -225,10 +225,10 @@ const PortfolioEditorPage = () => {
   return (
     <main className="bg-gray-900 pt-20">
       <Navbar></Navbar>
-      <aside className="bg-gray-700 p-4 rounded-md fixed bottom-5 ml-auto right-5 w-auto z-30">
+      <aside className="bg-gray-700 p-4 rounded-md fixed bottom-5 ml-auto right-5 w-52 z-30">
         <Link
           to={`/portfolio/${user.username}`}
-          className="bg-rose-400 hover:bg-rose-500 font-medium text-sm px-4 py-1 rounded-sm block mb-2"
+          className="bg-rose-400 hover:bg-rose-500 mb-2 py-1.5 px-3 block w-full text-sm rounded-sm shadow-lg font-medium transition text-center"
         >
           View portfolio
         </Link>
@@ -238,6 +238,9 @@ const PortfolioEditorPage = () => {
         >
           Save
         </button>
+        <div className="float-right mr-5">
+          {errorMsg && <em className="text-rose-400 text-sm float-left text-center">{errorMsg}</em>}
+        </div>
       </aside>
 
       <section className="dark:text-white container mx-auto pt-20">
@@ -493,10 +496,6 @@ const PortfolioEditorPage = () => {
           </label>
         </h2>
       </section>
-      <div className="float-right mr-5">
-        {errorMsg && <em className="text-rose-400 text-sm float-left">{errorMsg}</em>}
-      </div>
-
       <Footer />
     </main>
   );

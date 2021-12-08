@@ -74,20 +74,30 @@ const PortfolioEditorPage = () => {
 
   const checkExperienceCompletion = () => {
     // users shouldn't send empty experience
+    let companyFlag = true;
+    let posFlag = true;
+    let desFlag = true;
     experiences.forEach( exp => {
       if (!exp.company) {
-        setErrorMsg("* Company cannot be empty.")
-        return false
+        setErrorMsg("* Company cannot be empty in experience.")
+        companyFlag = false
       }
-      if(!exp.position) {
-        setErrorMsg("* Position cannot be empty.")
-        return false
+      else if(!exp.position) {
+        setErrorMsg("* Position cannot be empty in experience.")
+        posFlag = false
       }
-      if(!exp.description) {
-        setErrorMsg("* Description cannot be empty.")
-        return false
+      else if(!exp.description) {
+        setErrorMsg("* Description cannot be empty in experience.")
+        desFlag = false
       }
     })
+    if (companyFlag && posFlag && desFlag) {
+      setErrorMsg("")
+      return true
+    }
+    else {
+      return false
+    }
   }
 
   useEffect(getPortfolio, [user._id])

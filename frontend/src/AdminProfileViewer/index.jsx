@@ -3,31 +3,29 @@ import Footer from "../components/Footer";
 import "./index.css";
 import { Link, useParams } from "react-router-dom";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { apiUrl, defaultAvatarUrl } from "../config";
 import { useAuthentication } from "../hooks/useAuthentication";
-import loading from "../components/Loading";
 import Loading from "../components/Loading";
-import Unauthenticated from "../components/Unauthenticated";
 import Unauthorized from "../components/Unauthorized";
 import { useHistory } from "react-router-dom";
 
 const AdminProfileViewer = () => {
   const history = useHistory();
   const { id } = useParams();
-  const { user: adminUser, accessToken, login, redirectToLogin, isLoggedIn } = useAuthentication();
+  const { user: adminUser, accessToken, redirectToLogin, isLoggedIn } = useAuthentication();
   const [user, setUser] = useState(null);
   const [artworks, setArtworks] = useState(null);
   const [portfolio, setPortfolio] = useState(null);
 
   useEffect(() => {
     if (!isLoggedIn) redirectToLogin();
-  }, [isLoggedIn]);
+  }, [redirectToLogin, isLoggedIn]);
 
 
   //phase2: create method here for API call to update user information
-  const getUser = async () => {
+  const getUser = useCallback(async () => {
     try {
       const { data: user } = await axios.get(`${apiUrl}/users/${id}`);
       setUser(user);
@@ -39,7 +37,7 @@ const AdminProfileViewer = () => {
       console.log(e);
       history.push("/404")
     }
-  };
+  }, [id, history]);
 
   const banUser = async () => {
     const { data } = await axios.patch(
@@ -107,7 +105,7 @@ const AdminProfileViewer = () => {
     console.log("use effect call");
     getUser();
     // getPortfolio();
-  }, []);
+  }, [getUser]);
 
   if (!user || !portfolio || !artworks) {
     console.log("user", user);

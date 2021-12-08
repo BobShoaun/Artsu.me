@@ -31,7 +31,7 @@ const SearchPage = () => {
     } catch (e) {
       console.log(e);
     }
-  }, [apiUrl]);
+  }, []);
 
   const getUsers = useCallback(async () => {
     try {
@@ -40,7 +40,7 @@ const SearchPage = () => {
     } catch (e) {
       console.log(e);
     }
-  }, [apiUrl]);
+  }, []);
 
   const getArtworks = useCallback(async () => {
     try {
@@ -52,7 +52,7 @@ const SearchPage = () => {
     } catch (e) {
       console.log(e);
     }
-  }, [apiUrl]);
+  }, []);
 
   useScrollToTop();
 

@@ -12,7 +12,7 @@ import axios from "axios";
 
 const AdminPanel = () => {
   const dispatch = useDispatch();
-  const { user, login, accessToken, redirectToLogin, isLoggedIn } = useAuthentication();
+  const { user, accessToken, redirectToLogin, isLoggedIn } = useAuthentication();
   const [users, setUsers] = useState([]);
   const [tags, setTags] = useState([]);
   const tagNameInput = useRef(null);
@@ -20,7 +20,7 @@ const AdminPanel = () => {
 
   useEffect(() => {
     if (!isLoggedIn) redirectToLogin();
-  }, [isLoggedIn]);
+  }, [isLoggedIn, redirectToLogin]);
 
 
   //phase2: create method here for API call to update user information

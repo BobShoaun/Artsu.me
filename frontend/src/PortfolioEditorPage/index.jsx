@@ -7,6 +7,7 @@ import { apiUrl } from "../config";
 import Loading from "../components/Loading";
 import Unauthenticated from "../components/Unauthenticated";
 import "./index.css";
+import Navbar from "../components/Navbar";
 
 const PortfolioEditorPage = () => {
   const { isLoggedIn, accessToken, user, redirectToLogin } = useAuthentication();
@@ -80,31 +81,28 @@ const PortfolioEditorPage = () => {
     let companyFlag = true;
     let posFlag = true;
     let desFlag = true;
-    experiences.forEach( exp => {
+    experiences.forEach(exp => {
       if (!exp.company) {
-        setErrorMsg("* Company cannot be empty in experience.")
-        companyFlag = false
+        setErrorMsg("* Company cannot be empty in experience.");
+        companyFlag = false;
+      } else if (!exp.position) {
+        setErrorMsg("* Position cannot be empty in experience.");
+        posFlag = false;
+      } else if (!exp.description) {
+        setErrorMsg("* Description cannot be empty in experience.");
+        desFlag = false;
       }
-      else if(!exp.position) {
-        setErrorMsg("* Position cannot be empty in experience.")
-        posFlag = false
-      }
-      else if(!exp.description) {
-        setErrorMsg("* Description cannot be empty in experience.")
-        desFlag = false
-      }
-    })
+    });
     if (companyFlag && posFlag && desFlag) {
-      setErrorMsg("")
-      return true
+      setErrorMsg("");
+      return true;
+    } else {
+      return false;
     }
-    else {
-      return false
-    }
-  }
+  };
 
-  useEffect(getPortfolio, [getPortfolio, user._id])
-  useEffect(getArtworks, [getArtworks, portfolio])
+  useEffect(getPortfolio, [getPortfolio, user._id]);
+  useEffect(getArtworks, [getArtworks, portfolio]);
 
   useEffect(getPortfolio, [getPortfolio, user]);
   useEffect(getArtworks, [getArtworks, portfolio]);
@@ -225,21 +223,23 @@ const PortfolioEditorPage = () => {
   }
 
   return (
-    <main className="bg-gray-900">
-      <header className="z-20 py-5 shadow-lg bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm sticky top-0">
-        <div className="container mx-auto flex item-center gap-10">
-          <Link to="/" className="dark:text-white text-2xl font-semibold">
-            artsu.me
-          </Link>
-          <h2 className="dark:text-white text-2xl ml-auto">Edit Portfolio</h2>
-          <Link
-            to={`/portfolio/${user.username}`}
-            className="dark:text-white font-semibold text-2xl ml-auto"
-          >
-            {user.name}
-          </Link>
-        </div>
-      </header>
+    <main className="bg-gray-900 pt-20">
+      <Navbar></Navbar>
+      <aside className="bg-gray-700 p-4 rounded-md fixed bottom-5 ml-auto right-5 w-auto z-30">
+        <Link
+          to={`/portfolio/${user.username}`}
+          className="bg-rose-400 hover:bg-rose-500 font-medium text-sm px-4 py-1 rounded-sm block mb-2"
+        >
+          View portfolio
+        </Link>
+        <button
+          onClick={savePortfolio}
+          className="text-gray-900 bg-gray-300 hover:bg-gray-400 py-1.5 px-3 block w-full text-sm rounded-sm shadow-lg font-medium transition"
+        >
+          Save
+        </button>
+      </aside>
+
       <section className="dark:text-white container mx-auto pt-20">
         <h2>1. Colors</h2>
         <div className="container mx-auto flex item-center gap-20 py-10">
@@ -479,7 +479,7 @@ const PortfolioEditorPage = () => {
         </div>
       </section>
 
-      <section className="dark:text-white container mx-auto mt-10" id="chooseLayout">
+      <section className="dark:text-white container mx-auto mt-10 mb-32" id="chooseLayout">
         <h2 className="mb-10">
           5. Contact
           <label className="dark:text-gray-400 mt-1 mb-5 portfolio-editor-contact-visible">
@@ -495,26 +495,6 @@ const PortfolioEditorPage = () => {
       </section>
       <div className="float-right mr-5">
         {errorMsg && <em className="text-rose-400 text-sm float-left">{errorMsg}</em>}
-      </div>
-      <br />
-
-      <div className="flex justify-start" id="buttons">
-        <div className="ml-5 mt-1 mb-5">
-          <Link
-            className="text-gray-900 bg-gray-300 hover:bg-gray-400 py-1.5 px-3 mb-5 text-sm rounded-sm shadow-lg font-medium transition"
-            to={`/portfolio/${user.username}`}
-          >
-            Quit
-          </Link>
-        </div>
-        <div className="ml-auto mb-5 mr-5">
-          <button
-            onClick={savePortfolio}
-            className="text-gray-900 bg-gray-300 hover:bg-gray-400 py-1.5 px-3 mb-5 text-sm rounded-sm shadow-lg font-medium transition"
-          >
-            Save
-          </button>
-        </div>
       </div>
 
       <Footer />

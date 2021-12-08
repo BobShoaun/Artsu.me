@@ -1,12 +1,9 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-//import { users } from "../users.json";
 import "./index.css";
 
 import { Link, useParams } from "react-router-dom";
 
-//replace with API call in phase 2
-import { artworks } from "../artworks.json";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { apiUrl, defaultAvatarUrl } from "../config";

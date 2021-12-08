@@ -5,7 +5,7 @@ import { X } from "react-feather";
 import { useAuthentication } from "../hooks/useAuthentication";
 import axios from "axios";
 import { apiUrl } from "../config";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Loading from "../components/Loading";
 import Unauthorized from "../components/Unauthorized";
 import { useHistory } from "react-router-dom";
@@ -17,7 +17,7 @@ const AdminArtworkViewer = () => {
   // const artwork = artworks.find(artwork => artwork.id === parseInt(id));
   //replace with API call in phase 2
   // const user = users.find(user => user.id === artwork.authorId);
-  const { user: adminUser, accessToken, login, redirectToLogin, isLoggedIn } = useAuthentication();
+  const { user: adminUser, accessToken, redirectToLogin, isLoggedIn } = useAuthentication();
   // const artworkTags = [];
   // artwork.tagIds.forEach(tagid => {
   //   artworkTags.push(tags.find(tag => tag.id === tagid));
@@ -29,11 +29,11 @@ const AdminArtworkViewer = () => {
 
   useEffect(() => {
     if (!isLoggedIn) redirectToLogin();
-  }, [isLoggedIn]);
+  }, [isLoggedIn, redirectToLogin]);
 
 
 
-  const getArtwork = async () => {
+  const getArtwork = useCallback(async () => {
     try {
       console.log("setting artwork...")
       const { data: artwork } = await axios.get(`${apiUrl}/artworks/${id}`);
@@ -52,11 +52,11 @@ const AdminArtworkViewer = () => {
       history.push("/404")
       console.log(e);
     }
-  };
+  }, [id, history]);
 
   const banArt = async () => {
     console.log("id", artwork._id)
-    const { data } = await axios.patch(
+    await axios.patch(
       `${apiUrl}/artworks/${artwork._id}`,
       [
         { op: "replace", path: "/isBanned", value: !artwork.isBanned },
@@ -104,7 +104,7 @@ const AdminArtworkViewer = () => {
 
   useEffect(() => {
     getArtwork();
-  }, []);
+  }, [getArtwork]);
 
 
   if (!user || !artwork || !reportingUsers) {

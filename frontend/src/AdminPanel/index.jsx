@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import { setIsPublic } from "../store/generalSlice";
-import { useScrollToTop } from "../hooks/useScrollToTop";
 import { useAuthentication } from "../hooks/useAuthentication";
 import Unauthorized from "../components/Unauthorized";
 import { apiUrl } from "../config";
@@ -134,13 +133,13 @@ const AdminPanel = () => {
                   </Link>
                 </td>
                 <td className="dark:text-white text-lg mr-3 text-center border-2 p-1">
-                  <Link
-                    to={`${user.avatarUrl}`}
+                  <a
+                    href={user.avatarUrl}
                     key={user.avatarUrl}
                     className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
                   >
                     {user.avatarUrl}
-                  </Link>
+                  </a>
                 </td>
                 <td className="dark:text-white text-lg mr-3 text-center border-2 p-1">
                   {user.isBanned.toString()}
@@ -193,9 +192,6 @@ const AdminPanel = () => {
               <th className="text-white p-1 w-64 border-2">
                 id
               </th>
-              <th className="text-white p-1 w-64 border-2">
-                edit
-              </th>
             </tr>
             </thead>
             <tbody>
@@ -210,12 +206,6 @@ const AdminPanel = () => {
                 </td>
                 <td className="dark:text-white text-lg mr-3 w-128 text-center border-2 p-1">
                   {tag._id}
-                </td>
-                <td className="dark:text-white text-lg mr-3 w-128 text-center border-2 p-1">
-                  <button
-                    className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm text-center">
-                    Edit
-                  </button>
                 </td>
               </tr>
             ))}

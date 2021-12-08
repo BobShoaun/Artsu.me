@@ -1,12 +1,7 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link, useParams } from "react-router-dom";
-//replace with API call in phase 2
-//replace with API call in phase 2
-
 import { X } from "react-feather";
-
-import { useScrollToTop } from "../hooks/useScrollToTop";
 import { useAuthentication } from "../hooks/useAuthentication";
 import axios from "axios";
 import { apiUrl } from "../config";

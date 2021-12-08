@@ -44,16 +44,12 @@ const AdminPanel = () => {
 
   const addTag = async (inputLabel, inputColor) => {
     try {
-      console.log("adding tag...")
-      console.log(inputLabel)
-      console.log(inputColor)
       const { data } = await axios.post(`${apiUrl}/tags`,
         {
           label: inputLabel,
           color: inputColor
         }, { headers: { Authorization: `Bearer ${accessToken}` } });
       tags.push(data)
-      console.log(tags)
       getTags()
     } catch (e) {
       console.log(e);

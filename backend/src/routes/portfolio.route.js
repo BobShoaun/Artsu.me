@@ -32,7 +32,6 @@ router.get("/users/username/:username/portfolio", async (req, res, next) => {
     for (const experience of pf.section.experience.experiences) {
       const artworks = await Artwork.find({ _id: { $in: experience.artworkIds } });
       experience.artworks = artworks;
-      console.log(artworks);
     }
 
     res.send(pf);

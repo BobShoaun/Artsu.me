@@ -102,16 +102,10 @@ const AdminProfileViewer = () => {
 
 
   useEffect(() => {
-    console.log("use effect call");
     getUser();
-    // getPortfolio();
   }, [getUser]);
 
   if (!user || !portfolio || !artworks) {
-    console.log("user", user);
-    console.log("portfolio", portfolio);
-    console.log("artworks", artworks);
-    console.log("returning null");
     return <Loading />;
   }
 

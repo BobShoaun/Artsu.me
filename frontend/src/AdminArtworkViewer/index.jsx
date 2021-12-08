@@ -35,11 +35,8 @@ const AdminArtworkViewer = () => {
 
   const getArtwork = useCallback(async () => {
     try {
-      console.log("setting artwork...")
       const { data: artwork } = await axios.get(`${apiUrl}/artworks/${id}`);
       setArtwork(artwork);
-      console.log(artwork.tags)
-      console.log("setting artwork...")
       const { data: user } = await axios.get(`${apiUrl}/users/${artwork.userId}`);
       setUser(user);
       let reportingUsers = []
@@ -55,7 +52,6 @@ const AdminArtworkViewer = () => {
   }, [id, history]);
 
   const banArt = async () => {
-    console.log("id", artwork._id)
     await axios.patch(
       `${apiUrl}/artworks/${artwork._id}`,
       [
@@ -89,14 +85,13 @@ const AdminArtworkViewer = () => {
   };
 
   const removeTag = async (tagIndex) => {
-    const { data } = await axios.patch(
+    await axios.patch(
       `${apiUrl}/artworks/${id}`,
       [
         { op: "remove", path: `/tagIds/${tagIndex}`},
       ],
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
-    console.log("Data", data)
     getArtwork()
   };
 
@@ -108,15 +103,8 @@ const AdminArtworkViewer = () => {
 
 
   if (!user || !artwork || !reportingUsers) {
-    console.log("checking user and artwork...")
-    console.log("user", user);
-    console.log("artwork", artwork);
-    console.log("returning null");
     return <Loading />;
   }
-
-console.log("reports", artwork.reports)
-  //phase2: create method here for API call to update artwork and/or tags
 
   if (isLoggedIn && adminUser.isAdmin) {
     return (

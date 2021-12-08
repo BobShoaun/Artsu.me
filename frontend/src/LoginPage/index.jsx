@@ -39,7 +39,6 @@ const LoginPage = () => {
       _login(user, accessToken);
 
       const params = new URLSearchParams(history.location.search);
-      console.log(params.get("destination"));
       history.push(params.get("destination") ?? "/");
     } catch (e) {
       setUsernameError("invalid username or password");

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"; // removed useRef
-import { Link, useParams } from "react-router-dom";
+import { useEffect, useState, useCallback } from "react"; // removed useRef
+import { Link, useParams, useHistory } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 import { useScrollToTop } from "../hooks/useScrollToTop";
@@ -14,29 +14,32 @@ import ContactSection from "./ContactSection";
 import HeroSection from "./HeroSection";
 import ExperienceSection from "./ExperienceSection";
 
+import { ArrowLeft } from "react-feather";
 import Loading from "../components/Loading";
 
 const PortfolioPage = () => {
+  const history = useHistory();
   const { username } = useParams();
   const { isPublic } = useSelector(state => state.general);
-  const { accessToken, user, isLoggedIn } = useAuthentication();
+  const { user, isLoggedIn } = useAuthentication(); // removed accessToken
 
   useScrollToTop();
 
   const [portfolio, setPortfolio] = useState(null);
 
-  const getPortfolio = async () => {
+  const getPortfolio = useCallback(async () => {
     try {
       const { data } = await axios.get(`${apiUrl}/users/username/${username}/portfolio`);
       setPortfolio(data);
     } catch (e) {
       console.log(e);
+      history.push("/404");
     }
-  };
+  }, [username, history]);
 
   useEffect(() => {
     getPortfolio();
-  }, [username, apiUrl]);
+  }, [getPortfolio, username]);
 
   // from css tricks https://css-tricks.com/snippets/javascript/lighten-darken-color/
   const lightenDarkenColor = (col, amt) => {
@@ -83,24 +86,34 @@ const PortfolioPage = () => {
         "--secondary-dark": secondary.dark,
       }}
     >
-      <header className="z-20 py-5 shadow-lg bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm fixed top-0 left-0 right-0">
+      {!isPublic && (
+        <header className="bg-gradient-to-r from-rose-500 to-teal-500">
+          <div className="container mx-auto py-3 flex items-center">
+            <Link
+              to="/"
+              className="text-gray-200 text-sm hover:underline flex items-center gap-2 self-center"
+            >
+              <ArrowLeft size={15} />
+              Back to Browse
+            </Link>
+            {isLoggedIn && user._id === portfolio.userId && (
+              <Link
+                to={`/portfolio/editor`}
+                className="ml-auto text-gray-200 text-sm hover:underline"
+              >
+                Edit Portfolio
+              </Link>
+            )}
+          </div>
+        </header>
+      )}
+
+      <header className="z-20 py-5 shadow-lg bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm sticky top-0 left-0 right-0">
         <div className="container mx-auto flex item-center gap-10">
           <a href="#main" className="dark:text-white text-lg font-semibold">
             {portfolio.user.name}
           </a>
-          {!isPublic && (
-            <Link to="/" className="text-gray-200 text-sm hover:underline self-center">
-              Back to Browse
-            </Link>
-          )}
-          {isLoggedIn && user._id === portfolio.userId && (
-            <Link
-              to={`/portfolio/editor`}
-              className="text-gray-200 text-sm hover:underline self-center"
-            >
-              Edit Portfolio
-            </Link>
-          )}
+
           <a
             href="#experiences"
             className="ml-auto text-gray-200 text-sm hover:underline underline-offset"
@@ -116,7 +129,7 @@ const PortfolioPage = () => {
         </div>
       </header>
 
-      {portfolio.section.hero.isVisible && <HeroSection portfolio={portfolio} />}
+      <HeroSection portfolio={portfolio} />
       {portfolio.section.experience.isVisible && <ExperienceSection portfolio={portfolio} />}
       {portfolio.section.project.isVisible && <ProjectSection portfolio={portfolio} />}
       {portfolio.section.contact.isVisible && <ContactSection portfolio={portfolio} />}

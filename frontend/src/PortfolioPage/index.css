@@ -6,10 +6,6 @@
   grid-template-columns: auto 1fr;
 }
 
-.artwork {
-  max-width: 15em;
-}
-
 .portfolio {
   --primary: #ffffff;
   --primary-light: #ffffff;
@@ -21,7 +17,7 @@
 }
 
 .project:is(:hover, :focus) {
-  background-image: linear-gradient(to bottom right, var(--primary-dark), var(--secondary-dark));
+  background-image: linear-gradient(to bottom right, var(--primary), var(--secondary));
 }
 
 .send-button {

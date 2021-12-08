@@ -1,5 +1,6 @@
+import { defaultAvatarUrl } from "../config";
 const HeroSection = ({ portfolio }) => {
-  const layoutId = 2;
+  const layoutId = portfolio.section.hero.layoutId ?? 2;
 
   const displayHero = () => {
     switch (layoutId) {
@@ -23,7 +24,8 @@ const HeroSection = ({ portfolio }) => {
               ></div>
               <img
                 className="rounded-lg shadow-xl z-10 relative"
-                src={portfolio.user.avatarUrl}
+                src={portfolio.user.avatarUrl || defaultAvatarUrl}
+                onError={e => (e.target.src = defaultAvatarUrl)}
                 alt={`${portfolio.user.name} avatar`}
               />
               <div

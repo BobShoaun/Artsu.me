@@ -1,12 +1,15 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useHistory } from "react-router";
 
 import { apiUrl } from "../config";
 import axios from "axios";
+import { useScrollToTop } from "../hooks/useScrollToTop";
 import ArtsumeBanner from "../components/ArtsumeBanner";
+import Loading from "../components/Loading";
+import UserCard from "../components/UserCard";
+import ArtworkCard from "../components/ArtworkCard";
 
 const SearchPage = () => {
   const history = useHistory();
@@ -14,6 +17,7 @@ const SearchPage = () => {
   const [artworks, setArtworks] = useState([]);
   const [users, setUsers] = useState([]);
   const [tags, setTags] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const type = useRef("artwork");
   const query = useRef("");
@@ -21,35 +25,51 @@ const SearchPage = () => {
 
   const searchInput = useRef(null);
 
-  const getTags = async () => {
+  const getTags = useCallback(async () => {
     try {
       const { data: tags } = await axios.get(`${apiUrl}/tags`);
       setTags(tags);
     } catch (e) {
       console.log(e);
     }
-  };
+  }, []);
 
-  const getUsers = async () => {
+  const getUsers = useCallback(async () => {
     try {
+      setLoading(true);
       const { data: users } = await axios.get(`${apiUrl}/users?query=${query.current}`);
       setUsers(users);
+      setLoading(false);
     } catch (e) {
       console.log(e);
     }
-  };
+  }, []);
 
-  const getArtworks = async () => {
+  const getArtworks = useCallback(async () => {
     try {
+      setLoading(true);
       const { data } = await axios.get(`${apiUrl}/artworks?query=${query.current}`);
       const artworks = tagId.current
         ? data.filter(art => art.tagIds.includes(tagId.current))
         : data;
       setArtworks(artworks);
+      setLoading(false);
     } catch (e) {
       console.log(e);
     }
-  };
+  }, []);
+
+  useScrollToTop();
+
+  const search = useCallback(() => {
+    if (type.current === "user") getUsers();
+    else getArtworks();
+    const params = new URLSearchParams();
+    params.set("query", query.current);
+    params.set("type", type.current);
+    params.set("tag", tagId.current);
+    history.push(`/search?${params}`);
+  }, [history, getUsers, getArtworks]);
 
   useEffect(() => {
     getTags();
@@ -58,17 +78,9 @@ const SearchPage = () => {
     query.current = params.get("query") || "";
     tagId.current = params.get("tag") || "";
     search();
-  }, [history]);
+  }, [search, history, getTags]);
 
-  const search = () => {
-    if (type.current === "user") getUsers();
-    else getArtworks();
-    const params = new URLSearchParams();
-    params.set("query", query.current);
-    params.set("type", type.current);
-    params.set("tag", tagId.current);
-    history.push(`/search?${params}`);
-  };
+  if (loading || !tags.length) return <Loading />;
 
   const numResults = type.current === "user" ? users.length : artworks.length;
 
@@ -90,7 +102,8 @@ const SearchPage = () => {
                 tagId.current = tag._id;
                 search();
               }}
-              className={`text-gray-900 cursor-pointer font-semibold text-sm bg-${tag.color} rounded-sm px-2 py-1`}
+              style={{ background: tag.color }}
+              className={`text-gray-900 cursor-pointer font-semibold text-sm rounded-sm px-2 py-1`}
             >
               #{tag.label}
             </button>
@@ -145,40 +158,8 @@ const SearchPage = () => {
 
         <div className="flex flex-wrap gap-x-2 gap-y-8 justify-evenly">
           {type.current === "user"
-            ? users.map(user => (
-                <Link
-                  to={`/portfolio/${user._id}`}
-                  key={user._id}
-                  className="hover:bg-gray-800 rounded-md transition-colors p-6 mx-3"
-                >
-                  <img
-                    className="w-48 h-48 object-cover shadow-xl mb-3 mx-auto"
-                    src={user.avatarUrl}
-                    alt={`${user._id}`}
-                  />
-                  <div className="text-center mx-auto max-w-sm">
-                    <h2 className="dark:text-white text-lg font-semibold">{user.name}</h2>
-                    <p className="dark:text-gray-300 text-sm">{user.username}</p>
-                  </div>
-                </Link>
-              ))
-            : artworks.map(artwork => (
-                <Link
-                  to={`/artwork/${artwork._id}`}
-                  key={artwork._id}
-                  className={"hover:bg-gray-800 p-6 transition-colors rounded-md"}
-                >
-                  <img
-                    className="h-52 shadow-xl mb-3 mx-auto"
-                    src={artwork.imageUrl}
-                    alt={artwork.name}
-                  />
-                  <div className="text-center mx-auto max-w-sm">
-                    <h2 className="dark:text-white text-lg font-semibold">{artwork.name}</h2>
-                    <p className="dark:text-gray-300 text-sm">{artwork.summary}</p>
-                  </div>
-                </Link>
-              ))}
+            ? users.map(user => <UserCard key={user._id} user={user} />)
+            : artworks.map(artwork => <ArtworkCard key={artwork._id} artwork={artwork} />)}
         </div>
       </div>
       <ArtsumeBanner />

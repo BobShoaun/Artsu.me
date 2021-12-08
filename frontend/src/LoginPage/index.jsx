@@ -1,5 +1,5 @@
 import { Link, useHistory } from "react-router-dom";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useAuthentication } from "../hooks/useAuthentication";
 import ArtsumeModal from "../components/ArtsumeModal";
 import { apiUrl } from "../config";
@@ -11,18 +11,10 @@ const LoginPage = () => {
 
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
-  const { accessToken, user, login: _login } = useAuthentication();
+  const { login: _login } = useAuthentication();
 
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-
-  useEffect(() => {
-    // redirect to main page if logged in
-    if (accessToken && user) {
-      history.push("/");
-      return;
-    }
-  }, []);
 
   const login = async e => {
     e.preventDefault();

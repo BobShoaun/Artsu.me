@@ -1,12 +1,12 @@
 import { Link, useHistory } from "react-router-dom";
 import { useAuthentication } from "../hooks/useAuthentication";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useCallback } from "react"; // removed useRef
 import { Search, Bell } from "react-feather"; // removed Check
 import MessagePanel from "./MessagePanel";
 import "./index.css";
 
 import axios from "axios";
-import { apiUrl } from "../config";
+import { apiUrl, defaultAvatarUrl } from "../config";
 import { User, LogOut, Layout, Image, Users } from "react-feather";
 
 const Navbar = ({ onSearch, searchInput }) => {
@@ -19,7 +19,7 @@ const Navbar = ({ onSearch, searchInput }) => {
     history.push("/");
   };
 
-  const getMessages = async () => {
+  const getMessages = useCallback(async () => {
     if (!isLoggedIn) return;
     const { data } = await axios.get(`${apiUrl}/users/${user._id}/messages/received`, {
       headers: { Authorization: `Bearer ${accessToken}` },
@@ -28,11 +28,11 @@ const Navbar = ({ onSearch, searchInput }) => {
       .filter(m => !m.hasRead)
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     setMessages(messages);
-  };
+  }, [accessToken, isLoggedIn, user]);
 
   const readMessage = async messageId => {
     if (!isLoggedIn) return;
-    const { data } = await axios.patch(
+    await axios.patch(
       `${apiUrl}/users/${user._id}/messages/${messageId}/remove`,
       {},
       {
@@ -44,7 +44,7 @@ const Navbar = ({ onSearch, searchInput }) => {
 
   useEffect(() => {
     getMessages();
-  }, [isLoggedIn]);
+  }, [getMessages, isLoggedIn]);
 
   return (
     <nav className=" bg-gray-800 bg-opacity-80 z-20 py-5 shadow-lg backdrop-filter backdrop-blur-lg fixed top-0 left-0 right-0">
@@ -91,7 +91,8 @@ const Navbar = ({ onSearch, searchInput }) => {
               <p className="font-semibold z-10">{user.name}</p>
               <img
                 className="rounded-full w-10 h-10 object-cover z-10"
-                src={user.avatarUrl}
+                src={user.avatarUrl || defaultAvatarUrl}
+                onError={e => (e.target.src = defaultAvatarUrl)}
                 alt={`${user.name} avatar`}
               />
               <div className="dropdown opacity-0 absolute py-1 right-0 bg-gray-900 rounded-sm">

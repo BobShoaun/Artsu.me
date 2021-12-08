@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 import store from "./store";
 import { Provider } from "react-redux";
@@ -14,9 +14,8 @@ import SearchPage from "./SearchPage";
 import AdminPanel from "./AdminPanel";
 import AdminProfileViewer from "./AdminProfileViewer";
 import AdminArtworkViewer from "./AdminArtworkViewer";
-import UploadImagePage from "./UploadImagePage";
-import UploadAvatarPage from "./UploadAvatarPage";
 import ArtworkListPage from "./ArtworkListPage";
+import NotFound from "./components/NotFound";
 
 const App = () => {
   return (
@@ -24,18 +23,20 @@ const App = () => {
       <main className="dark">
         <Router>
           <Switch>
-            <Route path="/portfolio/editor" component={PortfolioEditorPage} />
-            <Route path="/portfolio/:username" component={PortfolioPage} />
-            <Route path="/artwork/:id" component={ArtworkPage} />
-            <Route path="/login" component={LoginPage} />
-            <Route path="/register" component={RegisterPage} />
-            <Route path="/profile" component={ProfilePage} />
-            <Route path="/artworks" component={ArtworkListPage} />
-            <Route path="/search" component={SearchPage} />
-            <Route path="/admin/artwork/:id" component={AdminArtworkViewer} />
-            <Route path="/admin/:username" component={AdminProfileViewer} />
-            <Route path="/admin" component={AdminPanel} />
-            <Route path="/" component={MainPage} />
+            <Route exact path="/portfolio/editor" component={PortfolioEditorPage} />
+            <Route exact path="/portfolio/:username" component={PortfolioPage} />
+            <Route exact path="/artwork/:id" component={ArtworkPage} />
+            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/register" component={RegisterPage} />
+            <Route exact path="/profile" component={ProfilePage} />
+            <Route exact path="/artworks" component={ArtworkListPage} />
+            <Route exact path="/search" component={SearchPage} />
+            <Route exact path="/admin/artwork/:id" component={AdminArtworkViewer} />
+            <Route exact path="/admin/:id" component={AdminProfileViewer} />
+            <Route exact path="/admin" component={AdminPanel} />
+            <Route exact path="/" component={MainPage} />
+            <Route exact path="/404" component={NotFound} />
+            <Redirect to="/404" />
           </Switch>
         </Router>
       </main>

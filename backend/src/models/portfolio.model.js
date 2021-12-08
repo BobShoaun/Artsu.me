@@ -16,45 +16,19 @@ const artworkArtistValidator = {
   message: ({ value }) => `${value} userId does not belong to portfolio's userId`,
 };
 
-// TODO: check if duplicate artworkId
-
-// const experience = new Schema(
-//   {
-//     company: { type: String },
-//     position: { type: String },
-//     startDate: { type: Date },
-//     endDate: { type: Date },
-//     description: { type: String },
-//     artworkIds: [
-//       {
-//         type: Schema.ObjectId,
-//         ref: "artworks",
-//         validate: artworkExistValidator,
-//       },
-//     ],
-//   },
-//   { versionKey: false, toJSON: { virtuals: true }, toObject: { virtuals: true } }
-// );
-
-// experience.virtual("artworks", {
-//   ref: "artworks",
-//   localField: "artworkIds",
-//   foreignField: "_id",
-// });
-
 const portfolio = new Schema(
   {
     userId: { type: Schema.ObjectId, required: true, ref: "users", unique: true, immutable: true },
     color: {
-      primary: { type: String, required: true, default: "#ffffff" },
-      secondary: { type: String, required: true, default: "#ffffff" },
-      highlight: { type: String, required: true, default: "#ffffff" },
+      primary: { type: String, required: true, default: "#FB7185" },
+      secondary: { type: String, required: true, default: "#14B8A6" },
+      highlight: { type: String, required: true, default: "#F59E0B" },
     },
     section: {
       hero: {
-        layoutId: { type: Number },
-        heading: { type: String },
-        subtitle: { type: String },
+        layoutId: { type: Number, default: 0 },
+        heading: { type: String, default: "" },
+        subtitle: { type: String, default: "" },
         isVisible: { type: Boolean, required: true, default: true },
       },
       about: {
@@ -62,7 +36,7 @@ const portfolio = new Schema(
         isVisible: { type: Boolean, required: true, default: true },
       },
       experience: {
-        layoutId: { type: Number },
+        layoutId: { type: Number, default: 0 },
         experiences: [
           {
             company: { type: String },
@@ -82,7 +56,7 @@ const portfolio = new Schema(
         isVisible: { type: Boolean, required: true, default: false },
       },
       project: {
-        layoutId: Number,
+        layoutId: { Number, default: 0 },
         artworkIds: [
           {
             type: Schema.ObjectId,
@@ -112,11 +86,4 @@ portfolio.virtual("section.project.artworks", {
   localField: "section.project.artworkIds",
   foreignField: "_id",
 });
-
-// portfolio.virtual("section.experience.experiences", {
-//   ref: "experiences",
-//   localField: "section.experience.experiences",
-//   foreignField: "_id",
-// });
-
 export default portfolio;

@@ -21,13 +21,12 @@ const UploadArtworkModal = ({ onClose }) => {
     try {
       const { data: tags } = await axios.get(`${apiUrl}/tags`);
       setTags(tags);
-      console.log(tags);
     } catch (e) {
       console.log(e);
     }
   };
 
-  useEffect(() => getTags(), [apiUrl]);
+  useEffect(() => getTags(), []);
 
   const upload = async e => {
     e.preventDefault();
@@ -51,8 +50,8 @@ const UploadArtworkModal = ({ onClose }) => {
     formData.append("name", title);
     formData.append("summary", summary);
     formData.append("description", description);
-    formData.append("tagIds", tagIds);
-
+    formData.append("tagIds", JSON.stringify(tagIds));
+    
     try {
       const response = await axios.post(`${apiUrl}/users/${user._id}/artworks`, formData, {
         headers: { Authorization: `Bearer ${accessToken}` },

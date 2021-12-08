@@ -143,48 +143,17 @@ Run backend `npm run backend`
 
 ## Profile Page
 
-### Access
+1. Update your name or username by changing the value and pressing ‘update info’
+2. Update your password by entering it into the ‘new password’ and ‘confirm password’ boxes, and pressing ‘change password’
+3. Change your avatar by pressing ‘update avatar’, selecting an image from your computer, and clicking ‘upload’.
+4. Access the portfolio editor from the button on the bottom of the page.
 
-1. When Logged in as a user, click on your avatar and select profile.
 
-### Features
-
-From this page users can:
-
-- view their artworks
-- view their email
-- access the upload artwork tool
-- access the upload avatar tool
-- change their password
-- change their email
-- change their name
-
-## UploadAvatarPage
-
-### Access
-
-1. When Logged in as a user, click on your avatar and select profile.
-2. Click Upload New Avatar.
-
-### Features
-
-From this page users can:
-
-- Upload an image to be their new avatar.
-
-## UploadImagePage
-
-### Access
-
-1. When Logged in as a user, click on your avatar and select profile.
-2. Click Upload New Artwork.
-
-### Features
-
-From this page users can:
-
-- Upload an image to be their new avatar.
-  - Users must provide a summary, description, and title of the artwork to upload.
+## Artworks Page
+1. Upload new artworks by pressing ‘upload artwork’ and then selecting an image, setting a title, summary, and description, choosing the appropriate tags for your piece of artwork, and pressing upload.
+2. Click on the ‘delete’ button to delete a piece of artwork.
+3. Click on the ‘edit’ button to edit a piece of artwork. You can change the title, summary, description, and tags (everything but the image).
+4. Click the ‘view’ button to go to the artwork page for a piece of artwork.
 
 # Admin instructions
 

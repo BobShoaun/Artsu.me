@@ -1,14 +1,15 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useHistory } from "react-router";
 
-import { apiUrl, defaultAvatarUrl } from "../config";
+import { apiUrl } from "../config";
 import axios from "axios";
 import { useScrollToTop } from "../hooks/useScrollToTop";
 import ArtsumeBanner from "../components/ArtsumeBanner";
 import Loading from "../components/Loading";
+import UserCard from "../components/UserCard";
+import ArtworkCard from "../components/ArtworkCard";
 
 const SearchPage = () => {
   const history = useHistory();
@@ -151,41 +152,8 @@ const SearchPage = () => {
 
         <div className="flex flex-wrap gap-x-2 gap-y-8 justify-evenly">
           {type.current === "user"
-            ? users.map(user => (
-                <Link
-                  to={`/portfolio/${user._id}`}
-                  key={user._id}
-                  className="hover:bg-gray-800 rounded-md transition-colors p-6 mx-3"
-                >
-                  <img
-                    className="w-48 h-48 object-cover shadow-xl mb-3 mx-auto"
-                    src={user.avatarUrl || defaultAvatarUrl}
-                    onError={e => (e.target.src = defaultAvatarUrl)}
-                    alt={`${user._id}`}
-                  />
-                  <div className="text-center mx-auto max-w-sm">
-                    <h2 className="dark:text-white text-lg font-semibold">{user.name}</h2>
-                    <p className="dark:text-gray-300 text-sm">{user.username}</p>
-                  </div>
-                </Link>
-              ))
-            : artworks.map(artwork => (
-                <Link
-                  to={`/artwork/${artwork._id}`}
-                  key={artwork._id}
-                  className={"hover:bg-gray-800 p-6 transition-colors rounded-md"}
-                >
-                  <img
-                    className="h-52 shadow-xl mb-3 mx-auto"
-                    src={artwork.imageUrl}
-                    alt={artwork.name}
-                  />
-                  <div className="text-center mx-auto max-w-sm">
-                    <h2 className="dark:text-white text-lg font-semibold">{artwork.name}</h2>
-                    <p className="dark:text-gray-300 text-sm">{artwork.summary}</p>
-                  </div>
-                </Link>
-              ))}
+            ? users.map(user => <UserCard key={user._id} user={user} />)
+            : artworks.map(artwork => <ArtworkCard key={artwork._id} artwork={artwork} />)}
         </div>
       </div>
       <ArtsumeBanner />

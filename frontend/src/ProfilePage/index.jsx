@@ -4,7 +4,7 @@ import "./index.css";
 
 import { Link } from "react-router-dom"; // removed useParams as it is unused
 import UploadAvatarModal from "./UploadAvatarModal";
-import { useState, useRef } from "react"; // removed useEffect
+import { useState, useRef, useEffect } from "react"; // removed useEffect
 
 import { useAuthentication } from "../hooks/useAuthentication";
 import axios from "axios";
@@ -13,7 +13,7 @@ import { apiUrl, defaultAvatarUrl } from "../config";
 import Unauthenticated from "../components/Unauthenticated";
 
 const ProfilePage = () => {
-  const { isLoggedIn, accessToken, user, login } = useAuthentication(); // removed redirectToLogin
+  const { isLoggedIn, accessToken, user, login, redirectToLogin } = useAuthentication(); // removed redirectToLogin
   const [showAvatarModal, setShowAvatarModal] = useState(false);
 
   const nameInput = useRef(null);
@@ -22,6 +22,10 @@ const ProfilePage = () => {
   const confirmPasswordInput = useRef(null);
   const [passwordError, setPasswordError] = useState("");
   const [nameError, setNameError] = useState("");
+
+  useEffect(() => {
+    if (!isLoggedIn) redirectToLogin();
+  }, [redirectToLogin, isLoggedIn]);
 
   const updateInfo = async e => {
     e.preventDefault();

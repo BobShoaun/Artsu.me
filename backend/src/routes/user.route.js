@@ -26,7 +26,11 @@ router.get("/users", async (req, res, next) => {
   const offset = parseInt(req.query.offset);
 
   try {
-    const users = await (query ? User.find({ $text: { $search: query } }) : User.find())
+    const users = await (query
+      ? User.find({ $text: { $search: query }, isBanned: false })
+      : User.find({ isBanned: false })
+    )
+      .sort({ isFeatured: -1 })
       .skip(offset > 0 ? offset : 0)
       .limit(limit > 0 ? limit : 0);
 

@@ -107,7 +107,7 @@ router.get("/artworks", async (req, res, next) => {
       { $sort: { length: -1 } },
     ])
       .skip(offset > 0 ? offset : 0)
-      .limit(limit > 0 ? limit : 1);
+      .limit(limit > 0 ? limit : Number.POSITIVE_INFINITY);
 
     res.send(artworks);
   } catch (e) {

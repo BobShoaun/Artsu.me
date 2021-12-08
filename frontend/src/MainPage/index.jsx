@@ -12,6 +12,7 @@ import axios from "axios";
 import { apiUrl, defaultAvatarUrl } from "../config";
 
 import ArtsumeBanner from "../components/ArtsumeBanner";
+import UserCard from "../components/UserCard";
 
 import { useHistory } from "react-router";
 
@@ -77,7 +78,9 @@ const MainPage = () => {
         <div className="absolute inset-0 container flex">
           <div className="my-auto pl-5 bg-opacity-20 shadow-xl bg-gray-900 backdrop-filter backdrop-blur-sm p-5">
             <h1 className="text-white text-4xl font-bold">Discover</h1>
-            <p className="text-gray-100 text-xl font-medium">Great Artwork & Talented Artists</p>
+            <p className="text-gray-100 text-xl font-medium">
+              Great Artwork &#38; Talented Artists
+            </p>
           </div>
         </div>
         <img
@@ -143,38 +146,10 @@ const MainPage = () => {
       <h2 className="text-gray-200 text-lg mx-auto container font-light py-2 mb-5">
         Top Artists / Users:
       </h2>
-      <section className="mb-14 container mx-auto flex flex-wrap items-center justify-evenly gap-y-3 gap-x-1">
-        {users
-          .filter(user => !user.isBanned)
-          .map(user => (
-            <Link
-              to={`/portfolio/${user.username}`}
-              key={user._id}
-              className={`mx-auto ${
-                user.featured
-                  ? "bg-gradient-to-br hover:from-fuchsia-500 hover:to-emerald-500"
-                  : "hover:bg-gray-800"
-              }  rounded-lg transition-all p-4 cursor-pointer`}
-            >
-              {user.isFeatured && (
-                <h3 className="underline-offset text-white text-sm font-semibold underline mb-2">
-                  Featured
-                </h3>
-              )}
-              <div className="mb-2">
-                <img
-                  className="main-page-avatar shadow-lg rounded-sm w-48 h-48 object-cover"
-                  src={user.avatarUrl || defaultAvatarUrl}
-                  onError={e => (e.target.src = defaultAvatarUrl)}
-                  alt={`${user.name} avatar`}
-                />
-              </div>
-              <div className="px-2 text-center">
-                <h2 className="dark:text-white font-semibold text-lg">{user.name}</h2>
-                <p className="dark:text-gray-200 text-sm">{user.username}</p>
-              </div>
-            </Link>
-          ))}
+      <section className="mb-14 container mx-auto flex flex-wrap items-center justify-evenly gap-y-4 gap-x-1">
+        {users.map(user => (
+          <UserCard user={user} />
+        ))}
       </section>
 
       <div className="text-center mb-20">

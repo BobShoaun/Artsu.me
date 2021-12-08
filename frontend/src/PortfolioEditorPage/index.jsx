@@ -290,6 +290,7 @@ const PortfolioEditorPage = () => {
               <img
                 className="cursor-pointer mx-1 my-5 h-20"
                 src="http://res.cloudinary.com/artsu-me/image/upload/v1638859308/tqxu5yt4vk7mx4jrrixx.png"
+                alt="layout 1"
               />
             </div>
             <div className="dark:text-white text-xs text-center my-5">layout 1</div>
@@ -302,6 +303,7 @@ const PortfolioEditorPage = () => {
               <img
                 className="cursor-pointer mx-1 my-5 h-20"
                 src="http://res.cloudinary.com/artsu-me/image/upload/v1638860134/gpjdxg5kundpoyaclxet.png"
+                alt="layout 2"
               />
             </div>
             <div className="dark:text-white text-xs text-center my-5">layout 2</div>
@@ -314,6 +316,7 @@ const PortfolioEditorPage = () => {
               <img
                 className=" cursor-pointer mx-2 my-5 h-20"
                 src="http://res.cloudinary.com/artsu-me/image/upload/v1638860736/tepx7rjuiwfyhtcynggj.png"
+                alt="layout 3"
               />
             </div>
             <div className="dark:text-white text-xs text-center my-5">layout 3</div>
@@ -359,6 +362,7 @@ const PortfolioEditorPage = () => {
             <img
               className=" cursor-pointer mx-5 my-5 h-20"
               src="http://res.cloudinary.com/artsu-me/image/upload/v1638863729/uqadikxkjeojoye89zmv.png"
+              alt="layout 1"
             />
             <div className="dark:text-white text-xs text-center my-5">layout 1</div>
           </div>
@@ -369,6 +373,7 @@ const PortfolioEditorPage = () => {
             <img
               className=" items-center cursor-pointer mx-5 my-5 h-20"
               src="http://res.cloudinary.com/artsu-me/image/upload/v1638863953/faiesnys3xjrfhcinld8.png"
+              alt="layout 2"
             />
             <div className="dark:text-white text-xs text-center my-5">layout 2</div>
           </div>
@@ -434,6 +439,7 @@ const PortfolioEditorPage = () => {
             <img
               className=" cursor-pointer mx-5 my-5 h-20"
               src="http://res.cloudinary.com/artsu-me/image/upload/v1638864064/n1fz5atyefq3zcony0mf.png"
+              alt="layout 1"
             />
             <div className="dark:text-white text-xs text-center my-5">layout 1</div>
           </div>
@@ -444,6 +450,7 @@ const PortfolioEditorPage = () => {
             <img
               className=" items-center cursor-pointer mx-5 my-5 h-20"
               src="http://res.cloudinary.com/artsu-me/image/upload/v1638909073/k7dr6fdjwvej7jpcdk2g.png"
+              alt="layout 2"
             />
             <div className="dark:text-white text-xs text-center my-5">layout 2</div>
           </div>
@@ -454,6 +461,7 @@ const PortfolioEditorPage = () => {
             <img
               className=" items-center cursor-pointer mx-5 my-5 h-20"
               src="http://res.cloudinary.com/artsu-me/image/upload/v1638909099/scqallfnjvxjwf8civf6.png"
+              alt="layout 3"
             />
             <div className="dark:text-white text-xs text-center my-5">layout 3</div>
           </div>

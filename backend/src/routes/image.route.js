@@ -7,6 +7,8 @@ const multipart = connectMultiparty();
 
 const router = express.Router();
 
+// mainly for testing uploading and deleting image in cloudinary
+
 router.post("/images", multipart, uploadImage, (req, res) => {
   res.send({ id: req.imageId, url: req.imageUrl });
 });

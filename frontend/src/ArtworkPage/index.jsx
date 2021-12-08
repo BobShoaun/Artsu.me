@@ -1,6 +1,6 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { Link, useParams } from "react-router-dom"; // removed useHistory 
+import { Link, useParams } from "react-router-dom"; // removed useHistory
 import ImageStage from "../components/ImageStage";
 import { useState, useEffect, useCallback } from "react";
 import { Maximize } from "react-feather";
@@ -14,9 +14,11 @@ import ReportModal from "./ReportModal";
 
 import { apiUrl } from "../config";
 import axios from "axios";
+import { useHistory } from "react-router";
 
 const ArtworkPage = () => {
   const { id } = useParams();
+  const history = useHistory();
 
   const [artwork, setArtwork] = useState(null);
   const [artworkTags, setArtworkTags] = useState([]);
@@ -43,8 +45,9 @@ const ArtworkPage = () => {
       );
     } catch (e) {
       console.log(e);
+      history.push("/404");
     }
-  }, [id]);
+  }, [id, history]);
 
   useEffect(() => getArtwork(), [getArtwork, id]);
 

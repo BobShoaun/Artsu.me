@@ -148,7 +148,7 @@ const MainPage = () => {
       </h2>
       <section className="mb-14 container mx-auto flex flex-wrap items-center justify-evenly gap-y-4 gap-x-1">
         {users.map(user => (
-          <UserCard user={user} />
+          <UserCard key={user._id} user={user} />
         ))}
       </section>
 

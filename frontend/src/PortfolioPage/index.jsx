@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react"; // removed useRef
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 import { useScrollToTop } from "../hooks/useScrollToTop";
@@ -18,6 +18,7 @@ import { ArrowLeft } from "react-feather";
 import Loading from "../components/Loading";
 
 const PortfolioPage = () => {
+  const history = useHistory();
   const { username } = useParams();
   const { isPublic } = useSelector(state => state.general);
   const { user, isLoggedIn } = useAuthentication(); // removed accessToken
@@ -33,8 +34,9 @@ const PortfolioPage = () => {
       console.log("portfolio loaded", data);
     } catch (e) {
       console.log(e);
+      history.push("/404");
     }
-  }, [username]);
+  }, [username, history]);
 
   useEffect(() => {
     getPortfolio();

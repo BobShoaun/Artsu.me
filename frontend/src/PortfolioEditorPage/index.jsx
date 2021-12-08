@@ -2,13 +2,10 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import { useAuthentication } from "../hooks/useAuthentication";
-import UploadArtworkModal from "../ArtworkListPage/UploadArtworkModal";
-
 import axios from "axios";
 import { apiUrl } from "../config";
 import Loading from "../components/Loading";
 import Unauthenticated from "../components/Unauthenticated";
-
 import "./index.css";
 
 const PortfolioEditorPage = () => {
@@ -18,10 +15,10 @@ const PortfolioEditorPage = () => {
   const [experiences, setExperiences] = useState([]);
   const [artworks, setArtworks] = useState([]);
   const [projects, setProjects] = useState([])
-  const [showArtworkModal, setShowArtworkModal] = useState(false);
   const [heroLayout, setHeroLayout] = useState(null);
   const [experienceLayout, setExperienceLayout] = useState(null);
   const [projectLayout, setProjectLayout] = useState(null);
+  const [errorMsg, setErrorMsg] = useState("")
 
   const getPortfolio = async () => {
     try {
@@ -54,8 +51,10 @@ const PortfolioEditorPage = () => {
   const savePortfolio = async e => {
     console.log(portfolio)
     e.preventDefault()
+    if (!checkExperienceCompletion()) return 
     portfolio.section.hero.layoutId = heroLayout
     portfolio.section.experience.layoutId = experienceLayout
+    portfolio.section.experience.experiences = experiences
     portfolio.section.project.layoutId = projectLayout
     portfolio.section.project.artworkIds = projects
     const userId = portfolio.userId
@@ -73,6 +72,24 @@ const PortfolioEditorPage = () => {
     alert("Portfolio saved successfully");
   }
 
+  const checkExperienceCompletion = () => {
+    // users shouldn't send empty experience
+    experiences.forEach( exp => {
+      if (!exp.company) {
+        setErrorMsg("* Company cannot be empty.")
+        return false
+      }
+      if(!exp.position) {
+        setErrorMsg("* Position cannot be empty.")
+        return false
+      }
+      if(!exp.description) {
+        setErrorMsg("* Description cannot be empty.")
+        return false
+      }
+    })
+  }
+
   useEffect(getPortfolio, [user._id])
   useEffect(getArtworks, [portfolio])
 
@@ -87,7 +104,6 @@ const PortfolioEditorPage = () => {
   console.log(portfolio)
   // if no value
   
-  console.log(heroLayout, projectLayout, experienceLayout)
   const emptyExperience = {
     company: '',
     position: '',
@@ -109,7 +125,7 @@ const PortfolioEditorPage = () => {
   function displayExperience(experience) {
     // return an existing experience
     return (
-      <div key={experience._id} className="transition-all bg-gray-800 rounded-lg p-5 shadow-lg">
+      <div key={experiences.indexOf(experience)} className="transition-all bg-gray-800 rounded-lg p-5 shadow-lg">
         <div id="portfolio-editor-experience-remove-button">
           <button className=" bg-rose-800 hover:bg-rose-600 text-white text-sm py-1 px-2 mb-10"
                   onClick={e => {
@@ -133,18 +149,6 @@ const PortfolioEditorPage = () => {
             </label>
             <input className="border" type="text" defaultValue={experience.position}
                    onChange={e => experience.position = e.target.value}/>
-            {/* <label className="dark:text-gray-200 text-sm text-right mt-2">
-              Start Date: 
-            </label>
-            <input className="bg-transparent border px-1" type="date" 
-                   defaultValue={experience.startDate.split('T')[0]}
-                   onChange={e => experience.startDate = e.target.value}/>
-            <label className="dark:text-gray-200 text-sm text-right mt-2">
-              End Date:
-            </label>
-            <input className="bg-transparent border px-1" type="date" 
-                   defaultValue={experience.endDate}
-                   onChange={e => experience.endDate = e.target.value}/> */}
           </div>
           <div className="mt-10 grid gap-5 portfolio-form mb-10">
             <label className="dark:text-gray-200 text-sm text-right mt-2">
@@ -201,14 +205,6 @@ const PortfolioEditorPage = () => {
 
   return (
       <main className="bg-gray-900">
-        {showArtworkModal && (
-        <UploadArtworkModal
-          onClose={() => {
-            setShowArtworkModal(false);
-            getArtworks();
-          }}
-        />
-      )}
         <header className="z-20 py-5 shadow-lg bg-gray-900 bg-opacity-50 backdrop-filter backdrop-blur-sm sticky top-0">
           <div className="container mx-auto flex item-center gap-10">
             <Link to="/" className="dark:text-white text-2xl font-semibold">
@@ -327,6 +323,7 @@ const PortfolioEditorPage = () => {
                   }} >
             Add Experience
           </button>
+          
 
           <h3 className="mt-10">Select a layout:</h3>
           <div className="container mx-auto flex item-center gap-20 py-5">
@@ -388,15 +385,6 @@ const PortfolioEditorPage = () => {
             })}
           </div>
         
-          <div className="flex container mx-auto my-10">
-          {/* <div className="m-auto">
-              <button 
-                onClick={() => setShowArtworkModal(true)}
-                className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
-                Upload New Artwork
-              </button>
-          </div> */}
-          </div>
           <h3 className="mt-10">Select a layout:</h3>
           <div className="container mx-auto flex item-center gap-20 py-5">
             <div className={`${0 === projectLayout ? "bg-gray-700" : "hover:bg-gray-800"}`}
@@ -428,6 +416,18 @@ const PortfolioEditorPage = () => {
             </div>
             
           </div>
+
+          
+          <div className="flex container mx-auto my-10">
+          <div className="m-auto">
+              <Link 
+                to={`/artworks`}
+                className="text-gray-900 bg-gray-300 hover:bg-gray-400 py-1.5 px-10 mb-5 text-sm rounded-sm shadow-lg font-medium transition"
+                >
+                Manage All Artworks
+              </Link>
+          </div>
+          </div>
         
         </section>
         
@@ -443,13 +443,16 @@ const PortfolioEditorPage = () => {
             Do not receive messages from other users
           </label></h2>
         </section>
-
+        <div className="float-right mr-5">
+              {errorMsg && <em className="text-rose-400 text-sm float-left">{errorMsg}</em>}
+        </div>
+        <br/>
 
         <div className="flex justify-start" id="buttons">
-          <div className="ml-5 mt-7 mb-5">
+          <div className="ml-5 mt-1 mb-5">
             <Link
-              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full"
-              to={`/portfolio/${user.username}`}
+            className="text-gray-900 bg-gray-300 hover:bg-gray-400 py-1.5 px-3 mb-5 text-sm rounded-sm shadow-lg font-medium transition"
+            to={`/portfolio/${user.username}`}
             >
               Quit
             </Link>
@@ -457,12 +460,15 @@ const PortfolioEditorPage = () => {
           <div className="ml-auto mb-5 mr-5">
             <button
             onClick={savePortfolio}
-              className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full my-5"
+            className="text-gray-900 bg-gray-300 hover:bg-gray-400 py-1.5 px-3 mb-5 text-sm rounded-sm shadow-lg font-medium transition"
             >
               Save
             </button>
+            
           </div>
+          
         </div>
+        
         <Footer />
       </main>
     );

@@ -15,14 +15,17 @@ import axios from "axios";
 import { apiUrl } from "../config";
 import { useEffect, useState } from "react";
 import Loading from "../components/Loading";
+import Unauthorized from "../components/Unauthorized";
+import { useHistory } from "react-router-dom";
 
 const AdminArtworkViewer = () => {
+  const history = useHistory();
   const { id } = useParams();
   //replace with API call in phase 2
   // const artwork = artworks.find(artwork => artwork.id === parseInt(id));
   //replace with API call in phase 2
   // const user = users.find(user => user.id === artwork.authorId);
-  const { user: adminUser, accessToken } = useAuthentication();
+  const { user: adminUser, accessToken, login, redirectToLogin, isLoggedIn } = useAuthentication();
   // const artworkTags = [];
   // artwork.tagIds.forEach(tagid => {
   //   artworkTags.push(tags.find(tag => tag.id === tagid));
@@ -31,6 +34,11 @@ const AdminArtworkViewer = () => {
   const [user, setUser] = useState(null);
   const [artwork, setArtwork] = useState(null);
   const [reportingUsers, setReportingUsers] = useState(null);
+
+  useEffect(() => {
+    if (!isLoggedIn) redirectToLogin();
+  }, [isLoggedIn]);
+
 
 
   const getArtwork = async () => {
@@ -49,6 +57,7 @@ const AdminArtworkViewer = () => {
       }
       setReportingUsers(reportingUsers);
     } catch (e) {
+      history.push("/404")
       console.log(e);
     }
   };
@@ -117,11 +126,11 @@ const AdminArtworkViewer = () => {
 console.log("reports", artwork.reports)
   //phase2: create method here for API call to update artwork and/or tags
 
-  if (adminUser.isAdmin) {
+  if (isLoggedIn && adminUser.isAdmin) {
     return (
       <main className="bg-gray-900 min-h-screen">
         <Navbar />
-        <div className="container mx-auto px-5">
+        <div className="container mx-auto px-5 pt-20">
           <img className="pt-10 mb-5 max-w-xlg mx-auto h-96" src={artwork.imageUrl} alt={artwork.name} />
           <h1 className="place-self-center mb-5 text-white text-center text-5xl col-span-3">
             {artwork.name}
@@ -211,15 +220,7 @@ console.log("reports", artwork.reports)
       </main>
     );
   } else {
-    return (
-      <main className="dark:bg-gray-900">
-        <Navbar />
-        <h1 className="dark:text-white text-2xl font-semibold text-center py-5 min-h-screen">
-          403 Unauthorized
-        </h1>
-        <Footer />
-      </main>
-    );
+    return <Unauthorized/>
   }
 };
 

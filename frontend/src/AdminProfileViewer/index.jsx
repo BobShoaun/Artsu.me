@@ -9,17 +9,26 @@ import { Link, useParams } from "react-router-dom";
 import { artworks } from "../artworks.json";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { apiUrl } from "../config";
+import { apiUrl, defaultAvatarUrl } from "../config";
 import { useAuthentication } from "../hooks/useAuthentication";
 import loading from "../components/Loading";
 import Loading from "../components/Loading";
+import Unauthenticated from "../components/Unauthenticated";
+import Unauthorized from "../components/Unauthorized";
+import { useHistory } from "react-router-dom";
 
 const AdminProfileViewer = () => {
+  const history = useHistory();
   const { id } = useParams();
-  const { user: adminUser, accessToken } = useAuthentication();
+  const { user: adminUser, accessToken, login, redirectToLogin, isLoggedIn } = useAuthentication();
   const [user, setUser] = useState(null);
   const [artworks, setArtworks] = useState(null);
   const [portfolio, setPortfolio] = useState(null);
+
+  useEffect(() => {
+    if (!isLoggedIn) redirectToLogin();
+  }, [isLoggedIn]);
+
 
   //phase2: create method here for API call to update user information
   const getUser = async () => {
@@ -32,6 +41,7 @@ const AdminProfileViewer = () => {
       setPortfolio(portfolio);
     } catch (e) {
       console.log(e);
+      history.push("/404")
     }
   };
 
@@ -69,13 +79,8 @@ const AdminProfileViewer = () => {
   };
 
   const removeAvatar = async () => {
-    const { data } = await axios.put(
-      `${apiUrl}/users/${user._id}/avatar`,
-      [
-        { imageUrl: "http://res.cloudinary.com/artsu-me/image/upload/v1638716068/urx8b1kby9ig8v6wga6o.png", imageId:"urx8b1kby9ig8v6wga6o" },
-      ],
-      { headers: { Authorization: `Bearer ${accessToken}` } }
-    );
+    const { data } = await axios.delete(`${apiUrl}/users/${user._id}/avatar`,
+      { headers: { Authorization: `Bearer ${accessToken}` } });
     setUser(data)
   };
 
@@ -122,16 +127,17 @@ const AdminProfileViewer = () => {
 
   //phase2: create method here for API call to update user information
 
-  if (adminUser.isAdmin) {
+  if (isLoggedIn && adminUser.isAdmin) {
     return (
       <main className="dark:bg-gray-900">
         <Navbar />
-        <div className="container mx-auto flex mb-20 py-20 gap-8 text-center">
+        <div className="container mx-auto flex mb-20 py-20 gap-8 text-center pt-20">
           <aside className="profile-avatar-wrapper">
             <div className="gap-3">
               <img
                 className="profile-avatar mx-auto shadow-lg rounded-lg"
-                src={user.avatarUrl}
+                src={user.avatarUrl || defaultAvatarUrl}
+                onError={e => (e.target.src = defaultAvatarUrl)}
                 alt={`${user.name} avatar`}
               />
             </div>
@@ -299,15 +305,7 @@ const AdminProfileViewer = () => {
 
     );
   } else {
-    return (
-      <main className="dark:bg-gray-900">
-        <Navbar />
-        <h1 className="dark:text-white text-2xl font-semibold text-center py-5 min-h-screen">
-          403 Unauthorized
-        </h1>
-        <Footer />
-      </main>
-    );
+    return <Unauthorized/>
   }
 };
 

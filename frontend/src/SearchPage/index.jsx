@@ -24,25 +24,25 @@ const SearchPage = () => {
 
   const searchInput = useRef(null);
 
-  const getTags = async () => {
+  const getTags = useCallback(async () => {
     try {
       const { data: tags } = await axios.get(`${apiUrl}/tags`);
       setTags(tags);
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [apiUrl]);
 
-  const getUsers = async () => {
+  const getUsers = useCallback(async () => {
     try {
       const { data: users } = await axios.get(`${apiUrl}/users?query=${query.current}`);
       setUsers(users);
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [apiUrl]);
 
-  const getArtworks = async () => {
+  const getArtworks = useCallback(async () => {
     try {
       const { data } = await axios.get(`${apiUrl}/artworks?query=${query.current}`);
       const artworks = tagId.current
@@ -52,7 +52,8 @@ const SearchPage = () => {
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [apiUrl]);
+
   useScrollToTop();
 
   const search = useCallback(() => {
@@ -63,7 +64,7 @@ const SearchPage = () => {
     params.set("type", type.current);
     params.set("tag", tagId.current);
     history.push(`/search?${params}`);
-  }, [history]);
+  }, [history, getUsers, getArtworks]);
 
   useEffect(() => {
     getTags();
@@ -72,7 +73,7 @@ const SearchPage = () => {
     query.current = params.get("query") || "";
     tagId.current = params.get("tag") || "";
     search();
-  }, [search, history]);
+  }, [search, history, getTags]);
 
   if ((!users.length && !artworks.length) || !tags.length) return <Loading />;
 

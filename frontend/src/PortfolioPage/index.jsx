@@ -14,6 +14,7 @@ import ContactSection from "./ContactSection";
 import HeroSection from "./HeroSection";
 import ExperienceSection from "./ExperienceSection";
 
+import { ArrowLeft } from "react-feather";
 import Loading from "../components/Loading";
 
 const PortfolioPage = () => {
@@ -87,7 +88,11 @@ const PortfolioPage = () => {
       {!isPublic && (
         <header className="bg-gradient-to-r from-rose-500 to-teal-500">
           <div className="container mx-auto py-3 flex items-center">
-            <Link to="/" className="text-gray-200 text-sm hover:underline self-center">
+            <Link
+              to="/"
+              className="text-gray-200 text-sm hover:underline flex items-center gap-2 self-center"
+            >
+              <ArrowLeft size={15} />
               Back to Browse
             </Link>
             {isLoggedIn && user._id === portfolio.userId && (

@@ -32,10 +32,10 @@ const App = () => {
             <Route exact path="/artworks" component={ArtworkListPage} />
             <Route exact path="/search" component={SearchPage} />
             <Route exact path="/admin/artwork/:id" component={AdminArtworkViewer} />
-            <Route exact path="/admin/:username" component={AdminProfileViewer} />
+            <Route exact path="/admin/:id" component={AdminProfileViewer} />
             <Route exact path="/admin" component={AdminPanel} />
             <Route exact path="/" component={MainPage} />
-            <Route path="/404" component={NotFound} />
+            <Route exact path="/404" component={NotFound} />
             <Redirect to="/404" />
           </Switch>
         </Router>

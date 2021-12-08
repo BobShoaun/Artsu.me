@@ -1,9 +1,16 @@
 import express from "express";
 import { User } from "../models/index.js";
-import { authenticate, usernameHandler } from "../middlewares/user.middleware.js";
-import { validateJsonPatch, validateIdParam } from "../middlewares/general.middleware.js";
-import { checkDatabaseConn, mongoHandler } from "../middlewares/mongo.middleware.js";
-import { executeJsonPatch } from "../helpers/general.helper.js";
+import { authenticate, authorize, usernameHandler } from "../middlewares/user.middleware.js";
+import { executeJsonPatch } from "../middlewares/general.middleware.js";
+import {
+  checkDatabaseConn,
+  mongoHandler,
+  validateIdParam,
+} from "../middlewares/mongo.middleware.js";
+import { deleteImage, uploadImage } from "../middlewares/image.middleware.js";
+import connectMultiparty from "connect-multiparty";
+
+const multipart = connectMultiparty();
 
 const router = express.Router();
 
@@ -20,15 +27,25 @@ router.get("/users", async (req, res, next) => {
 
   try {
     const users = await (query
-      ? User.aggregate([{ $search: { index: "fuzzy", text: { query, path: { wildcard: "*" } } } }])
-      : User.find()
+      ? User.find({ $text: { $search: query }, isBanned: false })
+      : User.find({ isBanned: false })
     )
+      .sort({ isFeatured: -1 })
       .skip(offset > 0 ? offset : 0)
       .limit(limit > 0 ? limit : 0);
 
-    for (const user of users) delete user.password; // mainly for aggregate query not removing password
-
     res.send(users);
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get("/users/:userId", async (req, res, next) => {
+  const { userId } = req.params;
+  try {
+    const user = await User.findById(userId);
+    if (!user) return res.sendStatus(404);
+    res.send(user);
   } catch (e) {
     next(e);
   }
@@ -40,19 +57,26 @@ router.get("/users", async (req, res, next) => {
 router.patch(
   "/users/:userId",
   authenticate,
-  validateJsonPatch,
+  authorize,
   async (req, res, next) => {
     const { userId } = req.params;
-    if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403); // can only edit yourself, unless admin
     try {
       const user = await User.findById(userId);
       if (!user) return res.sendStatus(404);
 
-      const forbiddenPaths = ["/_id", "/createdAt", "/updatedAt", "/password"];
-      if (!req.user.isAdmin) forbiddenPaths.push("/isAdmin", "/isFeatured", "/isBanned");
-      executeJsonPatch(req, res, user, forbiddenPaths);
-      if (res.headersSent) return; // res already sent in executeJsonPatch
-
+      req.allowedPaths = ["/name", "/username"];
+      if (req.user.isAdmin) req.allowedPaths.push("/isFeatured", "/isAdmin", "/isBanned");
+      req.allowedOperations = ["replace"];
+      req.patchDoc = user;
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  executeJsonPatch,
+  async (req, res, next) => {
+    try {
+      const user = req.patchDoc;
       await user.save();
       res.send(user);
     } catch (e) {
@@ -67,15 +91,82 @@ router.patch(
  */
 router.delete("/users/:userId", authenticate, async (req, res, next) => {
   if (!req.user.isAdmin) return res.sendStatus(403);
-  const id = req.params.userId;
+  const { userId } = req.params;
   try {
-    const user = await User.findByIdAndDelete(id);
+    const user = await User.findByIdAndDelete(userId);
     if (!user) return res.sendStatus(404);
     res.send(user);
   } catch (e) {
     next(e);
   }
 });
+
+router.put(
+  "/users/:userId/avatar",
+  authenticate,
+  authorize,
+  async (req, res, next) => {
+    const { userId } = req.params;
+    try {
+      const user = await User.findById(userId);
+      if (!user) return res.sendStatus(404);
+      req.editingUser = user;
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  multipart,
+  uploadImage, // upload new avatar
+  async (req, res, next) => {
+    const user = req.editingUser;
+    const oldAvatarId = user.avatarId;
+    user.avatarUrl = req.imageUrl;
+    user.avatarId = req.imageId;
+    req.imageId = oldAvatarId;
+    try {
+      await user.save();
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  deleteImage, // delete old avatar
+  (req, res) => res.send(req.editingUser)
+);
+
+/**
+ * Deleteing a user's avatar
+ */
+router.delete(
+  "/users/:userId/avatar",
+  authenticate,
+  authorize,
+  async (req, res, next) => {
+    const { userId } = req.params;
+    try {
+      const user = await User.findById(userId);
+      if (!user) return res.sendStatus(404);
+      req.imageId = user.avatarId;
+      req.editingUser = user;
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  deleteImage, // delete avatar from cloudinary
+  async (req, res) => {
+    const user = req.editingUser;
+    user.avatarId = "";
+    user.avatarUrl = "";
+    try {
+      await user.save();
+      res.send(user);
+    } catch (e) {
+      next(e);
+    }
+  }
+);
 
 router.use(mongoHandler);
 

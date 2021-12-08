@@ -1,49 +1,48 @@
 import { Link, useHistory } from "react-router-dom";
-import { useRef, useState, useEffect } from "react";
-import { users } from "../users.json"; // NOTE: user will be from API
+import { useRef, useState } from "react";
 import { useAuthentication } from "../hooks/useAuthentication";
 import ArtsumeModal from "../components/ArtsumeModal";
+import { apiUrl } from "../config";
+import axios from "axios";
 // API calls to read users
 
 const LoginPage = () => {
   const history = useHistory();
+
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
-  const [jwt, , _login] = useAuthentication();
+  const { login: _login } = useAuthentication();
 
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  useEffect(() => {
-    // redirect to main page if logged in
-    if (!jwt) return;
-    history.push("/");
-  });
-
-  const login = e => {
+  const login = async e => {
     e.preventDefault();
     const username = usernameRef.current.value;
     const password = passwordRef.current.value;
-
     setUsernameError("");
     setPasswordError("");
 
-    const user = users.find(
-      user => user.username === username.toLocaleLowerCase()
-    ); // NOTE: users will be found from api
-    if (!user) {
-      setUsernameError("invalid username");
-      return;
-    }
+    if (!username) return setUsernameError("username cannot be empty");
+    if (!password) return setPasswordError("password cannot be empty");
 
-    if (user.password !== password) {
-      setPasswordError("invalid password");
-      return;
-    }
+    try {
+      const { data } = await axios.post(`${apiUrl}/users/login`, {
+        username,
+        password,
+      });
 
-    // NOTE: authenticate user in backend
-    _login(username, password);
-    history.push("/");
+      const accessToken = data.accessToken;
+      const user = data.user;
+
+      // NOTE: authenticate user in backend
+      _login(user, accessToken);
+
+      const params = new URLSearchParams(history.location.search);
+      history.push(params.get("destination") ?? "/");
+    } catch (e) {
+      setUsernameError("invalid username or password");
+    }
   };
 
   return (
@@ -55,23 +54,11 @@ const LoginPage = () => {
         <p className="dark:text-gray-200 text-lg">your art awaits you</p>
       </header>
       <form className="">
-        <label className="dark:text-gray-200 text-sm text-right mb-2">
-          Username:
-        </label>
-        {usernameError && (
-          <em className="text-rose-400 text-sm float-right">
-            *{usernameError}
-          </em>
-        )}
+        <label className="dark:text-gray-200 text-sm text-right mb-2">Username:</label>
+        {usernameError && <em className="text-rose-400 text-sm float-right">*{usernameError}</em>}
         <input ref={usernameRef} className="px-2 py-1 mb-10" type="text" />
-        <label className="dark:text-gray-200 text-sm text-right mb-3">
-          Password:
-        </label>
-        {passwordError && (
-          <em className="text-rose-400 text-sm float-right">
-            *{passwordError}
-          </em>
-        )}
+        <label className="dark:text-gray-200 text-sm text-right mb-3">Password:</label>
+        {passwordError && <em className="text-rose-400 text-sm float-right">*{passwordError}</em>}
         <input ref={passwordRef} className="px-2 py-1 mb-8" type="password" />
         <button
           onClick={login}

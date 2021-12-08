@@ -2,7 +2,9 @@ const colors = require("tailwindcss/colors");
 delete colors["lightBlue"];
 
 module.exports = {
-  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  purge: {
+    content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  },
   darkMode: "class",
   theme: {
     colors: {
@@ -22,7 +24,9 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      flexDirection: ["even"],
+    },
   },
   plugins: [],
   corePlugins: {

@@ -6,18 +6,22 @@ import userRoutes from "./routes/user.route.js";
 import portfolioRoutes from "./routes/portfolio.route.js";
 import tagRoutes from "./routes/tag.route.js";
 import artworkRoutes from "./routes/artwork.route.js";
+import messageRoutes from "./routes/message.route.js";
+import imageRoutes from "./routes/image.route.js";
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors()); // only for development
 
 app.use(authenticationRoutes);
 app.use(userRoutes);
 app.use(portfolioRoutes);
-app.use(tagRoutes)
-app.use(artworkRoutes)
+app.use(tagRoutes);
+app.use(artworkRoutes);
+app.use(messageRoutes);
+app.use(imageRoutes);
 
 app.get("/", (req, res) => res.send("Hello from artsu.me"));
 app.all("*", (req, res) => res.sendStatus(404));

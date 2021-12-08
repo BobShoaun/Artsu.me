@@ -18,13 +18,13 @@
 
 .fade-up {
   animation: fade-up 0.6s ease;
-  animation-delay: 1.1s;
+  animation-delay: 0.2s;
   animation-fill-mode: both;
 }
 
 .appear {
   animation: appear 0.2s ease;
-  animation-delay: 0.8s;
+  animation-delay: 0.2s;
   animation-fill-mode: both;
 }
 
@@ -56,15 +56,26 @@
 .dropdown {
   transform: translateY(-50%);
   transition: all 0.2s ease-in-out;
-  z-index: -10;
   top: 120%;
 }
 
 .dropdown-wrapper:hover .dropdown {
-  opacity: 0.7;
+  opacity: 0.9;
   transform: translateY(0);
 }
 
 .searchbox:focus-within > .searchbox-icon {
   opacity: 1;
+}
+
+.notifications {
+  opacity: 0;
+  transform: translateY(-100%) translateX(-50%);
+  transition: all 0.2s ease-in-out;
+  z-index: -10;
+}
+
+.notif-wrapper:focus-within .notifications {
+  opacity: 0.95;
+  transform: translateY(0) translateX(-50%);
 }

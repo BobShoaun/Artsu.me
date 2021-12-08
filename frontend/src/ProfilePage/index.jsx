@@ -1,174 +1,175 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { users } from "../users.json"; //phase2: add API call to get information
 import "./index.css";
 
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom"; // removed useParams as it is unused
+import UploadAvatarModal from "./UploadAvatarModal";
+import { useState, useRef, useEffect } from "react"; // removed useEffect
 
-//phase2: add API call to get information
-import { artworks } from "../artworks.json";
 import { useAuthentication } from "../hooks/useAuthentication";
+import axios from "axios";
+import { apiUrl, defaultAvatarUrl } from "../config";
+
+import Unauthenticated from "../components/Unauthenticated";
 
 const ProfilePage = () => {
-  const { username } = useParams();
-  const user = users.find(user => user.username === username); //phase2: add API call to get information
-  const [, loggedInUser] = useAuthentication();
+  const { isLoggedIn, accessToken, user, login, redirectToLogin } = useAuthentication(); // removed redirectToLogin
+  const [showAvatarModal, setShowAvatarModal] = useState(false);
 
-  const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
-  const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
+  const nameInput = useRef(null);
+  const usernameInput = useRef(null);
+  const newPasswordInput = useRef(null);
+  const confirmPasswordInput = useRef(null);
+  const [passwordError, setPasswordError] = useState("");
+  const [nameError, setNameError] = useState("");
 
-  //phase2: create method here for API call to update user information
+  useEffect(() => {
+    if (!isLoggedIn) redirectToLogin();
+  }, [redirectToLogin, isLoggedIn]);
 
-  if (loggedInUser === user) {
-    return (
-      <main className="dark:bg-gray-900">
-        <Navbar />
-        <div className="container mx-auto flex mb-20 py-20 gap-8 text-center">
-          <aside className="profile-avatar-wrapper">
-            <div className="gap-3">
-              <img
-                className="profile-avatar mx-auto shadow-lg rounded-lg"
-                src={user.avatar}
-                alt={`${user.name} avatar`}
-              />
-            </div>
-            <h3 className="dark:text-gray-200 mt-3 mb-6 font-semibold content-center text-center">
-              {user.name}
-            </h3>
-            <Link
-              to={`/profile/${user.username}/upload-avatar`}
-              key={user.id}
-              className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
+  const updateInfo = async e => {
+    e.preventDefault();
+    try {
+      const name = nameInput.current.value;
+      const username = usernameInput.current.value;
+      setNameError("");
+      if (!name || !username) {
+        setNameError("Name and Username cannot be empty");
+        return;
+      }
+      const { data } = await axios.patch(
+        `${apiUrl}/users/${user._id}`,
+        [
+          { op: "replace", path: "/name", value: name },
+          { op: "replace", path: "/username", value: username },
+        ],
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      login(data, accessToken);
+      alert("Updated name and username.");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const updatePassword = async e => {
+    e.preventDefault();
+    try {
+      const newPassword = newPasswordInput.current.value;
+      const confirmPassword = confirmPasswordInput.current.value;
+      setPasswordError("");
+      if (newPassword !== confirmPassword) {
+        setPasswordError("Passwords do not match");
+        return;
+      }
+      if (newPassword.length < 4) {
+        setPasswordError("Passwords must be at least 4 characters");
+        return;
+      }
+      await axios.put(
+        `${apiUrl}/users/${user._id}/password`,
+        { password: newPassword },
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      newPasswordInput.current.value = "";
+      confirmPasswordInput.current.value = "";
+      alert("Updated password.");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  if (!isLoggedIn) return <Unauthenticated />;
+
+  return (
+    <main className="dark:bg-gray-900">
+      <Navbar />
+
+      {showAvatarModal && (
+        <UploadAvatarModal
+          onClose={() => {
+            setShowAvatarModal(false);
+          }}
+        />
+      )}
+
+      <div className="container mx-auto flex gap-12 px-10 pt-32 pb-20">
+        <aside className="ml-auto mt-5">
+          <img
+            className="mx-auto shadow-lg rounded-lg mb-4 w-52"
+            src={user.avatarUrl || defaultAvatarUrl}
+            onError={e => (e.target.src = defaultAvatarUrl)}
+            alt={`${user.name} avatar`}
+          />
+
+          <div className="text-center">
+            <button
+              onClick={() => setShowAvatarModal(true)}
+              className="text-gray-900 bg-gray-300 hover:bg-gray-400 py-1.5 px-3 mb-5 text-sm rounded-sm shadow-lg font-medium transition"
             >
-              <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm text-center">
-                Upload New Avatar
-              </button>
-            </Link>
-          </aside>
-          <section className="dark:bg-gray">
-            <ul className="items-centre gap-10 container mx-auto">
-              <ul className="flex items-center gap-10 mx-auto mb-6">
-                <li color="white">
-                  <h3 className="dark:text-gray-200 font-semibold text-right">
-                    name:{" "}
-                  </h3>
-                </li>
-                <li className="ml-auto">
-                  <input
-                    className=""
-                    type="text"
-                    defaultValue={user.username}
-                  />
-                </li>
-              </ul>
-              <ul className="flex items-center gap-10 mx-auto mb-6">
-                <li color="white">
-                  <h3 className="dark:text-gray-200 font-semibold text-right">
-                    username:{" "}
-                  </h3>
-                </li>
-                <li className="ml-auto">
-                  <input className="" type="text" defaultValue={user.email} />
-                </li>
-              </ul>
-              <ul className="flex items-center gap-10 mx-auto mb-6">
-                <li>
-                  <h3 className="dark:text-gray-200 font-semibold text-right">
-                    password:
-                  </h3>
-                </li>
-                <li className="ml-auto">
-                  <input className="" type="password" />
-                </li>
-              </ul>
-              <ul className="flex items-center gap-10 mx-auto mb-6">
-                <li>
-                  <h3 className="dark:text-gray-200 font-semibold text-right">
-                    new password:
-                  </h3>
-                </li>
-                <li className="ml-auto">
-                  <input className="" type="password" />
-                </li>
-              </ul>
-              <ul className="flex items-center gap-10 mx-auto mb-10">
-                <li>
-                  <h3 className="dark:text-gray-200 font-semibold text-right">
-                    confirm password:
-                  </h3>
-                </li>
-                <li className="ml-auto">
-                  <input className="" type="password" />
-                </li>
-              </ul>
-              <div className="text-right">
-                <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
-                  Submit
-                </button>
-              </div>
-            </ul>
-          </section>
-        </div>
-        <section
-          className="py-20 bg-gradient-to-b from-gray-800 to-gray-900"
-          id="artworks"
-        >
-          <div className="container mx-auto mb-10">
-            <h1 className="dark:text-white text-2xl font-semibold text-center mb-14">
-              My Artworks
-            </h1>
-            <div className="flex flex-wrap items-center justify-around gap-x-10 gap-y-10">
-              {user.portfolioSettings.artworkIds.map(id => {
-                const artwork = artworks.find(artwork => artwork.id === id);
-                return (
-                  <Link
-                    to={`/artwork/${artwork.id}`}
-                    key={artwork.id}
-                    className={`bg-gradient-to-br from-transparent to-transparent hover:from-${primary.main} hover:to-${secondary.main} transition-all rounded-lg p-7 cursor-pointer hover:shadow-xl`}
-                  >
-                    <img
-                      className="profile-page-artwork mb-5 shadow-xl mx-auto"
-                      src={artwork.image}
-                      alt={artwork.name}
-                    />
-                    <div className="pl-3">
-                      <h2 className="dark:text-white text-lg font-semibold mb-1">
-                        {artwork.name}
-                      </h2>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
+              Update Avatar
+            </button>
           </div>
-          <div className="flex container mx-auto">
-            <div className="m-auto">
-              <Link
-                to={`/profile/${user.username}/upload`}
-                key={user.id}
-                className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
+        </aside>
+        <section className="mr-auto">
+          <h1 className="text-white text-xl font-bold mb-8">General Information</h1>
+          <form action="" onSubmit={updateInfo} className="pl-5">
+            <label className="dark:text-gray-200 text-sm text-right mb-2">Name:</label>
+            <input
+              ref={nameInput}
+              defaultValue={user.name}
+              className="px-2 py-1 mb-7"
+              type="text"
+            />
+            <label className="dark:text-gray-200 text-sm text-right mb-3">Username:</label>
+            <input
+              ref={usernameInput}
+              defaultValue={user.username}
+              className="px-2 py-1 mb-5"
+              type="text"
+            />
+            <div className="text-right">
+              {nameError && <em className="text-rose-400 text-sm float-left">*{nameError}</em>}
+
+              <button
+                type="submit"
+                className="text-gray-900 bg-gray-300 hover:bg-gray-400 py-1.5 px-3 mb-5 text-sm rounded-sm shadow-lg font-medium transition"
               >
-                <button className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
-                  Upload New Artwork
-                </button>
-              </Link>
+                Update Info
+              </button>
             </div>
-          </div>
+          </form>
+          <h1 className="text-white text-xl font-bold mb-8">Password</h1>
+          <form action="" onSubmit={updatePassword} className="pl-5">
+            <label className="dark:text-gray-200 text-sm text-right mb-2">New Password:</label>
+            <input ref={newPasswordInput} className="px-2 py-1 mb-7" type="password" />
+            <label className="dark:text-gray-200 text-sm text-right mb-3">Confirm Password:</label>
+            <input ref={confirmPasswordInput} className="px-2 py-1 mb-5" type="password" />
+            <div className="text-right">
+              {passwordError && (
+                <em className="text-rose-400 text-sm float-left">*{passwordError}</em>
+              )}
+              <button
+                type="submit"
+                className="text-gray-900 bg-gray-300 hover:bg-gray-400 py-1.5 px-3 mb-5 text-sm rounded-sm shadow-lg font-medium transition"
+              >
+                Change Password
+              </button>
+            </div>
+          </form>
+          <h1 className="text-white text-xl font-bold mb-3">Portfolio</h1>
+          <Link
+            to="/portfolio/editor"
+            className="text-gray-900 ml-5 block text-center bg-gray-300 hover:bg-gray-400 py-1.5 px-3 mb-5 text-sm rounded-sm shadow-lg font-medium transition"
+          >
+            Go to Portfolio editor
+          </Link>
         </section>
-        <Footer />
-      </main>
-    );
-  } else {
-    return (
-      <main className="dark:bg-gray-900">
-        <Navbar />
-        <h1 className="dark:text-white text-2xl font-semibold text-center py-5 min-h-screen">
-          403 Unauthorized
-        </h1>
-        <Footer />
-      </main>
-    );
-  }
+      </div>
+
+      <Footer />
+    </main>
+  );
 };
 
 export default ProfilePage;

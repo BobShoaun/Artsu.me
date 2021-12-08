@@ -21,7 +21,6 @@ const UploadArtworkModal = ({ onClose }) => {
     try {
       const { data: tags } = await axios.get(`${apiUrl}/tags`);
       setTags(tags);
-      console.log(tags);
     } catch (e) {
       console.log(e);
     }

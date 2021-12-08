@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import { setIsPublic } from "../store/generalSlice";
-import { useScrollToTop } from "../hooks/useScrollToTop";
 import { useAuthentication } from "../hooks/useAuthentication";
 import Unauthorized from "../components/Unauthorized";
 import { apiUrl } from "../config";
@@ -13,7 +12,7 @@ import axios from "axios";
 
 const AdminPanel = () => {
   const dispatch = useDispatch();
-  const { user, login, accessToken, redirectToLogin, isLoggedIn } = useAuthentication();
+  const { user, accessToken, redirectToLogin, isLoggedIn } = useAuthentication();
   const [users, setUsers] = useState([]);
   const [tags, setTags] = useState([]);
   const tagNameInput = useRef(null);
@@ -21,7 +20,7 @@ const AdminPanel = () => {
 
   useEffect(() => {
     if (!isLoggedIn) redirectToLogin();
-  }, [isLoggedIn]);
+  }, [isLoggedIn, redirectToLogin]);
 
 
   //phase2: create method here for API call to update user information
@@ -45,16 +44,12 @@ const AdminPanel = () => {
 
   const addTag = async (inputLabel, inputColor) => {
     try {
-      console.log("adding tag...")
-      console.log(inputLabel)
-      console.log(inputColor)
       const { data } = await axios.post(`${apiUrl}/tags`,
         {
           label: inputLabel,
           color: inputColor
         }, { headers: { Authorization: `Bearer ${accessToken}` } });
       tags.push(data)
-      console.log(tags)
       getTags()
     } catch (e) {
       console.log(e);
@@ -134,13 +129,13 @@ const AdminPanel = () => {
                   </Link>
                 </td>
                 <td className="dark:text-white text-lg mr-3 text-center border-2 p-1">
-                  <Link
-                    to={`${user.avatarUrl}`}
+                  <a
+                    href={user.avatarUrl}
                     key={user.avatarUrl}
                     className={`mx-auto hover:bg-gray-600 rounded-lg transition-all cursor-pointer p-1`}
                   >
                     {user.avatarUrl}
-                  </Link>
+                  </a>
                 </td>
                 <td className="dark:text-white text-lg mr-3 text-center border-2 p-1">
                   {user.isBanned.toString()}
@@ -193,9 +188,6 @@ const AdminPanel = () => {
               <th className="text-white p-1 w-64 border-2">
                 id
               </th>
-              <th className="text-white p-1 w-64 border-2">
-                edit
-              </th>
             </tr>
             </thead>
             <tbody>
@@ -210,12 +202,6 @@ const AdminPanel = () => {
                 </td>
                 <td className="dark:text-white text-lg mr-3 w-128 text-center border-2 p-1">
                   {tag._id}
-                </td>
-                <td className="dark:text-white text-lg mr-3 w-128 text-center border-2 p-1">
-                  <button
-                    className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm text-center">
-                    Edit
-                  </button>
                 </td>
               </tr>
             ))}

@@ -1,16 +1,11 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { Link, useParams } from "react-router-dom";
-//replace with API call in phase 2
-//replace with API call in phase 2
-
 import { X } from "react-feather";
-
-import { useScrollToTop } from "../hooks/useScrollToTop";
 import { useAuthentication } from "../hooks/useAuthentication";
 import axios from "axios";
 import { apiUrl } from "../config";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Loading from "../components/Loading";
 import Unauthorized from "../components/Unauthorized";
 import { useHistory } from "react-router-dom";
@@ -22,7 +17,7 @@ const AdminArtworkViewer = () => {
   // const artwork = artworks.find(artwork => artwork.id === parseInt(id));
   //replace with API call in phase 2
   // const user = users.find(user => user.id === artwork.authorId);
-  const { user: adminUser, accessToken, login, redirectToLogin, isLoggedIn } = useAuthentication();
+  const { user: adminUser, accessToken, redirectToLogin, isLoggedIn } = useAuthentication();
   // const artworkTags = [];
   // artwork.tagIds.forEach(tagid => {
   //   artworkTags.push(tags.find(tag => tag.id === tagid));
@@ -34,17 +29,14 @@ const AdminArtworkViewer = () => {
 
   useEffect(() => {
     if (!isLoggedIn) redirectToLogin();
-  }, [isLoggedIn]);
+  }, [isLoggedIn, redirectToLogin]);
 
 
 
-  const getArtwork = async () => {
+  const getArtwork = useCallback(async () => {
     try {
-      console.log("setting artwork...")
       const { data: artwork } = await axios.get(`${apiUrl}/artworks/${id}`);
       setArtwork(artwork);
-      console.log(artwork.tags)
-      console.log("setting artwork...")
       const { data: user } = await axios.get(`${apiUrl}/users/${artwork.userId}`);
       setUser(user);
       let reportingUsers = []
@@ -57,11 +49,10 @@ const AdminArtworkViewer = () => {
       history.push("/404")
       console.log(e);
     }
-  };
+  }, [id, history]);
 
   const banArt = async () => {
-    console.log("id", artwork._id)
-    const { data } = await axios.patch(
+    await axios.patch(
       `${apiUrl}/artworks/${artwork._id}`,
       [
         { op: "replace", path: "/isBanned", value: !artwork.isBanned },
@@ -94,14 +85,13 @@ const AdminArtworkViewer = () => {
   };
 
   const removeTag = async (tagIndex) => {
-    const { data } = await axios.patch(
+    await axios.patch(
       `${apiUrl}/artworks/${id}`,
       [
         { op: "remove", path: `/tagIds/${tagIndex}`},
       ],
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
-    console.log("Data", data)
     getArtwork()
   };
 
@@ -109,19 +99,12 @@ const AdminArtworkViewer = () => {
 
   useEffect(() => {
     getArtwork();
-  }, []);
+  }, [getArtwork]);
 
 
   if (!user || !artwork || !reportingUsers) {
-    console.log("checking user and artwork...")
-    console.log("user", user);
-    console.log("artwork", artwork);
-    console.log("returning null");
     return <Loading />;
   }
-
-console.log("reports", artwork.reports)
-  //phase2: create method here for API call to update artwork and/or tags
 
   if (isLoggedIn && adminUser.isAdmin) {
     return (

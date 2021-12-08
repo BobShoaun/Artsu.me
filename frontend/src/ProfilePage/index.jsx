@@ -25,7 +25,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     if (!isLoggedIn) redirectToLogin();
-  }, [isLoggedIn]);
+  }, [redirectToLogin, isLoggedIn]);
 
   const updateInfo = async e => {
     e.preventDefault();

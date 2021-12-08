@@ -9,7 +9,7 @@ import "./index.css";
 
 import Loading from "../components/Loading";
 import axios from "axios";
-import { apiUrl, defaultAvatarUrl } from "../config";
+import { apiUrl } from "../config";
 
 import ArtsumeBanner from "../components/ArtsumeBanner";
 import UserCard from "../components/UserCard";

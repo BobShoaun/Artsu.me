@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import { useAuthentication } from "../hooks/useAuthentication";
@@ -23,7 +23,7 @@ const PortfolioEditorPage = () => {
     if (!isLoggedIn) redirectToLogin();
   }, [isLoggedIn, redirectToLogin]);
 
-  const getPortfolio = async () => {
+  const getPortfolio = useCallback(async () => {
     try {
       const { data } = await axios.get(`${apiUrl}/users/username/${user.username}/portfolio`);
       setPortfolio(data);
@@ -35,9 +35,9 @@ const PortfolioEditorPage = () => {
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [user]);
 
-  const getArtworks = async () => {
+  const getArtworks = useCallback(async () => {
     if (portfolio) {
       const userId = portfolio.userId;
       try {
@@ -47,7 +47,7 @@ const PortfolioEditorPage = () => {
         console.log(e);
       }
     }
-  };
+  }, [portfolio]);
 
   const savePortfolio = async e => {
     console.log(portfolio);
@@ -60,7 +60,7 @@ const PortfolioEditorPage = () => {
     portfolio.section.project.artworkIds = projects;
     const userId = portfolio.userId;
     try {
-      const { data } = await axios.patch(
+      await axios.patch(
         `${apiUrl}/users/${userId}/portfolio`,
         [
           { op: "replace", path: "/color", value: color },
@@ -77,24 +77,37 @@ const PortfolioEditorPage = () => {
 
   const checkExperienceCompletion = () => {
     // users shouldn't send empty experience
-    experiences.forEach(exp => {
+    let companyFlag = true;
+    let posFlag = true;
+    let desFlag = true;
+    experiences.forEach( exp => {
       if (!exp.company) {
-        setErrorMsg("* Company cannot be empty.");
-        return false;
+        setErrorMsg("* Company cannot be empty in experience.")
+        companyFlag = false
       }
-      if (!exp.position) {
-        setErrorMsg("* Position cannot be empty.");
-        return false;
+      else if(!exp.position) {
+        setErrorMsg("* Position cannot be empty in experience.")
+        posFlag = false
       }
-      if (!exp.description) {
-        setErrorMsg("* Description cannot be empty.");
-        return false;
+      else if(!exp.description) {
+        setErrorMsg("* Description cannot be empty in experience.")
+        desFlag = false
       }
-    });
-  };
+    })
+    if (companyFlag && posFlag && desFlag) {
+      setErrorMsg("")
+      return true
+    }
+    else {
+      return false
+    }
+  }
 
-  useEffect(getPortfolio, [user]);
-  useEffect(getArtworks, [portfolio]);
+  useEffect(getPortfolio, [getPortfolio, user._id])
+  useEffect(getArtworks, [getArtworks, portfolio])
+
+  useEffect(getPortfolio, [getPortfolio, user]);
+  useEffect(getArtworks, [getArtworks, portfolio]);
   if (!isLoggedIn) return <Unauthenticated />;
   if (!portfolio) return <Loading />;
 
@@ -277,6 +290,7 @@ const PortfolioEditorPage = () => {
               <img
                 className="cursor-pointer mx-1 my-5 h-20"
                 src="http://res.cloudinary.com/artsu-me/image/upload/v1638859308/tqxu5yt4vk7mx4jrrixx.png"
+                alt="layout 1"
               />
             </div>
             <div className="dark:text-white text-xs text-center my-5">layout 1</div>
@@ -289,6 +303,7 @@ const PortfolioEditorPage = () => {
               <img
                 className="cursor-pointer mx-1 my-5 h-20"
                 src="http://res.cloudinary.com/artsu-me/image/upload/v1638860134/gpjdxg5kundpoyaclxet.png"
+                alt="layout 2"
               />
             </div>
             <div className="dark:text-white text-xs text-center my-5">layout 2</div>
@@ -301,6 +316,7 @@ const PortfolioEditorPage = () => {
               <img
                 className=" cursor-pointer mx-2 my-5 h-20"
                 src="http://res.cloudinary.com/artsu-me/image/upload/v1638860736/tepx7rjuiwfyhtcynggj.png"
+                alt="layout 3"
               />
             </div>
             <div className="dark:text-white text-xs text-center my-5">layout 3</div>
@@ -346,6 +362,7 @@ const PortfolioEditorPage = () => {
             <img
               className=" cursor-pointer mx-5 my-5 h-20"
               src="http://res.cloudinary.com/artsu-me/image/upload/v1638863729/uqadikxkjeojoye89zmv.png"
+              alt="layout 1"
             />
             <div className="dark:text-white text-xs text-center my-5">layout 1</div>
           </div>
@@ -356,6 +373,7 @@ const PortfolioEditorPage = () => {
             <img
               className=" items-center cursor-pointer mx-5 my-5 h-20"
               src="http://res.cloudinary.com/artsu-me/image/upload/v1638863953/faiesnys3xjrfhcinld8.png"
+              alt="layout 2"
             />
             <div className="dark:text-white text-xs text-center my-5">layout 2</div>
           </div>
@@ -421,6 +439,7 @@ const PortfolioEditorPage = () => {
             <img
               className=" cursor-pointer mx-5 my-5 h-20"
               src="http://res.cloudinary.com/artsu-me/image/upload/v1638864064/n1fz5atyefq3zcony0mf.png"
+              alt="layout 1"
             />
             <div className="dark:text-white text-xs text-center my-5">layout 1</div>
           </div>
@@ -431,6 +450,7 @@ const PortfolioEditorPage = () => {
             <img
               className=" items-center cursor-pointer mx-5 my-5 h-20"
               src="http://res.cloudinary.com/artsu-me/image/upload/v1638909073/k7dr6fdjwvej7jpcdk2g.png"
+              alt="layout 2"
             />
             <div className="dark:text-white text-xs text-center my-5">layout 2</div>
           </div>
@@ -441,6 +461,7 @@ const PortfolioEditorPage = () => {
             <img
               className=" items-center cursor-pointer mx-5 my-5 h-20"
               src="http://res.cloudinary.com/artsu-me/image/upload/v1638909099/scqallfnjvxjwf8civf6.png"
+              alt="layout 3"
             />
             <div className="dark:text-white text-xs text-center my-5">layout 3</div>
           </div>

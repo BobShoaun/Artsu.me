@@ -1,6 +1,5 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { users } from "../users.json";
 
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";

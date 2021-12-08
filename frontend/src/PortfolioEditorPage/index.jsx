@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 import { useAuthentication } from "../hooks/useAuthentication";
@@ -23,7 +23,7 @@ const PortfolioEditorPage = () => {
     if (!isLoggedIn) redirectToLogin();
   }, [isLoggedIn, redirectToLogin]);
 
-  const getPortfolio = async () => {
+  const getPortfolio = useCallback(async () => {
     try {
       const { data } = await axios.get(`${apiUrl}/users/username/${user.username}/portfolio`);
       setPortfolio(data);
@@ -35,9 +35,9 @@ const PortfolioEditorPage = () => {
     } catch (e) {
       console.log(e);
     }
-  };
+  }, [user]);
 
-  const getArtworks = async () => {
+  const getArtworks = useCallback(async () => {
     if (portfolio) {
       const userId = portfolio.userId;
       try {
@@ -47,7 +47,7 @@ const PortfolioEditorPage = () => {
         console.log(e);
       }
     }
-  };
+  }, [portfolio]);
 
   const savePortfolio = async e => {
     console.log(portfolio);
@@ -60,7 +60,7 @@ const PortfolioEditorPage = () => {
     portfolio.section.project.artworkIds = projects;
     const userId = portfolio.userId;
     try {
-      const { data } = await axios.patch(
+      await axios.patch(
         `${apiUrl}/users/${userId}/portfolio`,
         [
           { op: "replace", path: "/color", value: color },
@@ -103,11 +103,11 @@ const PortfolioEditorPage = () => {
     }
   }
 
-  useEffect(getPortfolio, [user._id])
-  useEffect(getArtworks, [portfolio])
+  useEffect(getPortfolio, [getPortfolio, user._id])
+  useEffect(getArtworks, [getArtworks, portfolio])
 
-  useEffect(getPortfolio, [user]);
-  useEffect(getArtworks, [portfolio]);
+  useEffect(getPortfolio, [getPortfolio, user]);
+  useEffect(getArtworks, [getArtworks, portfolio]);
   if (!isLoggedIn) return <Unauthenticated />;
   if (!portfolio) return <Loading />;
 

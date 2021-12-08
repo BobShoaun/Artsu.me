@@ -35,6 +35,7 @@ const PortfolioEditorPage = () => {
       setExperienceLayout(data.section.experience.layoutId);
     } catch (e) {
       console.log(e);
+      history.push("/404");
     }
   }, [user]);
 
@@ -51,7 +52,6 @@ const PortfolioEditorPage = () => {
   }, [portfolio]);
 
   const savePortfolio = async e => {
-    console.log(portfolio);
     e.preventDefault();
     if (!checkExperienceCompletion()) return;
     portfolio.section.hero.layoutId = heroLayout;
@@ -113,7 +113,6 @@ const PortfolioEditorPage = () => {
   const hero = portfolio.section.hero;
   const project = portfolio.section.project;
   const contact = portfolio.section.contact;
-  console.log(portfolio);
   // if no value
 
   const emptyExperience = {

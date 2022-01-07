@@ -269,7 +269,7 @@ The frontend will then be hosted on localhost:3000 and the backend will be hoste
 - POST /artworks/:artworkId/reports
     - add report to artwork with artworkId
     - needs authentication
-    - example body: 
+    - example body:
     ```
     {
         "userId": “61afe6abbe0e0a42dfab667a”,
@@ -287,7 +287,7 @@ The frontend will then be hosted on localhost:3000 and the backend will be hoste
 
 - POST /users/register
     - registers a new user
-    - example body: 
+    - example body:
     ```
     {
         "username": "firstname-lastname,
@@ -351,7 +351,7 @@ The frontend will then be hosted on localhost:3000 and the backend will be hoste
     - Returns the tag at the specified id
 - POST /tags
     - Creates a tag for use
-    - example body: 
+    - example body:
     ```
     {
         "label": "Oil Painting,
@@ -451,100 +451,54 @@ The frontend will then be hosted on localhost:3000 and the backend will be hoste
 
 # Project Directory Structure
 
+```
 team18
-
 ├── backend
-
 │   ├── src
-
 │   │     ├── helpers
-
 │   │     ├── middlewares
-
 │   │     ├── models
-
 │   │     ├── routes
-
 │   │     ├── tests
-
 │   │     ├── app.js
-
 │   │     ├── cloudinary.js
-
 │   │     ├── config.js
-
 │   │     ├── index.js
-
 │   │     └── mongo.js
-
 │   ├──.env
-
 │   ├──package-lock.json
-
 │   └──package.json
-
 │
-
 ├── frontend
-
 │   ├── public
-
 │   │     ├── index.html
-
 │   │     ├── manifest.json
-
 │   │     └── robots.txt
-
 │   │
-
 │   ├── src
-
 │   │     ├── AdminArtworkViewer
-
 │   │     ├── AdminPanel
-
 │   │     ├── AdminProfileViewer
-
 │   │     ├── ArtworkListPage
-
 │   │     ├── ArtworkPage
-
 │   │     ├── components
-
 │   │     ├── hooks
-
 │   │     ├── LoginPage
-
 │   │     ├── MainPage
-
 │   │     ├── PortfolioEditorPage
-
 │   │     ├── PortfolioPage
-
 │   │     ├── ProfilePage
-
 │   │     ├── RegisterPage
-
 │   │     ├── SearchPage
-
 │   │     ├── App.jsx
-
 │   │     ├── config.js
-
 │   │     ├── index.css
-
 │   │     └── index.js
-
 │   │
-
 │   ├── .env
-
 │   ├── craco.config.js
-
 │   ├── package.json
-
 │   ├── tailwind.config.js
-
 │   └── yarn.lock
-
 └── package.json
+```

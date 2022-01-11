@@ -1,4 +1,3 @@
-this commit should be graded as late
 # Artsu.me
 
 ```
@@ -9,6 +8,7 @@ this commit should be graded as late
 ██║░░██║██║░░██║░░░██║░░░██████╔╝╚██████╔╝██╗██║░╚═╝░██║███████╗
 ╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░╚═════╝░░╚═════╝░╚═╝╚═╝░░░░░╚═╝╚══════╝
 ```
+
 Showcase your projects and experiences as an artist, share your amazing artworks, connect with the best art community.
 
 Website:
@@ -59,49 +59,48 @@ REACT_APP_API_URL=http://localhost:3001
 Backend
 
 ```
-MONGO_USERNAME=user
-MONGO_PASSWORD=1gmj6YB5EnsCnPfJ
-MONGO_DATABASE=artsume
-CLOUDINARY_NAME=artsu-me
-CLOUDINARY_API_KEY=853874317566352
-CLOUDINARY_API_SECRET=8CyIIYxpIV7wPR4Zy-crkHdySPc
-ACCESS_TOKEN_SECRET=cc882d877177534c708dbd7a93b3bf235bf3c35c4b19c9d239ff9a7b649e7db33a57a536dcdacd591c7815daede48ad59f258e74871f250dd47bfb45bcf33743
+MONGO_USERNAME
+MONGO_PASSWORD
+MONGO_DATABASE
+CLOUDINARY_NAME
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
+ACCESS_TOKEN_SECRET
 ```
 
 ## Run development environment
 
-Run frontend ```npm run frontend```
+Run frontend `npm run frontend`
 
-Run backend ```npm run backend```
+Run backend `npm run backend`
 
 The frontend will then be hosted on localhost:3000 and the backend will be hosted on localhost:3001
 
-
-
 # Tech Stack
+
 - Frontend
   - React
-      - component framework library
+    - component framework library
   - React-router
-      - routing library for react
+    - routing library for react
   - TailwindCSS
-      - A css utility library
+    - A css utility library
   - Redux-toolkit
-      - Opinionated Redux state management library
+    - Opinionated Redux state management library
   - React-feather
-      - Icon pack
+    - Icon pack
 - Backend
   - Express
-      - server framework
+    - server framework
   - Node.js
   - Cloudinary
-      - Image server
+    - Image server
   - MongoDB
-      - NoSQL database
+    - NoSQL database
   - Mongoose
-      - Interface for mongodb
+    - Interface for mongodb
   - Jest & Supertest
-      - API unit testing
+    - API unit testing
 
 # User instructions
 
@@ -127,6 +126,7 @@ The frontend will then be hosted on localhost:3000 and the backend will be hoste
 6. You will be directed back to the main page as a logged in user.
 
 --or--
+
 1. When not logged in and attempting to view a page that requires verification a user will be redirected to the login screen.
 2. After logging in, the user will be redirected back to the page where they came from. (destination URL params)
 
@@ -199,11 +199,9 @@ The frontend will then be hosted on localhost:3000 and the backend will be hoste
 1. When attempting to access a URL which does not exist you.
 2. Entering a page which triggers a 404 response from the API. For example going to portfolio page where the username does not exist
 
-
 ## Loading Page
 
 1. Appears when a page is currently being loaded in but has not completed yet
-
 
 # API Documentation
 
@@ -225,163 +223,184 @@ The frontend will then be hosted on localhost:3000 and the backend will be hoste
     ]
     ```
 - DELETE /users/:userId
-    - delete user with userId
-    - needs authentication and admin rights
+  - delete user with userId
+  - needs authentication and admin rights
 - PUT /users/:userId/avatar
-    - needs authentication or admin rights
+  - needs authentication or admin rights
 - DELETE /users/:userId/avatar
-    - needs authentication or admin rights
+
+  - needs authentication or admin rights
 
 - GET /artworks?query=&limit=&offset=
-    - get all artworks, sorted by number of likes, excluding banned artworks
-    - supports query, and pagination with limit and offset
+
+  - get all artworks, sorted by number of likes, excluding banned artworks
+  - supports query, and pagination with limit and offset
 
 - GET /artworks/:artworkId
-    - get artwork with artworkId
+  - get artwork with artworkId
 - PATCH /artworks/:artworkId
-    - edit artwork with artworkId
-    - needs authentication or admin rights
-     - example body:
-    ```
-    [
-        { "op": "replace", "path": "/name", "value": "The Epic Artwork" },
-        { "op": "replace", "path": "/isBanned", "value": false },
-        { "op": "add", "path": "/tagIds/0", "value": “61abdf85a32b7cf09720a51b” },
-    ]
-    ```
+  - edit artwork with artworkId
+  - needs authentication or admin rights
+  - example body:
+  ```
+  [
+      { "op": "replace", "path": "/name", "value": "The Epic Artwork" },
+      { "op": "replace", "path": "/isBanned", "value": false },
+      { "op": "add", "path": "/tagIds/0", "value": “61abdf85a32b7cf09720a51b” },
+  ]
+  ```
 - POST /users/:userId/artworks
-    - add new artwork for the user with userId
-    - needs authentication or admin rights
-    - example body:
-    ```
-    {
-        “name”: “new-artwork”,
-        “summary”: “summary for artwork”,
-        “description”: “description for artwork”,
-        “tagIds”: [‘tagId1234567’’],
-    }
-    ```
+  - add new artwork for the user with userId
+  - needs authentication or admin rights
+  - example body:
+  ```
+  {
+      “name”: “new-artwork”,
+      “summary”: “summary for artwork”,
+      “description”: “description for artwork”,
+      “tagIds”: [‘tagId1234567’’],
+  }
+  ```
 - DELETE /users/:userId/artworks/:artworkId
-    - delete artwork with artworkId from user with userId
-    - needs authentication or admin rights
+  - delete artwork with artworkId from user with userId
+  - needs authentication or admin rights
 - GET /users/:userId/artworks
-    - get all artworks of user with userId
+  - get all artworks of user with userId
 - POST /artworks/:artworkId/reports
-    - add report to artwork with artworkId
-    - needs authentication
-    - example body:
-    ```
-    {
-        "userId": “61afe6abbe0e0a42dfab667a”,
-        "message": “This artwork is owned by myself”,
-    }
 
-     ```
+  - add report to artwork with artworkId
+  - needs authentication
+  - example body:
+
+  ```
+  {
+      "userId": “61afe6abbe0e0a42dfab667a”,
+      "message": “This artwork is owned by myself”,
+  }
+
+  ```
+
 - POST /artworks/:artworkId/like
-    - add like to artwork with artworkId
-    - needs authentication or admin rights
-    - does not have a body
+  - add like to artwork with artworkId
+  - needs authentication or admin rights
+  - does not have a body
 - DELETE /artworks/:artworkId/unlike
-    - unlike artwork with artworkId
-    - needs authentication or admin rights
+
+  - unlike artwork with artworkId
+  - needs authentication or admin rights
 
 - POST /users/register
-    - registers a new user
-    - example body:
-    ```
-    {
-        "username": "firstname-lastname,
-        "password": "iloveyou",
-        "name": "Firstname Lastname"
-    }
 
-     ```
+  - registers a new user
+  - example body:
+
+  ```
+  {
+      "username": "firstname-lastname,
+      "password": "iloveyou",
+      "name": "Firstname Lastname"
+  }
+
+  ```
+
 - POST /users/login
-    - Logins in a user and returns an access token
-    - example body:
-    ```
-    {
-        "username": "firstname-lastname,
-        "password": "iloveyou",
-        "name": "Firstname Lastname"
-    }
-     ```
+
+  - Logins in a user and returns an access token
+  - example body:
+
+  ```
+  {
+      "username": "firstname-lastname,
+      "password": "iloveyou",
+      "name": "Firstname Lastname"
+  }
+  ```
 
 - PUT /users/:userId/password
-    - edits the password for user with userId
-    - needs authentication or admin rights
+  - edits the password for user with userId
+  - needs authentication or admin rights
 - GET /users/:userId/messages/sent
-    - get all send messages for user with userId
-    - needs authentication or admin rights
+  - get all send messages for user with userId
+  - needs authentication or admin rights
 - GET /users/:userId/messages/received
-    - get all received messages for user with userId
-    - needs authentication or admin rights
+
+  - get all received messages for user with userId
+  - needs authentication or admin rights
 
 - GET /users/:userId/messages/:messageId
-    - get message with messageId for user with userId
-    - needs authentication or admin rights
+  - get message with messageId for user with userId
+  - needs authentication or admin rights
 - POST /users/:userId/messages
-    - send message as userId
-    - needs authentication
+
+  - send message as userId
+  - needs authentication
 
 - PATCH /users/:userId/messages/:messageId/remove
-    - mark message as read
-    - needs authentication
+
+  - mark message as read
+  - needs authentication
 
 - GET /users/username/:username/portfolio
-    - Returns the portfolio of the specified username
+  - Returns the portfolio of the specified username
 - GET /users/:userId/portfolio
-    - Returns the portfolio of the specified userId
+  - Returns the portfolio of the specified userId
 - PATCH /users/:userId/portfolio
-    - Modifies the portfolio of a user
-    - needs authentication or admin rights
-    - example body:
-    ```
-    [
-        { "op": "replace", "path": "/section/hero/heading", "value": "Why Im so good" },
-        { "op": "add", "path": "/section/projects/artworkIds/-", "value": “61acd618b7315b51a91bd105” },
-        { "op": "remove", "path": "/section/experiences/experiences/2" },
-    ]
-    ```
 
+  - Modifies the portfolio of a user
+  - needs authentication or admin rights
+  - example body:
+
+  ```
+  [
+      { "op": "replace", "path": "/section/hero/heading", "value": "Why Im so good" },
+      { "op": "add", "path": "/section/projects/artworkIds/-", "value": “61acd618b7315b51a91bd105” },
+      { "op": "remove", "path": "/section/experiences/experiences/2" },
+  ]
+  ```
 
 - GET /tags
-    - Returns all tags
+  - Returns all tags
 - GET /tags/:tagId
-    - Returns the tag at the specified id
+  - Returns the tag at the specified id
 - POST /tags
-    - Creates a tag for use
-    - example body:
-    ```
-    {
-        "label": "Oil Painting,
-        "color": #F97316,
-    }
 
-     ```
+  - Creates a tag for use
+  - example body:
+
+  ```
+  {
+      "label": "Oil Painting,
+      "color": #F97316,
+  }
+
+  ```
+
 - PATCH /tags/:tagId
-    - Modify the details of a tag
-    - example body:
-    ```
-    [
-        { "op": "replace", "path": "/label", "value": "my-tag" },
-    { "op": "replace", "path": "/color", "value": "#c0ffee" },
-    ]
-    ```
+
+  - Modify the details of a tag
+  - example body:
+
+  ```
+  [
+      { "op": "replace", "path": "/label", "value": "my-tag" },
+  { "op": "replace", "path": "/color", "value": "#c0ffee" },
+  ]
+  ```
 
 - DELETE /tags/:tagId
-    - Deletes a tag from the database
+
+  - Deletes a tag from the database
 
 - POST /images
-    - upload image to cloudinary (for testing purposes)
-    - example body: multipart form data
-    ```
-    {
-        image: <image-file>
-    }
-    ```
+  - upload image to cloudinary (for testing purposes)
+  - example body: multipart form data
+  ```
+  {
+      image: <image-file>
+  }
+  ```
 - DELETE /images/:imageId
-    - delete image from cloudinary (for testing purposes)
+  - delete image from cloudinary (for testing purposes)
 
 # Admin instructions
 
@@ -394,9 +413,9 @@ The frontend will then be hosted on localhost:3000 and the backend will be hoste
 ### Features
 
 - View from a list of usernames, real names, avatarUrls, user IDs, admin status, featured status, and their ban status.
-   Click on a field to view the user profile.
- - View all tags label, ids, and colors
- - Add a new tag
+  Click on a field to view the user profile.
+- View all tags label, ids, and colors
+- Add a new tag
 
 ## Admin User Viewer
 

@@ -1,2 +1,3 @@
 .env file contents:
 REACT_APP_API_URL
+GOOGLE_CLIENT_ID

@@ -2,9 +2,10 @@ import { Link, useHistory } from "react-router-dom";
 import { useRef, useState } from "react";
 import { useAuthentication } from "../hooks/useAuthentication";
 import ArtsumeModal from "../components/ArtsumeModal";
-import { apiUrl } from "../config";
+import { apiUrl, googleClientId } from "../config";
 import axios from "axios";
-// API calls to read users
+
+import GoogleLogin from "react-google-login";
 
 const LoginPage = () => {
   const history = useHistory();
@@ -45,6 +46,25 @@ const LoginPage = () => {
     }
   };
 
+  const onGoogleLoginSuccess = async response => {
+    console.log(response);
+    try {
+      const { data } = await axios.post(`${apiUrl}/auth/google`, {
+        token: response.tokenId,
+      });
+
+      const accessToken = data.accessToken;
+      const user = data.user;
+
+      _login(user, accessToken);
+
+      const params = new URLSearchParams(history.location.search);
+      history.push(params.get("destination") ?? "/");
+    } catch (e) {
+      setUsernameError("invalid credentials");
+    }
+  };
+
   return (
     <ArtsumeModal>
       <header className="mb-10 text-center">
@@ -54,7 +74,7 @@ const LoginPage = () => {
         <p className="dark:text-gray-200 text-lg">your art awaits you</p>
       </header>
       <form className="">
-        <label className="dark:text-gray-200 text-sm text-right mb-2">Username:</label>
+        <label className="dark:text-gray-200 text-sm text-right mb-2">Username or Email:</label>
         {usernameError && <em className="text-rose-400 text-sm float-right">*{usernameError}</em>}
         <input ref={usernameRef} className="px-2 py-1 mb-10" type="text" />
         <label className="dark:text-gray-200 text-sm text-right mb-3">Password:</label>
@@ -66,9 +86,38 @@ const LoginPage = () => {
         >
           LOGIN
         </button>
+
+        {/* <hr /> */}
+        <p className="text-xs text-gray-200 mb-3 text-center">Or login with</p>
+
+        <div className="text-center text-white font-semibold">
+          <GoogleLogin
+            clientId={googleClientId}
+            render={({ onClick, disabled }) => (
+              <button
+                onClick={onClick}
+                disabled={disabled}
+                className="font-semibold tracking-wider py-2 5 mb-2 text-sm rounded-sm shadow-lg bg-red-700 hover:bg-red-500 transition block w-full"
+              >
+                GOOGLE
+              </button>
+            )}
+            onSuccess={onGoogleLoginSuccess}
+            onFailure={null}
+            cookiePolicy="single_host_origin"
+          />
+
+          <a
+            href=""
+            className="tracking-wider py-2 5 mb-5 text-sm rounded-sm shadow-lg bg-blue-700 hover:bg-blue-500 transition block w-full"
+          >
+            FACEBOOK
+          </a>
+        </div>
+
         <h4 className="text-gray-100 text-sm text-center">
           Don't have an account?{" "}
-          <Link className="hover:underline" to="/register">
+          <Link className="underline" to="/register">
             Register here!
           </Link>
         </h4>

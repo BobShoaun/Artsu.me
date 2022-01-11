@@ -15,3 +15,4 @@ export const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 export const cloudinaryName = process.env.CLOUDINARY_NAME;
 export const cloudinaryApiKey = process.env.CLOUDINARY_API_KEY;
 export const cloudinaryApiSecret = process.env.CLOUDINARY_API_SECRET;
+export const googleClientId = process.env.GOOGLE_CLIENT_ID;

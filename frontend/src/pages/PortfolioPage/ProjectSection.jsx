@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"; // removed useParams
-import ArtworkCard from "../components/ArtworkCard";
+import ArtworkCard from "../../components/ArtworkCard";
 
 const ProjectSection = ({ portfolio }) => {
   const layoutId = portfolio.section.project.layoutId ?? 0;

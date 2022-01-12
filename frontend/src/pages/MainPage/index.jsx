@@ -1,18 +1,17 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect, useState, useRef, useCallback } from "react";
-import { setIsPublic } from "../store/generalSlice";
-import { useScrollToTop } from "../hooks/useScrollToTop";
+import { setIsPublic } from "../../store/generalSlice";
+import { useScrollToTop } from "../../hooks/useScrollToTop";
 import "./index.css";
 
-import Loading from "../components/Loading";
+import Loading from "../../components/Loading";
 import axios from "axios";
-import { apiUrl } from "../config";
 
-import ArtsumeBanner from "../components/ArtsumeBanner";
-import UserCard from "../components/UserCard";
+import ArtsumeBanner from "../../components/ArtsumeBanner";
+import UserCard from "../../components/UserCard";
 
 import { useHistory } from "react-router";
 
@@ -28,7 +27,7 @@ const MainPage = () => {
 
   const getUsers = useCallback(async () => {
     try {
-      const { data } = await axios.get(`${apiUrl}/users?limit=20`);
+      const { data } = await axios.get(`/users?limit=20`);
       setUsers(data);
     } catch (e) {
       console.log(e);
@@ -37,7 +36,7 @@ const MainPage = () => {
 
   const getTags = useCallback(async () => {
     try {
-      const { data: tags } = await axios.get(`${apiUrl}/tags`);
+      const { data: tags } = await axios.get(`/tags`);
       setTags(tags);
     } catch (e) {
       console.log(e);
@@ -46,7 +45,7 @@ const MainPage = () => {
 
   const getArtworks = useCallback(async () => {
     try {
-      const { data } = await axios.get(`${apiUrl}/artworks?limit=14`);
+      const { data } = await axios.get(`/artworks?limit=14`);
       setArtworks(data.filter(artwork => !artwork.isBanned));
     } catch (e) {
       console.log(e);

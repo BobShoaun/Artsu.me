@@ -1,15 +1,15 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useHistory } from "react-router";
 
-import { apiUrl } from "../config";
+import { apiUrl } from "../../config";
 import axios from "axios";
-import { useScrollToTop } from "../hooks/useScrollToTop";
-import ArtsumeBanner from "../components/ArtsumeBanner";
-import Loading from "../components/Loading";
-import UserCard from "../components/UserCard";
-import ArtworkCard from "../components/ArtworkCard";
+import { useScrollToTop } from "../../hooks/useScrollToTop";
+import ArtsumeBanner from "../../components/ArtsumeBanner";
+import Loading from "../../components/Loading";
+import UserCard from "../../components/UserCard";
+import ArtworkCard from "../../components/ArtworkCard";
 
 const SearchPage = () => {
   const history = useHistory();

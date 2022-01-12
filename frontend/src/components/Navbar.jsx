@@ -1,18 +1,21 @@
 import { Link, useHistory } from "react-router-dom";
-import { useAuthentication } from "../hooks/useAuthentication";
-import { useState, useEffect, useCallback } from "react"; // removed useRef
+// import { useAuthentication } from "../hooks/useAuthentication";
+import { useState, useEffect, useCallback, useContext } from "react"; // removed useRef
 import { Search, Bell } from "react-feather"; // removed Check
 import MessagePanel from "./MessagePanel";
 import "./index.css";
 
 import axios from "axios";
-import { apiUrl, defaultAvatarUrl } from "../config";
+import { defaultAvatarUrl } from "../config";
 import { User, LogOut, Layout, Image, Users } from "react-feather";
+import { AppContext } from "../App";
 
 const Navbar = ({ onSearch, searchInput }) => {
   const history = useHistory();
-  const { accessToken, isLoggedIn, user, logout: _logout } = useAuthentication();
+  // const { accessToken, isLoggedIn, user, logout: _logout } = useAuthentication();
   const [messages, setMessages] = useState([]);
+
+  const { accessToken, user, logout: _logout } = useContext(AppContext);
 
   const logout = () => {
     _logout();
@@ -20,20 +23,20 @@ const Navbar = ({ onSearch, searchInput }) => {
   };
 
   const getMessages = useCallback(async () => {
-    if (!isLoggedIn) return;
-    const { data } = await axios.get(`${apiUrl}/users/${user._id}/messages/received`, {
+    if (!accessToken) return;
+    const { data } = await axios.get(`/users/${user._id}/messages/received`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     const messages = data
       .filter(m => !m.hasRead)
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     setMessages(messages);
-  }, [accessToken, isLoggedIn, user]);
+  }, [accessToken, user]);
 
   const readMessage = async messageId => {
-    if (!isLoggedIn) return;
+    if (!accessToken) return;
     await axios.patch(
-      `${apiUrl}/users/${user._id}/messages/${messageId}/remove`,
+      `/users/${user._id}/messages/${messageId}/remove`,
       {},
       {
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -44,7 +47,7 @@ const Navbar = ({ onSearch, searchInput }) => {
 
   useEffect(() => {
     getMessages();
-  }, [getMessages, isLoggedIn]);
+  }, [getMessages, accessToken, user]);
 
   return (
     <nav className=" bg-gray-800 bg-opacity-80 z-20 py-5 shadow-lg backdrop-filter backdrop-blur-lg fixed top-0 left-0 right-0">

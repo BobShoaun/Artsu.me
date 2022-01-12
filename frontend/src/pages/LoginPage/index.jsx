@@ -1,8 +1,7 @@
 import { Link, useHistory } from "react-router-dom";
-import { useRef, useState, useContext } from "react";
-import { useAuthentication } from "../hooks/useAuthentication";
-import ArtsumeModal from "../components/ArtsumeModal";
-import { apiUrl, googleClientId } from "../config";
+import { useRef, useState, useContext, useEffect } from "react";
+import ArtsumeModal from "../../components/ArtsumeModal";
+import { googleClientId } from "../../config";
 import axios from "axios";
 import { AppContext } from "../../App";
 
@@ -13,12 +12,17 @@ const LoginPage = () => {
 
   const usernameRef = useRef(null);
   const passwordRef = useRef(null);
-  const { login: _login } = useAuthentication();
 
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
   const { accessToken, setAccessToken, setUser } = useContext(AppContext);
+
+  useEffect(() => {
+    // redirect to main page if logged in
+    if (!accessToken) return;
+    history.push("/");
+  }, []);
 
   const login = async e => {
     e.preventDefault();
@@ -36,7 +40,7 @@ const LoginPage = () => {
       : { username: usernameOrEmail, password };
 
     try {
-      const { data } = await axios.post(`${apiUrl}/auth/login`, body);
+      const { data } = await axios.post(`/auth/login`, body, { withCredentials: true });
 
       const accessToken = data.accessToken;
       const user = data.user;
@@ -54,7 +58,7 @@ const LoginPage = () => {
   const onGoogleLoginSuccess = async response => {
     try {
       const { data } = await axios.post(
-        `${apiUrl}/auth/google`,
+        `/auth/google`,
         {
           token: response.tokenId,
         },

@@ -1,15 +1,15 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import { Link } from "react-router-dom";
 import { useEffect, useState, useCallback } from "react";
 import UploadArtworkModal from "./UploadArtworkModal";
-import { useAuthentication } from "../hooks/useAuthentication";
+import { useAuthentication } from "../../hooks/useAuthentication";
 
-import Loading from "../components/Loading";
+import Loading from "../../components/Loading";
 import axios from "axios";
-import { apiUrl } from "../config";
+import { apiUrl } from "../../config";
 
-import Unauthenticated from "../components/Unauthenticated";
+import Unauthenticated from "../../components/Unauthenticated";
 import EditArtworkModal from "./EditArtworkModal";
 import { Edit, Eye, Trash2 } from "react-feather";
 

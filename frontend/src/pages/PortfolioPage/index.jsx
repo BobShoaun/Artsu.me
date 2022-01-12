@@ -2,11 +2,11 @@ import { useEffect, useState, useCallback } from "react"; // removed useRef
 import { Link, useParams, useHistory } from "react-router-dom";
 
 import { useSelector } from "react-redux";
-import { useScrollToTop } from "../hooks/useScrollToTop";
-import { useAuthentication } from "../hooks/useAuthentication";
+import { useScrollToTop } from "../../hooks/useScrollToTop";
+import { useAuthentication } from "../../hooks/useAuthentication";
 
 import axios from "axios";
-import { apiUrl } from "../config";
+import { apiUrl } from "../../config";
 
 import "./index.css";
 import ProjectSection from "./ProjectSection";
@@ -15,7 +15,7 @@ import HeroSection from "./HeroSection";
 import ExperienceSection from "./ExperienceSection";
 
 import { ArrowLeft } from "react-feather";
-import Loading from "../components/Loading";
+import Loading from "../../components/Loading";
 
 const PortfolioPage = () => {
   const history = useHistory();

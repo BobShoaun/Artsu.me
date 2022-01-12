@@ -1,18 +1,18 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import { Link, useParams } from "react-router-dom"; // removed useHistory
-import ImageStage from "../components/ImageStage";
+import ImageStage from "../../components/ImageStage";
 import { useState, useEffect, useCallback } from "react";
 import { Maximize } from "react-feather";
 import "./index.css";
-import { useAuthentication } from "../hooks/useAuthentication";
-import ArtsumeBanner from "../components/ArtsumeBanner";
+import { useAuthentication } from "../../hooks/useAuthentication";
+import ArtsumeBanner from "../../components/ArtsumeBanner";
 
 import { Heart, Flag } from "react-feather";
-import Loading from "../components/Loading";
+import Loading from "../../components/Loading";
 import ReportModal from "./ReportModal";
 
-import { apiUrl } from "../config";
+import { apiUrl } from "../../config";
 import axios from "axios";
 import { useHistory } from "react-router";
 

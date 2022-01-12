@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"; // removed useEffect, useRef
 import axios from "axios";
-import { useAuthentication } from "../hooks/useAuthentication";
+import { useAuthentication } from "../../hooks/useAuthentication";
 
-import { apiUrl } from "../config";
+import { apiUrl } from "../../config";
 import { useHistory } from "react-router";
 
 const ContactSection = ({ portfolio }) => {
@@ -76,7 +76,7 @@ const ContactSection = ({ portfolio }) => {
           />
           <label className="dark:text-gray-200 text-sm text-right mt-2">Message:</label>
           <textarea
-            value={body== null ? "" : body}
+            value={body == null ? "" : body}
             onChange={e => setBody(e.target.value)}
             className="px-2 py-1"
             cols="30"

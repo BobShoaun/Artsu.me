@@ -1,14 +1,14 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import "./index.css";
 import { Link, useParams } from "react-router-dom";
 
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import { apiUrl, defaultAvatarUrl } from "../config";
-import { useAuthentication } from "../hooks/useAuthentication";
-import Loading from "../components/Loading";
-import Unauthorized from "../components/Unauthorized";
+import { apiUrl, defaultAvatarUrl } from "../../config";
+import { useAuthentication } from "../../hooks/useAuthentication";
+import Loading from "../../components/Loading";
+import Unauthorized from "../../components/Unauthorized";
 import { useHistory } from "react-router-dom";
 
 const AdminProfileViewer = () => {
@@ -23,7 +23,6 @@ const AdminProfileViewer = () => {
     if (!isLoggedIn) redirectToLogin();
   }, [redirectToLogin, isLoggedIn]);
 
-
   //phase2: create method here for API call to update user information
   const getUser = useCallback(async () => {
     try {
@@ -31,75 +30,67 @@ const AdminProfileViewer = () => {
       setUser(user);
       const { data } = await axios.get(`${apiUrl}/users/${id}/artworks`);
       setArtworks(data);
-      const { data: portfolio } = await axios.get(`${apiUrl}/users/username/${user.username}/portfolio`);
+      const { data: portfolio } = await axios.get(
+        `${apiUrl}/users/username/${user.username}/portfolio`
+      );
       setPortfolio(portfolio);
     } catch (e) {
       console.log(e);
-      history.push("/404")
+      history.push("/404");
     }
   }, [id, history]);
 
   const banUser = async () => {
     const { data } = await axios.patch(
       `${apiUrl}/users/${user._id}`,
-      [
-        { op: "replace", path: "/isBanned", value: !user.isBanned },
-      ],
+      [{ op: "replace", path: "/isBanned", value: !user.isBanned }],
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
-    setUser(data)
+    setUser(data);
   };
 
   const featureUser = async () => {
     const { data } = await axios.patch(
       `${apiUrl}/users/${user._id}`,
-      [
-        { op: "replace", path: "/isFeatured", value: !user.isFeatured},
-      ],
+      [{ op: "replace", path: "/isFeatured", value: !user.isFeatured }],
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
-    setUser(data)
+    setUser(data);
   };
 
   const makeAdmin = async () => {
     const { data } = await axios.patch(
       `${apiUrl}/users/${user._id}`,
-      [
-        { op: "replace", path: "/isAdmin", value: !user.isAdmin},
-      ],
+      [{ op: "replace", path: "/isAdmin", value: !user.isAdmin }],
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
-    setUser(data)
+    setUser(data);
   };
 
   const removeAvatar = async () => {
-    const { data } = await axios.delete(`${apiUrl}/users/${user._id}/avatar`,
-      { headers: { Authorization: `Bearer ${accessToken}` } });
-    setUser(data)
+    const { data } = await axios.delete(`${apiUrl}/users/${user._id}/avatar`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    setUser(data);
   };
 
   const removeHeading = async () => {
     const { data } = await axios.patch(
       `${apiUrl}/users/${user._id}/portfolio`,
-      [
-        { op: "replace", path: "/section/hero/heading", value: ""},
-      ],
+      [{ op: "replace", path: "/section/hero/heading", value: "" }],
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
-    setPortfolio(data)
+    setPortfolio(data);
   };
 
   const removeBiography = async () => {
     const { data } = await axios.patch(
       `${apiUrl}/users/${user._id}/portfolio`,
-      [
-        { op: "replace", path: "/section/hero/subtitle", value: ""},
-      ],
+      [{ op: "replace", path: "/section/hero/subtitle", value: "" }],
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
-    setPortfolio(data)
+    setPortfolio(data);
   };
-
 
   useEffect(() => {
     getUser();
@@ -108,7 +99,6 @@ const AdminProfileViewer = () => {
   if (!user || !portfolio || !artworks) {
     return <Loading />;
   }
-
 
   const primary = { main: "rose-600", light: "rose-500", dark: "rose-700" };
   const secondary = { main: "teal-700", light: "teal-500", dark: "teal-800" };
@@ -134,7 +124,8 @@ const AdminProfileViewer = () => {
             </h3>
             <button
               onClick={() => removeAvatar()}
-              className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm text-center">
+              className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm text-center"
+            >
               Remove User Avatar
             </button>
           </aside>
@@ -142,62 +133,42 @@ const AdminProfileViewer = () => {
             <ul className="items-centre gap-10 container mx-auto">
               <ul className="flex items-center gap-10 mx-auto mb-6">
                 <li color="white">
-                  <h3 className="dark:text-gray-200 font-semibold text-right">
-                    name:{" "}
-                  </h3>
+                  <h3 className="dark:text-gray-200 font-semibold text-right">name: </h3>
                 </li>
                 <li className="ml-auto">
-                  <p className="dark:text-gray-200 text-right">
-                    {user.name}
-                  </p>
+                  <p className="dark:text-gray-200 text-right">{user.name}</p>
                 </li>
               </ul>
               <ul className="flex items-center gap-10 mx-auto mb-6">
                 <li color="white">
-                  <h3 className="dark:text-gray-200 font-semibold text-right">
-                    username:{" "}
-                  </h3>
+                  <h3 className="dark:text-gray-200 font-semibold text-right">username: </h3>
                 </li>
                 <li className="ml-auto">
-                  <p className="dark:text-gray-200 text-right">
-                    {user.username}
-                  </p>
+                  <p className="dark:text-gray-200 text-right">{user.username}</p>
                 </li>
               </ul>
               <ul className="flex items-center gap-10 mx-auto mb-6">
                 <li color="white">
-                  <h3 className="dark:text-gray-200 font-semibold text-right">
-                    heading:{" "}
-                  </h3>
+                  <h3 className="dark:text-gray-200 font-semibold text-right">heading: </h3>
                 </li>
                 <li className="ml-auto">
-                  <p className="dark:text-gray-200 text-right">
-                    {portfolio.section.hero.heading}
-                  </p>
+                  <p className="dark:text-gray-200 text-right">{portfolio.section.hero.heading}</p>
                 </li>
               </ul>
               <ul className="flex items-center gap-10 mx-auto mb-6">
                 <li color="white">
-                  <h3 className="dark:text-gray-200 font-semibold text-right">
-                    biography:{" "}
-                  </h3>
+                  <h3 className="dark:text-gray-200 font-semibold text-right">biography: </h3>
                 </li>
                 <li className="ml-auto">
-                  <p className="dark:text-gray-200 text-right">
-                    {portfolio.section.hero.subtitle}
-                  </p>
+                  <p className="dark:text-gray-200 text-right">{portfolio.section.hero.subtitle}</p>
                 </li>
               </ul>
               <ul className="flex items-center gap-10 mx-auto mb-6">
                 <li color="white">
-                  <h3 className="dark:text-gray-200 font-semibold text-right">
-                    Is user banned:{" "}
-                  </h3>
+                  <h3 className="dark:text-gray-200 font-semibold text-right">Is user banned: </h3>
                 </li>
                 <li className="ml-auto">
-                  <p className="dark:text-gray-200 text-right">
-                    {user.isBanned.toString()}
-                  </p>
+                  <p className="dark:text-gray-200 text-right">{user.isBanned.toString()}</p>
                 </li>
               </ul>
               <ul className="flex items-center gap-10 mx-auto mb-6">
@@ -207,9 +178,7 @@ const AdminProfileViewer = () => {
                   </h3>
                 </li>
                 <li className="ml-auto">
-                  <p className="dark:text-gray-200 text-right">
-                    {user.isFeatured.toString()}
-                  </p>
+                  <p className="dark:text-gray-200 text-right">{user.isFeatured.toString()}</p>
                 </li>
               </ul>
               <ul className="flex items-center gap-10 mx-auto mb-6">
@@ -219,46 +188,46 @@ const AdminProfileViewer = () => {
                   </h3>
                 </li>
                 <li className="ml-auto">
-                  <p className="dark:text-gray-200 text-right">
-                    {user.isAdmin.toString()}
-                  </p>
+                  <p className="dark:text-gray-200 text-right">{user.isAdmin.toString()}</p>
                 </li>
               </ul>
 
               <div className="text-right">
                 <button
                   onClick={() => removeBiography()}
-                  className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm mr-2">
+                  className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm mr-2"
+                >
                   Remove Biography
                 </button>
                 <button
                   onClick={() => removeHeading()}
-                  className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm mr-2">
+                  className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm mr-2"
+                >
                   Remove Heading
                 </button>
                 <button
                   onClick={() => makeAdmin()}
-                  className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm mr-2">
+                  className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm mr-2"
+                >
                   Toggle Admin Status
                 </button>
                 <button
                   onClick={() => banUser()}
-                  className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm mr-2">
+                  className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm mr-2"
+                >
                   Toggle User Ban
                 </button>
                 <button
                   onClick={() => featureUser()}
-                  className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm">
+                  className="text-gray-800 font-semibold bg-gray-200 hover:bg-opacity-90 bg-opacity-75 py-1 px-3 text-sm"
+                >
                   Feature User
                 </button>
               </div>
             </ul>
           </section>
         </div>
-        <section
-          className="py-20 bg-gradient-to-b from-gray-800 to-gray-900"
-          id="artworks"
-        >
+        <section className="py-20 bg-gradient-to-b from-gray-800 to-gray-900" id="artworks">
           <div className="container mx-auto mb-10">
             <h1 className="dark:text-white text-2xl font-semibold text-center mb-14">
               User Artworks
@@ -278,9 +247,7 @@ const AdminProfileViewer = () => {
                       alt={artwork.name}
                     />
                     <div className="pl-3">
-                      <h2 className="dark:text-white text-lg font-semibold mb-1">
-                        {artwork.name}
-                      </h2>
+                      <h2 className="dark:text-white text-lg font-semibold mb-1">{artwork.name}</h2>
                     </div>
                   </Link>
                 );
@@ -290,10 +257,9 @@ const AdminProfileViewer = () => {
         </section>
         <Footer />
       </main>
-
     );
   } else {
-    return <Unauthorized/>
+    return <Unauthorized />;
   }
 };
 

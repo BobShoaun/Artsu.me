@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import axios from "axios";
-import { apiUrl } from "../config";
-import { useAuthentication } from "../hooks/useAuthentication";
+import { apiUrl } from "../../config";
+import { useAuthentication } from "../../hooks/useAuthentication";
 
 const ReportModal = ({ onClose, artwork }) => {
   const reasonInput = useRef(null);

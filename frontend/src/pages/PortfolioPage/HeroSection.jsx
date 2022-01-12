@@ -1,4 +1,4 @@
-import { defaultAvatarUrl } from "../config";
+import { defaultAvatarUrl } from "../../config";
 const HeroSection = ({ portfolio }) => {
   const layoutId = portfolio.section.hero.layoutId ?? 2;
 

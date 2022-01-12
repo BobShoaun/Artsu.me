@@ -1,16 +1,16 @@
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 import "./index.css";
 
 import { Link } from "react-router-dom"; // removed useParams as it is unused
 import UploadAvatarModal from "./UploadAvatarModal";
 import { useState, useRef, useEffect } from "react"; // removed useEffect
 
-import { useAuthentication } from "../hooks/useAuthentication";
+import { useAuthentication } from "../../hooks/useAuthentication";
 import axios from "axios";
-import { apiUrl, defaultAvatarUrl } from "../config";
+import { apiUrl, defaultAvatarUrl } from "../../config";
 
-import Unauthenticated from "../components/Unauthenticated";
+import Unauthenticated from "../../components/Unauthenticated";
 
 const ProfilePage = () => {
   const { isLoggedIn, accessToken, user, login, redirectToLogin } = useAuthentication(); // removed redirectToLogin

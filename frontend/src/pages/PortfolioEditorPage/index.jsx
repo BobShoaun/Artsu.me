@@ -1,13 +1,13 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link, useHistory } from "react-router-dom";
-import Footer from "../components/Footer";
-import { useAuthentication } from "../hooks/useAuthentication";
+import Footer from "../../components/Footer";
+import { useAuthentication } from "../../hooks/useAuthentication";
 import axios from "axios";
-import { apiUrl } from "../config";
-import Loading from "../components/Loading";
-import Unauthenticated from "../components/Unauthenticated";
+import { apiUrl } from "../../config";
+import Loading from "../../components/Loading";
+import Unauthenticated from "../../components/Unauthenticated";
 import "./index.css";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 
 const PortfolioEditorPage = () => {
   const history = useHistory();

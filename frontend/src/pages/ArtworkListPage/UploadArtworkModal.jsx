@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
-import { apiUrl } from "../config";
-import { useAuthentication } from "../hooks/useAuthentication";
+import { apiUrl } from "../../config";
+import { useAuthentication } from "../../hooks/useAuthentication";
 import axios from "axios";
 
 const UploadArtworkModal = ({ onClose }) => {
@@ -51,7 +51,7 @@ const UploadArtworkModal = ({ onClose }) => {
     formData.append("summary", summary);
     formData.append("description", description);
     formData.append("tagIds", JSON.stringify(tagIds));
-    
+
     try {
       const response = await axios.post(`${apiUrl}/users/${user._id}/artworks`, formData, {
         headers: { Authorization: `Bearer ${accessToken}` },

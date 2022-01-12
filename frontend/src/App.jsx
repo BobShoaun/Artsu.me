@@ -1,32 +1,52 @@
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
+import axios from "axios";
+import { apiUrl } from "./config";
 
 import store from "./store";
 import { Provider } from "react-redux";
 
-import MainPage from "./MainPage";
-import PortfolioPage from "./PortfolioPage";
-import PortfolioEditorPage from "./PortfolioEditorPage";
-import ArtworkPage from "./ArtworkPage";
-import ProfilePage from "./ProfilePage";
-import LoginPage from "./LoginPage";
-import RegisterPage from "./RegisterPage";
-import SearchPage from "./SearchPage";
-import AdminPanel from "./AdminPanel";
-import AdminProfileViewer from "./AdminProfileViewer";
-import AdminArtworkViewer from "./AdminArtworkViewer";
-import ArtworkListPage from "./ArtworkListPage";
+import MainPage from "./pages/MainPage";
+import PortfolioPage from "./pages/PortfolioPage";
+import PortfolioEditorPage from "./pages/PortfolioEditorPage";
+import ArtworkPage from "./pages/ArtworkPage";
+import ProfilePage from "./pages/ProfilePage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import SearchPage from "./pages/SearchPage";
+import AdminPanel from "./pages/AdminPanel";
+import AdminProfileViewer from "./pages/AdminProfileViewer";
+import AdminArtworkViewer from "./pages/AdminArtworkViewer";
+import ArtworkListPage from "./pages/ArtworkListPage";
 import NotFound from "./components/NotFound";
 
 export const AppContext = createContext();
+
+axios.defaults.baseURL = apiUrl;
 
 const App = () => {
   const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null); // logged in user
 
+  useEffect(() => {
+    console.log("startup app");
+  }, []);
+
+  const logout = async () => {
+    try {
+      await axios.delete("/auth/logout", {
+        headers: { Authorization: `Bearer ${accessToken}`, withCredentials: true },
+      });
+      setUser(null);
+      setAccessToken(null);
+    } catch (e) {
+      console.error("error logging out", e);
+    }
+  };
+
   return (
     <Provider store={store}>
-      <AppContext.Provider value={{ accessToken, setAccessToken, user, setUser }}>
+      <AppContext.Provider value={{ accessToken, setAccessToken, user, setUser, logout }}>
         <main className="dark">
           <Router>
             <Switch>

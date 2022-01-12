@@ -1,28 +1,27 @@
 import { Link, useHistory } from "react-router-dom";
-import { useRef, useState, useEffect } from "react";
-import { useAuthentication } from "../hooks/useAuthentication";
+import { useRef, useState, useEffect, useContext } from "react";
 
-import ArtsumeModal from "../components/ArtsumeModal";
+import ArtsumeModal from "../../components/ArtsumeModal";
+import { AppContext } from "../../App";
 
-import { apiUrl } from "../config";
 import axios from "axios";
 
 const RegisterPage = () => {
   const history = useHistory();
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
-  const { accessToken: jwt, login: _login } = useAuthentication();
 
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
+  const { accessToken, setAccessToken, setUser } = useContext(AppContext);
 
   useEffect(() => {
     // redirect to main page if logged in
-    if (!jwt) return;
+    if (!accessToken) return;
     history.push("/");
-  });
+  }, []);
 
   useEffect(() => {
     setUsername(fullName.replaceAll(" ", "-").toLocaleLowerCase());
@@ -42,13 +41,13 @@ const RegisterPage = () => {
     if (password !== confirmPassword) return setErrorMessage("password does not match");
 
     try {
-      await axios.post(`${apiUrl}/users/register`, {
+      await axios.post("/auth/register", {
         name: fullName,
         username,
         password,
       });
 
-      const { data } = await axios.post(`${apiUrl}/users/login`, {
+      const { data } = await axios.post("/auth/login", {
         username,
         password,
       });
@@ -56,7 +55,8 @@ const RegisterPage = () => {
       const accessToken = data.accessToken;
       const user = data.user;
 
-      _login(user, accessToken);
+      setAccessToken(accessToken);
+      setUser(user);
       history.push("/");
     } catch (e) {
       if (e.response.status === 409) return setErrorMessage("username taken");

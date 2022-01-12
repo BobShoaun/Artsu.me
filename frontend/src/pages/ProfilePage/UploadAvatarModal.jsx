@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
-import { apiUrl } from "../config";
-import { useAuthentication } from "../hooks/useAuthentication";
+import { apiUrl } from "../../config";
+import { useAuthentication } from "../../hooks/useAuthentication";
 import axios from "axios";
 
 const UploadAvatarModal = ({ onClose }) => {

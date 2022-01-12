@@ -1,10 +1,11 @@
 import { Link, useHistory } from "react-router-dom";
 import { useRef, useState, useContext, useEffect } from "react";
-import { googleClientId } from "../config";
+import { googleClientId, facebookAppId } from "../config";
 import axios from "axios";
 import { AppContext } from "../App";
 
 import GoogleLogin from "react-google-login";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 
 const SocialLogin = () => {
   const history = useHistory();
@@ -28,10 +29,15 @@ const SocialLogin = () => {
       setAccessToken(accessToken);
 
       const params = new URLSearchParams(history.location.search);
-      history.push(params.get("destination") ?? "/");
+      // history.push(params.get("destination") ?? "/");
+      history.push("/username");
     } catch (e) {
       // setUsernameError("invalid credentials");
     }
+  };
+
+  const onFacebookLoginSuccess = async response => {
+    console.log(response);
   };
 
   return (
@@ -49,7 +55,7 @@ const SocialLogin = () => {
             <button
               onClick={onClick}
               disabled={disabled}
-              className="font-semibold tracking-wider py-2.5 mb-3 text-sm rounded-sm shadow-lg bg-red-700 hover:bg-red-500 transition block w-full"
+              className="font-semibold tracking-wider py-2.5 mb-3 text-sm rounded-sm shadow-lg bg-red-700 hover:bg-red-600 transition block w-full"
             >
               GOOGLE
             </button>
@@ -59,12 +65,19 @@ const SocialLogin = () => {
           cookiePolicy="single_host_origin"
         />
 
-        <a
-          href=""
-          className="tracking-wider py-2.5 mb-5 text-sm rounded-sm shadow-lg bg-blue-700 hover:bg-blue-500 transition block w-full"
-        >
-          FACEBOOK
-        </a>
+        <FacebookLogin
+          appId={facebookAppId}
+          autoLoad
+          callback={onFacebookLoginSuccess}
+          render={({ onClick }) => (
+            <button
+              onClick={onClick}
+              className="font-semibold tracking-wider py-2.5 mb-5 text-sm rounded-sm shadow-lg bg-blue-700 hover:bg-blue-600 transition block w-full"
+            >
+              FACEBOOK
+            </button>
+          )}
+        />
       </div>
     </section>
   );

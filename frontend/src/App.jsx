@@ -19,6 +19,7 @@ import AdminProfileViewer from "./pages/AdminProfileViewer";
 import AdminArtworkViewer from "./pages/AdminArtworkViewer";
 import ArtworkListPage from "./pages/ArtworkListPage";
 import NotFound from "./components/NotFound";
+import UsernamePage from "./pages/UsernamePage";
 
 export const AppContext = createContext();
 
@@ -57,11 +58,11 @@ const App = () => {
   };
 
   return (
-    <Provider store={store}>
-      <AppContext.Provider
-        value={{ isLoggedIn, accessToken, setAccessToken, user, setUser, logout }}
-      >
-        <main className="dark">
+    <main className="dark">
+      <Provider store={store}>
+        <AppContext.Provider
+          value={{ isLoggedIn, accessToken, setAccessToken, user, setUser, logout }}
+        >
           <Router>
             <Switch>
               <Route exact path="/portfolio/editor" component={PortfolioEditorPage} />
@@ -69,6 +70,7 @@ const App = () => {
               <Route exact path="/artwork/:id" component={ArtworkPage} />
               <Route exact path="/login" component={LoginPage} />
               <Route exact path="/register" component={RegisterPage} />
+              <Route exact path="/username" component={UsernamePage} />
               <Route exact path="/profile" component={ProfilePage} />
               <Route exact path="/artworks" component={ArtworkListPage} />
               <Route exact path="/search" component={SearchPage} />
@@ -80,9 +82,9 @@ const App = () => {
               <Redirect to="/404" />
             </Switch>
           </Router>
-        </main>
-      </AppContext.Provider>
-    </Provider>
+        </AppContext.Provider>
+      </Provider>
+    </main>
   );
 };
 

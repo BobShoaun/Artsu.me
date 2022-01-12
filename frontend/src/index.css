@@ -33,11 +33,11 @@
 }
 
 html {
-  scroll-behavior: smooth !important;
+  scroll-behavior: smooth;
+  color-scheme: dark;
 }
 
 body {
-  margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

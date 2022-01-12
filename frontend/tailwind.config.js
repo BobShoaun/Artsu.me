@@ -9,7 +9,7 @@ module.exports = {
         gray: colors.neutral,
       },
       fontFamily: {
-        sans: ["Poppins"],
+        sans: ["Inter", "Poppins"],
       },
       cursor: {
         crosshair: "crosshair",

@@ -5,11 +5,13 @@ import ArtsumeModal from "../../components/ArtsumeModal";
 import { AppContext } from "../../App";
 
 import axios from "axios";
+import SocialLogin from "../../components/SocialLogin";
 
 const RegisterPage = () => {
   const history = useHistory();
   const passwordRef = useRef(null);
   const confirmPasswordRef = useRef(null);
+  const emailRef = useRef(null);
 
   const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
@@ -66,18 +68,20 @@ const RegisterPage = () => {
 
   return (
     <ArtsumeModal>
-      <header className="mb-10 text-center">
-        <h1 to="/" className="dark:text-gray-100 text-5xl mb-1 font-semibold">
-          Welcome
+      <header className="mb-10 py-5 text-center">
+        <h1 to="/" className="dark:text-gray-100 text-5xl mb-1 font-extrabold">
+          Create Account
         </h1>
-        <p className="dark:text-gray-200 text-lg">to your special art resume</p>
+        <p className="dark:text-gray-200">The best art community awaits you</p>
       </header>
       <form className="">
-        <div className="flex items-center gap-7 mb-10">
+        <div className="flex items-center gap-6 mb-8">
           <div className="flex-grow-0">
-            <label className="dark:text-gray-200 text-sm text-right mb-2">Full name:</label>
-
+            <label htmlFor="given-name" className="dark:text-gray-200 text-sm text-right mb-2">
+              Given name:
+            </label>
             <input
+              id="given-name"
               value={fullName}
               onChange={e => setFullName(e.target.value)}
               className="px-2 py-1"
@@ -86,8 +90,11 @@ const RegisterPage = () => {
             />
           </div>
           <div className="flex-grow-0">
-            <label className="dark:text-gray-200 text-sm text-right mb-2">Username:</label>
+            <label htmlFor="family-name" className="dark:text-gray-200 text-sm text-right mb-2">
+              Family name:
+            </label>
             <input
+              id="family-name"
               value={username}
               onChange={e => setUsername(e.target.value)}
               className="px-2 py-1"
@@ -97,26 +104,40 @@ const RegisterPage = () => {
           </div>
         </div>
 
-        <label className="dark:text-gray-200 text-sm text-right mb-3">Password:</label>
-        <input ref={passwordRef} className="px-2 py-1 mb-10" type="password" />
+        <label htmlFor="email" className="dark:text-gray-200 text-sm text-right mb-3">
+          Email:
+        </label>
+        <input id="email" ref={emailRef} className="px-2 py-1 mb-8" type="email" />
 
-        <label className="dark:text-gray-200 text-sm text-right mb-3">Confirm password:</label>
+        <label htmlFor="password" className="dark:text-gray-200 text-sm text-right mb-3">
+          Password:
+        </label>
+        <input id="password" ref={passwordRef} className="px-2 py-1 mb-8" type="password" />
 
-        <input ref={confirmPasswordRef} className="px-2 py-1 mb-3" type="password" />
+        <label htmlFor="confirm-password" className="dark:text-gray-200 text-sm text-right mb-3">
+          Confirm password:
+        </label>
+        <input
+          id="confirm-password"
+          ref={confirmPasswordRef}
+          className="px-2 py-1 mb-8"
+          type="password"
+        />
 
-        <div className="text-center mb-5">
-          {errorMessage && <em className="text-rose-400 text-sm">*{errorMessage}</em>}
-        </div>
+        {errorMessage && <em className="text-rose-400 text-sm">*{errorMessage}</em>}
 
         <button
           onClick={register}
-          className="text-white tracking-wider py-2.5 mb-5 text-sm rounded-sm shadow-lg font-semibold bg-gradient-to-r from-rose-400 to-teal-500 hover:to-teal-400 hover:from-rose-400 block w-full"
+          className="text-white tracking-wider py-2.5 mb-10 text-sm rounded-sm shadow-lg font-semibold bg-gradient-to-r from-rose-400 to-teal-500 hover:to-teal-400 hover:from-rose-400 block w-full"
         >
-          REGISTER
+          SIGN UP
         </button>
-        <h4 className="text-gray-100 text-sm text-center">
+
+        <SocialLogin></SocialLogin>
+
+        <h4 className="text-gray-100 text-sm text-center py-5">
           Already have an account?{" "}
-          <Link className="hover:underline" to="/login">
+          <Link className="underline" to="/login">
             Login instead!
           </Link>
         </h4>

@@ -1,9 +1,10 @@
 import { Link, useHistory } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import { useAuthentication } from "../hooks/useAuthentication";
 import ArtsumeModal from "../components/ArtsumeModal";
 import { apiUrl, googleClientId } from "../config";
 import axios from "axios";
+import { AppContext } from "../../App";
 
 import GoogleLogin from "react-google-login";
 
@@ -17,60 +18,61 @@ const LoginPage = () => {
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+  const { accessToken, setAccessToken, setUser } = useContext(AppContext);
+
   const login = async e => {
     e.preventDefault();
-    const username = usernameRef.current.value;
+    const usernameOrEmail = usernameRef.current.value;
     const password = passwordRef.current.value;
     setUsernameError("");
     setPasswordError("");
 
-    if (!username) return setUsernameError("username cannot be empty");
+    if (!usernameOrEmail) return setUsernameError("field cannot be empty");
     if (!password) return setPasswordError("password cannot be empty");
 
+    const isEmail = /\S+@\S+\.\S+/.test(usernameOrEmail);
+    const body = isEmail
+      ? { email: usernameOrEmail, password }
+      : { username: usernameOrEmail, password };
+
     try {
-      const { data } = await axios.post(`${apiUrl}/users/login`, {
-        username,
-        password,
-      });
+      const { data } = await axios.post(`${apiUrl}/auth/login`, body);
 
       const accessToken = data.accessToken;
       const user = data.user;
 
-      // NOTE: authenticate user in backend
-      _login(user, accessToken);
+      setAccessToken(accessToken);
+      setUser(user);
 
       const params = new URLSearchParams(history.location.search);
       history.push(params.get("destination") ?? "/");
     } catch (e) {
-      setUsernameError("invalid username or password");
+      setUsernameError("invalid credentials");
     }
   };
 
   const onGoogleLoginSuccess = async response => {
     try {
-      // const { data } = await axios.post(
-      //   `${apiUrl}/auth/google`,
-      //   {
-      //     token: response.tokenId,
-      //   },
-      //   { withCredentials: true }
-      // );
+      const { data } = await axios.post(
+        `${apiUrl}/auth/google`,
+        {
+          token: response.tokenId,
+        },
+        { withCredentials: true }
+      );
 
-      // const accessToken = data.accessToken;
-      // const user = data.user;
+      const accessToken = data.accessToken;
+      const user = data.user;
 
-      // _login(user, accessToken);
+      setAccessToken(accessToken);
+      setUser(user);
 
-      // console.log(data);
-
-      // // const params = new URLSearchParams(history.location.search);
-      // // history.push(params.get("destination") ?? "/");
+      const params = new URLSearchParams(history.location.search);
+      history.push(params.get("destination") ?? "/");
 
       // const { data: dd } = await axios.get(`${apiUrl}/auth/refresh`, { withCredentials: true });
-      // console.log(dd);
 
-      const { data: ddd } = await axios.delete(`${apiUrl}/auth/logout`, { withCredentials: true });
-      console.log(ddd);
+      // const { data: ddd } = await axios.delete(`${apiUrl}/auth/logout`, { withCredentials: true });
     } catch (e) {
       setUsernameError("invalid credentials");
     }
@@ -79,10 +81,10 @@ const LoginPage = () => {
   return (
     <ArtsumeModal>
       <header className="mb-10 text-center">
-        <h1 to="/" className="dark:text-gray-100 text-4xl mb-1 font-semibold">
+        <h1 to="/" className="dark:text-gray-100 text-5xl mb-1 font-semibold">
           Welcome back!
         </h1>
-        <p className="dark:text-gray-200 text-lg">your art awaits you</p>
+        <p className="dark:text-gray-300">The best art community awaits you</p>
       </header>
       <form className="">
         <label className="dark:text-gray-200 text-sm text-right mb-2">Username or Email:</label>

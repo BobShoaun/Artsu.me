@@ -1,6 +1,10 @@
 import express from "express";
 import { User } from "../models/index.js";
-import { authenticate, authorize, usernameHandler } from "../middlewares/user.middleware.js";
+import {
+  authorizeUser,
+  authorizeAdmin,
+  usernameHandler,
+} from "../middlewares/authentication.middleware.js";
 import { executeJsonPatch } from "../middlewares/general.middleware.js";
 import {
   checkDatabaseConn,
@@ -56,8 +60,8 @@ router.get("/users/:userId", async (req, res, next) => {
  */
 router.patch(
   "/users/:userId",
-  authenticate,
-  authorize,
+  authorizeUser,
+  authorizeAdmin,
   async (req, res, next) => {
     const { userId } = req.params;
     try {
@@ -89,7 +93,7 @@ router.patch(
 /**
  * Delete a user with userId
  */
-router.delete("/users/:userId", authenticate, async (req, res, next) => {
+router.delete("/users/:userId", authorizeUser, async (req, res, next) => {
   if (!req.user.isAdmin) return res.sendStatus(403);
   const { userId } = req.params;
   try {
@@ -103,8 +107,8 @@ router.delete("/users/:userId", authenticate, async (req, res, next) => {
 
 router.put(
   "/users/:userId/avatar",
-  authenticate,
-  authorize,
+  authorizeUser,
+  authorizeAdmin,
   async (req, res, next) => {
     const { userId } = req.params;
     try {
@@ -140,8 +144,8 @@ router.put(
  */
 router.delete(
   "/users/:userId/avatar",
-  authenticate,
-  authorize,
+  authorizeUser,
+  authorizeAdmin,
   async (req, res, next) => {
     const { userId } = req.params;
     try {

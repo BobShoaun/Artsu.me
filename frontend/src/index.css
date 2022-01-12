@@ -37,3 +37,17 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.appear {
+  animation: appear 0.2s ease;
+  animation-delay: 0.2s;
+  animation-fill-mode: both;
+}

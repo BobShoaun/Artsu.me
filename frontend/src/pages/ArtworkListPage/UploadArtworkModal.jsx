@@ -1,10 +1,10 @@
-import { useRef, useState, useEffect } from "react";
-import { apiUrl } from "../../config";
+import { useRef, useState, useEffect, useContext } from "react";
 import { useAuthentication } from "../../hooks/useAuthentication";
 import axios from "axios";
+import { AppContext } from "../../App";
 
 const UploadArtworkModal = ({ onClose }) => {
-  const { accessToken, user } = useAuthentication();
+  // const { accessToken, user } = useAuthentication();
 
   const [imageUrl, setImageUrl] = useState("");
   const imageInput = useRef(null);
@@ -17,9 +17,11 @@ const UploadArtworkModal = ({ onClose }) => {
   const [summaryError, setSummaryError] = useState("");
   const [tags, setTags] = useState([]);
 
+  const { accessToken, user, isLoggedIn } = useContext(AppContext);
+
   const getTags = async () => {
     try {
-      const { data: tags } = await axios.get(`${apiUrl}/tags`);
+      const { data: tags } = await axios.get(`/tags`);
       setTags(tags);
     } catch (e) {
       console.log(e);
@@ -53,7 +55,7 @@ const UploadArtworkModal = ({ onClose }) => {
     formData.append("tagIds", JSON.stringify(tagIds));
 
     try {
-      const response = await axios.post(`${apiUrl}/users/${user._id}/artworks`, formData, {
+      const response = await axios.post(`/users/${user._id}/artworks`, formData, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
 

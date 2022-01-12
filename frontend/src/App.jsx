@@ -28,17 +28,29 @@ const App = () => {
   const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null); // logged in user
 
+  const isLoggedIn = accessToken && user;
+
   useEffect(() => {
-    console.log("startup app");
+    // authenticate automatically if there is refresh token
+    (async () => {
+      try {
+        const { data } = await axios.get("/auth/refresh", { withCredentials: true });
+        setUser(data.user);
+        setAccessToken(data.accessToken);
+      } catch (e) {
+        // unautenticated
+      }
+    })();
   }, []);
 
   const logout = async () => {
     try {
       await axios.delete("/auth/logout", {
-        headers: { Authorization: `Bearer ${accessToken}`, withCredentials: true },
+        headers: { Authorization: `Bearer ${accessToken}` },
+        withCredentials: true,
       });
-      setUser(null);
       setAccessToken(null);
+      setUser(null);
     } catch (e) {
       console.error("error logging out", e);
     }
@@ -46,7 +58,9 @@ const App = () => {
 
   return (
     <Provider store={store}>
-      <AppContext.Provider value={{ accessToken, setAccessToken, user, setUser, logout }}>
+      <AppContext.Provider
+        value={{ isLoggedIn, accessToken, setAccessToken, user, setUser, logout }}
+      >
         <main className="dark">
           <Router>
             <Switch>

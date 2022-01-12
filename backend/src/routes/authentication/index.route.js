@@ -1,6 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import { accessTokenSecret } from "../../config.js";
+import { accessTokenSecret, refreshTokenSecret } from "../../config.js";
 import { checkDatabaseConn, mongoHandler } from "../../middlewares/mongo.middleware.js";
 import { authorizeUser } from "../../middlewares/authentication.middleware.js";
 import { Token } from "../../models/index.js";
@@ -28,8 +28,8 @@ router.get("/auth/refresh", async (req, res, next) => {
   }
 
   try {
-    const payload = await jwt.verify(refreshToken, refreshTokenSecret);
-    if (!token.user._id.equals(payload._id)) return res.sendStatus(403); // just in case, check if user id matches
+    const payload = jwt.verify(refreshToken, refreshTokenSecret);
+    if (!token.userId.equals(payload._id)) return res.sendStatus(403); // just in case, check if user id matches
 
     const accessToken = jwt.sign(
       {
@@ -42,7 +42,7 @@ router.get("/auth/refresh", async (req, res, next) => {
       { expiresIn: "10s" } // expires in 2 weeks
     );
 
-    res.send({ accessToken });
+    res.send({ accessToken, user: token.user });
   } catch {
     res.sendStatus(403); // forbidden, jwt failed to verify
   }

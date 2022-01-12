@@ -68,15 +68,11 @@ const LoginPage = () => {
       const accessToken = data.accessToken;
       const user = data.user;
 
-      setAccessToken(accessToken);
       setUser(user);
+      setAccessToken(accessToken);
 
       const params = new URLSearchParams(history.location.search);
       history.push(params.get("destination") ?? "/");
-
-      // const { data: dd } = await axios.get(`${apiUrl}/auth/refresh`, { withCredentials: true });
-
-      // const { data: ddd } = await axios.delete(`${apiUrl}/auth/logout`, { withCredentials: true });
     } catch (e) {
       setUsernameError("invalid credentials");
     }

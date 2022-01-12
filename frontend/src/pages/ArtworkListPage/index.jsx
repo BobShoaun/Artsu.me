@@ -1,29 +1,30 @@
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { Link } from "react-router-dom";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useContext } from "react";
 import UploadArtworkModal from "./UploadArtworkModal";
 import { useAuthentication } from "../../hooks/useAuthentication";
 
 import Loading from "../../components/Loading";
+import { AppContext } from "../../App";
 import axios from "axios";
-import { apiUrl } from "../../config";
 
 import Unauthenticated from "../../components/Unauthenticated";
 import EditArtworkModal from "./EditArtworkModal";
 import { Edit, Eye, Trash2 } from "react-feather";
 
 const ArtworkListPage = () => {
-  const { isLoggedIn, user, redirectToLogin, accessToken } = useAuthentication();
+  const { redirectToLogin } = useAuthentication();
   const [artworks, setArtworks] = useState([]);
   const [showArtworkModal, setShowArtworkModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const [editingArtwork, setEditingArtwork] = useState(null);
+  const { accessToken, user } = useContext(AppContext);
 
   const getArtworks = useCallback(async () => {
     try {
-      const { data } = await axios.get(`${apiUrl}/users/${user._id}/artworks`);
+      const { data } = await axios.get(`/users/${user._id}/artworks`);
       setArtworks(data);
       setLoading(false);
     } catch (e) {
@@ -32,17 +33,17 @@ const ArtworkListPage = () => {
   }, [user]);
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!accessToken) {
       redirectToLogin();
       return;
     }
     getArtworks();
-  }, [isLoggedIn, redirectToLogin, getArtworks]);
+  }, [accessToken, redirectToLogin, getArtworks]);
 
   const deleteArtwork = async artwork => {
     if (!window.confirm("Are you sure u want to delete " + artwork.name + "?")) return;
     try {
-      await axios.delete(`${apiUrl}/users/${user._id}/artworks/${artwork._id}`, {
+      await axios.delete(`/users/${user._id}/artworks/${artwork._id}`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       getArtworks();
@@ -51,7 +52,7 @@ const ArtworkListPage = () => {
     }
   };
 
-  if (!isLoggedIn) return <Unauthenticated />;
+  if (!accessToken) return <Unauthenticated />;
 
   if (loading) return <Loading />;
 

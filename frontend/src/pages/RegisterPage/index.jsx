@@ -55,8 +55,8 @@ const RegisterPage = () => {
       const accessToken = data.accessToken;
       const user = data.user;
 
-      setAccessToken(accessToken);
       setUser(user);
+      setAccessToken(accessToken);
       history.push("/");
     } catch (e) {
       if (e.response.status === 409) return setErrorMessage("username taken");

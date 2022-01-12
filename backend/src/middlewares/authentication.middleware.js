@@ -11,7 +11,7 @@ export const authorizeUser = async (req, res, next) => {
   const accessToken = req.headers.authorization?.split(" ")[1];
   if (!accessToken) return res.sendStatus(401); // unauthorized
   try {
-    const payload = await jwt.verify(accessToken, accessTokenSecret);
+    const payload = jwt.verify(accessToken, accessTokenSecret);
     req.user = payload;
     next();
   } catch {
@@ -51,7 +51,7 @@ export const issueTokens = async (req, res, next) => {
   const accessToken = jwt.sign(
     payload,
     accessTokenSecret,
-    { expiresIn: "15m" } // expires in 15 minutes
+    { expiresIn: "30s" } // expires in 15 minutes
   );
 
   // generate refresh token

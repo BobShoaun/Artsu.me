@@ -91,7 +91,9 @@ const Navbar = ({ onSearch, searchInput }) => {
               <MessagePanel messages={messages} onReadMessage={readMessage} />
             </li>
             <li className="dropdown-wrapper relative text-white text-sm flex items-center gap-5">
-              <p className="font-semibold z-10">{user.name}</p>
+              <p className="font-semibold z-10">
+                {user.name || `${user.givenName} ${user.familyName}`}
+              </p>
               <img
                 className="rounded-full w-10 h-10 object-cover z-10"
                 src={user.avatarUrl || defaultAvatarUrl}

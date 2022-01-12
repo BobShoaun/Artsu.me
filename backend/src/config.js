@@ -12,7 +12,10 @@ export const getMongoURI = database =>
 export const port = process.env.PORT || 3001;
 export const mongoURI = getMongoURI(mongoDatabase);
 export const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
+export const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
 export const cloudinaryName = process.env.CLOUDINARY_NAME;
 export const cloudinaryApiKey = process.env.CLOUDINARY_API_KEY;
 export const cloudinaryApiSecret = process.env.CLOUDINARY_API_SECRET;
 export const googleClientId = process.env.GOOGLE_CLIENT_ID;
+
+export const isProduction = process.env.NODE_ENV === "production";

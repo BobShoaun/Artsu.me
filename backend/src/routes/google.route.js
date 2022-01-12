@@ -2,9 +2,9 @@ import express from "express";
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import jwt from "jsonwebtoken";
-import { accessTokenSecret, googleClientId } from "../config.js";
+import { accessTokenSecret, refreshTokenSecret, googleClientId, isProduction } from "../config.js";
 
-import { User, Portfolio } from "../models/index.js";
+import { User, Portfolio, Token } from "../models/index.js";
 
 import { OAuth2Client } from "google-auth-library";
 
@@ -77,7 +77,15 @@ router.post("/auth/google", async (req, res, next) => {
 
     if (!user) {
       // create new user
-      user = new User({ email, givenName, familyName, avatarUrl, providerId, provider: "google" });
+      user = new User({
+        email,
+        givenName,
+        familyName,
+        avatarUrl,
+        providerId,
+        provider: "google",
+        isVerified: true,
+      });
       await user.save();
       // create new portfolio
       const portfolio = new Portfolio({ userId: user._id });
@@ -86,18 +94,76 @@ router.post("/auth/google", async (req, res, next) => {
       isNew = true;
     }
 
+    const payload = {
+      _id: user._id,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      isBanned: user.isBanned,
+    };
+
     // generate jwt
     const accessToken = jwt.sign(
+      payload,
+      accessTokenSecret,
+      { expiresIn: "10s" } // expires in 2 weeks
+    );
+
+    // generate refresh token
+    const refreshToken = jwt.sign(payload, refreshTokenSecret);
+
+    // upsert token
+    const token = await Token.findOne({ userId: user._id });
+    if (token) {
+      token.value = refreshToken;
+      await token.save();
+    } else await new Token({ value: refreshToken, userId: user._id }).save();
+
+    res.cookie("refresh-token", refreshToken, { httpOnly: true, secure: isProduction });
+    res.send({ user, accessToken, isNew });
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get("/auth/refresh", async (req, res, next) => {
+  const refreshToken = req.cookies["refresh-token"];
+  if (!refreshToken) return res.sendStatus(401); // unauthorized, no refreshtoken in cookie
+
+  let token = null;
+  try {
+    token = await Token.findOne({ value: refreshToken }).populate("user");
+    if (!token) return res.sendStatus(403); // forbidden, refreshtoken does not exist in db
+  } catch (e) {
+    return next(e);
+  }
+
+  try {
+    const payload = await jwt.verify(refreshToken, refreshTokenSecret);
+    if (!token.user._id.equals(payload._id)) return res.sendStatus(403); // just in case, check if user id matches
+
+    const accessToken = jwt.sign(
       {
-        _id: user._id,
-        email: user.email,
-        isAdmin: user.isAdmin,
-        isBanned: user.isBanned,
+        _id: token.user._id,
+        email: token.user.email,
+        isAdmin: token.user.isAdmin,
+        isBanned: token.user.isBanned,
       },
       accessTokenSecret,
-      { expiresIn: "1d" } // expires in 2 weeks
+      { expiresIn: "10s" } // expires in 2 weeks
     );
-    res.send({ user, accessToken, isNew });
+
+    res.send({ accessToken });
+  } catch {
+    res.sendStatus(403); // forbidden, jwt failed to verify
+  }
+});
+
+router.delete("/auth/logout", async (req, res, next) => {
+  const refreshToken = req.cookies["refresh-token"];
+  if (!refreshToken) return res.sendStatus(401); // unauthorized, no refreshtoken in cookie
+  try {
+    await Token.deleteOne({ value: refreshToken });
+    res.sendStatus(204);
   } catch (e) {
     next(e);
   }

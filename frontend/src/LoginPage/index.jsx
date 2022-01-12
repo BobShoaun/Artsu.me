@@ -47,19 +47,30 @@ const LoginPage = () => {
   };
 
   const onGoogleLoginSuccess = async response => {
-    console.log(response);
     try {
-      const { data } = await axios.post(`${apiUrl}/auth/google`, {
-        token: response.tokenId,
-      });
+      // const { data } = await axios.post(
+      //   `${apiUrl}/auth/google`,
+      //   {
+      //     token: response.tokenId,
+      //   },
+      //   { withCredentials: true }
+      // );
 
-      const accessToken = data.accessToken;
-      const user = data.user;
+      // const accessToken = data.accessToken;
+      // const user = data.user;
 
-      _login(user, accessToken);
+      // _login(user, accessToken);
 
-      const params = new URLSearchParams(history.location.search);
-      history.push(params.get("destination") ?? "/");
+      // console.log(data);
+
+      // // const params = new URLSearchParams(history.location.search);
+      // // history.push(params.get("destination") ?? "/");
+
+      // const { data: dd } = await axios.get(`${apiUrl}/auth/refresh`, { withCredentials: true });
+      // console.log(dd);
+
+      const { data: ddd } = await axios.delete(`${apiUrl}/auth/logout`, { withCredentials: true });
+      console.log(ddd);
     } catch (e) {
       setUsernameError("invalid credentials");
     }

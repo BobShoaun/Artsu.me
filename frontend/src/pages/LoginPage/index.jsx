@@ -56,8 +56,8 @@ const LoginPage = () => {
   return (
     <div className="h-screen relative overflow-hidden">
       <img
-        src="/low poly hills.jfif"
-        alt=""
+        src="/images/low poly hills.jfif"
+        alt="low poly wallpaper"
         className="w-full h-full absolute inset-0 z-0 object-cover"
       />
 

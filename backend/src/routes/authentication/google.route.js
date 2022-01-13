@@ -18,12 +18,15 @@ router.post(
     const { token } = req.body;
     if (!token) return res.sendStatus(400);
 
-    const ticket = await googleClient
-      .verifyIdToken({
+    let ticket = null;
+    try {
+      ticket = await googleClient.verifyIdToken({
         idToken: token,
         audience: googleClientId,
-      })
-      .catch(() => res.sendStatus(401));
+      });
+    } catch {
+      return res.sendStatus(401);
+    }
 
     const {
       sub: providerId,
@@ -34,7 +37,7 @@ router.post(
     } = ticket.getPayload();
 
     try {
-      let user = await User.findOne({ providerId });
+      let user = await User.findOne({ $and: [{ providerId }, { provider: "google" }] });
       let isNew = false;
 
       if (!user) {

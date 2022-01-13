@@ -7,6 +7,7 @@ import { Token } from "../../models/index.js";
 
 import passwordRoutes from "./password.route.js";
 import googleRoutes from "./google.route.js";
+import facebookRoutes from "./facebook.route.js";
 
 const router = express.Router();
 
@@ -14,6 +15,7 @@ router.use(checkDatabaseConn);
 
 router.use(passwordRoutes);
 router.use(googleRoutes);
+router.use(facebookRoutes);
 
 router.get("/auth/refresh", async (req, res, next) => {
   const refreshToken = req.cookies["refresh-token"];

@@ -22,40 +22,58 @@ const SocialLogin = () => {
         { withCredentials: true }
       );
 
-      const accessToken = data.accessToken;
-      const user = data.user;
+      setUser(data.user);
+      setAccessToken(data.accessToken);
 
-      setUser(user);
-      setAccessToken(accessToken);
-
-      const params = new URLSearchParams(history.location.search);
-      // history.push(params.get("destination") ?? "/");
-      history.push("/username");
-    } catch (e) {
-      // setUsernameError("invalid credentials");
-    }
+      redirect(data.user);
+    } catch (e) {}
   };
 
   const onFacebookLoginSuccess = async response => {
-    console.log(response);
+    try {
+      console.log(response);
+
+      const { data } = await axios.post(
+        `/auth/facebook`,
+        {
+          token: response.accessToken,
+        },
+        { withCredentials: true }
+      );
+
+      setUser(data.user);
+      setAccessToken(data.accessToken);
+
+      redirect(data.user);
+    } catch (e) {}
+  };
+
+  const redirect = user => {
+    if (user.username) {
+      const params = new URLSearchParams(history.location.search);
+      history.push(params.get("destination") ?? "/");
+      return;
+    }
+    // no username, have user set it
+    history.push("/username");
   };
 
   return (
     <section>
       <div className="mb-6 flex items-center gap-3 text-gray-300">
         <hr className="w-1/2 border-gray-400" />
-        <p className="text-sm whitespace-nowrap">or login with</p>
+        <p className="text-sm whitespace-nowrap">or continue with</p>
         <hr className="w-1/2 border-gray-400" />
       </div>
 
-      <div className="text-center text-white font-semibold">
+      <div className="flex items-center gap-3 text-center text-gray-800 font-semibold mb-5">
         <GoogleLogin
           clientId={googleClientId}
           render={({ onClick, disabled }) => (
             <button
               onClick={onClick}
               disabled={disabled}
-              className="font-semibold tracking-wider py-2.5 mb-3 text-sm rounded-sm shadow-lg bg-red-700 hover:bg-red-600 transition block w-full"
+              className="font-semibold tracking-wider py-2.5 text-sm rounded-sm shadow-md bg-gray-100 hover:text-white hover:bg-red-500 transition block w-full"
             >
               GOOGLE
             </button>
@@ -67,12 +85,12 @@ const SocialLogin = () => {
 
         <FacebookLogin
           appId={facebookAppId}
-          autoLoad
+          // autoLoad
           callback={onFacebookLoginSuccess}
           render={({ onClick }) => (
             <button
               onClick={onClick}
-              className="font-semibold tracking-wider py-2.5 mb-5 text-sm rounded-sm shadow-lg bg-blue-700 hover:bg-blue-600 transition block w-full"
+              className="font-semibold tracking-wider py-2.5 text-sm rounded-sm shadow-md bg-gray-100 hover:text-white hover:bg-blue-500 transition block w-full"
             >
               FACEBOOK
             </button>

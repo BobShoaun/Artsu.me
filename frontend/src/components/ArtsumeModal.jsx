@@ -7,14 +7,11 @@ const ArtsumeModal = ({ children }) => {
         artsu.me
       </h1> */}
 
-      <div className="appear backdrop-blur-sm absolute inset-0"></div>
+      {/* <div className="appear backdrop-blur-sm absolute inset-0"></div> */}
 
-      <dialog
-        open
-        className="m-auto z-10 fade-up bg-gray-800 bg-opacity-90 px-16 py-14 shadow-2xl rounded-lg max-w-2xl max-h-screen overflow-auto top-1/2"
-      >
+      <div className="m-auto z-10 fade-up max-h-screen foverflow-auto absolute fleft-1/2">
         {children}
-      </dialog>
+      </div>
     </main>
   );
 };

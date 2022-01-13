@@ -1,6 +1,5 @@
 import { Link, useHistory } from "react-router-dom";
 import { useRef, useState, useContext, useEffect } from "react";
-import axios from "axios";
 import { AppContext } from "../../App";
 
 import SocialLogin from "../../components/SocialLogin";
@@ -14,7 +13,7 @@ const LoginPage = () => {
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  const { accessToken, setAccessToken, setUser } = useContext(AppContext);
+  const { accessToken, setAccessToken, setUser, api } = useContext(AppContext);
 
   useEffect(() => {
     // redirect to main page if logged in
@@ -38,13 +37,10 @@ const LoginPage = () => {
       : { username: usernameOrEmail, password };
 
     try {
-      const { data } = await axios.post(`/auth/login`, body, { withCredentials: true });
+      const { data } = await api.public.post(`/auth/login`, body, { withCredentials: true });
 
-      const accessToken = data.accessToken;
-      const user = data.user;
-
-      setAccessToken(accessToken);
-      setUser(user);
+      setAccessToken(data.accessToken);
+      setUser(data.user);
 
       const params = new URLSearchParams(history.location.search);
       history.push(params.get("destination") ?? "/");

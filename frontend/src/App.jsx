@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { apiUrl } from "./config";
 
@@ -31,25 +31,50 @@ const App = () => {
 
   const isLoggedIn = accessToken && user;
 
-  useEffect(() => {
-    // authenticate automatically if there is refresh token
-    (async () => {
-      try {
-        const { data } = await axios.get("/auth/refresh", { withCredentials: true });
-        setUser(data.user);
-        setAccessToken(data.accessToken);
-      } catch (e) {
-        // unautenticated
-      }
-    })();
-  }, []);
+  const api = useMemo(() => {
+    // for public routes without access token
+    const _public = axios.create({ baseURL: apiUrl });
+
+    // for protected routes needed access token
+    const _protected = axios.create({
+      baseURL: apiUrl,
+      headers: { Authorization: `Bearer ${accessToken}` },
+      withCredentials: true,
+    });
+    _protected.interceptors.response.use(undefined, async error => {
+      const originalRequest = error.config;
+      if (error.response.status !== 401 || originalRequest._retry) return Promise.reject(error);
+      // intercept if error is 401, attempt to refresh access token
+      const newAccessToken = await refreshAccessToken();
+      if (!newAccessToken) return Promise.reject(error);
+
+      console.log("refreshed access token");
+
+      originalRequest._retry = true;
+      originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+      return _protected(originalRequest);
+    });
+    return { public: _public, protected: _protected };
+  }, [accessToken]);
+
+  const refreshAccessToken = async () => {
+    try {
+      const { data } = await api.public.get("/auth/refresh", { withCredentials: true });
+      setUser(data.user);
+      setAccessToken(data.accessToken);
+      return data.accessToken;
+    } catch (e) {
+      // unauthenticated
+    }
+    return null;
+  };
+
+  // authenticate automatically if there is refresh token
+  useEffect(refreshAccessToken, []);
 
   const logout = async () => {
     try {
-      await axios.delete("/auth/logout", {
-        headers: { Authorization: `Bearer ${accessToken}` },
-        withCredentials: true,
-      });
+      await api.protected.delete("/auth/logout");
       setAccessToken(null);
       setUser(null);
     } catch (e) {
@@ -61,7 +86,7 @@ const App = () => {
     <main className="dark">
       <Provider store={store}>
         <AppContext.Provider
-          value={{ isLoggedIn, accessToken, setAccessToken, user, setUser, logout }}
+          value={{ isLoggedIn, accessToken, setAccessToken, user, setUser, logout, api }}
         >
           <Router>
             <Switch>

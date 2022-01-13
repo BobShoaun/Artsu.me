@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import Sentencer from "sentencer";
-import axios from "axios";
 import { Check, X } from "react-feather";
 import { AppContext } from "../../App";
 
@@ -10,18 +9,16 @@ const UsernamePage = () => {
   const [username, setUsername] = useState("");
   const [validationMessage, setValidationMessage] = useState("");
 
-  const { accessToken, user, setUser } = useContext(AppContext);
+  const { user, setUser, api } = useContext(AppContext);
 
   const changeUsername = async e => {
     e.preventDefault();
     if (!(await validate())) return;
 
     try {
-      const { data } = await axios.patch(
-        `/users/${user._id}`,
-        [{ op: "replace", path: "/username", value: username }],
-        { headers: { Authorization: `Bearer ${accessToken}` } }
-      );
+      const { data } = await api.protected.patch(`/users/${user._id}`, [
+        { op: "replace", path: "/username", value: username },
+      ]);
       console.log("change username", data);
       setUser(data);
       history.push("/");
@@ -40,7 +37,7 @@ const UsernamePage = () => {
     e?.preventDefault();
     setValidationMessage("");
     try {
-      await axios.post("/users/username/validate", { username });
+      await api.public.post("/users/username/validate", { username });
       setValidationMessage("valid");
       return true;
     } catch (e) {

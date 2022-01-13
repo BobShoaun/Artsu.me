@@ -15,7 +15,7 @@ export const authorizeUser = async (req, res, next) => {
     req.user = payload;
     next();
   } catch {
-    res.sendStatus(403); // forbidden
+    res.sendStatus(401); // unauthorized, jwt invalid or expired
   }
 };
 
@@ -51,7 +51,7 @@ export const issueTokens = async (req, res, next) => {
   const accessToken = jwt.sign(
     payload,
     accessTokenSecret,
-    { expiresIn: "30s" } // expires in 15 minutes
+    { expiresIn: "15m" } // expires in 15 minutes
   );
 
   // generate refresh token

@@ -1,10 +1,7 @@
 import { Link, useHistory } from "react-router-dom";
 import { useRef, useState, useEffect, useContext, useCallback } from "react";
 
-import ArtsumeModal from "../../components/ArtsumeModal";
 import { AppContext } from "../../App";
-
-import axios from "axios";
 import SocialLogin from "../../components/SocialLogin";
 
 const RegisterPage = () => {
@@ -17,7 +14,7 @@ const RegisterPage = () => {
   const [username, setUsername] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
-  const { accessToken, setAccessToken, setUser } = useContext(AppContext);
+  const { accessToken, setAccessToken, setUser, api } = useContext(AppContext);
 
   useEffect(() => {
     // redirect to main page if logged in
@@ -43,43 +40,25 @@ const RegisterPage = () => {
     if (password !== confirmPassword) return setErrorMessage("password does not match");
 
     try {
-      await axios.post("/auth/register", {
+      await api.public.post("/auth/register", {
         name: fullName,
         username,
         password,
       });
 
-      const { data } = await axios.post("/auth/login", {
+      const { data } = await api.public.post("/auth/login", {
         username,
         password,
       });
 
-      const accessToken = data.accessToken;
-      const user = data.user;
-
-      setUser(user);
-      setAccessToken(accessToken);
+      setUser(data.user);
+      setAccessToken(data.accessToken);
       history.push("/");
     } catch (e) {
       if (e.response.status === 409) return setErrorMessage("username taken");
       setErrorMessage(e.response.data);
     }
   };
-
-  const [artworks, setArtworks] = useState([]);
-
-  const getArtworks = useCallback(async () => {
-    try {
-      const { data } = await axios.get(`/artworks?limit=20`);
-      setArtworks(data.filter(artwork => !artwork.isBanned));
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
-
-  useEffect(() => {
-    getArtworks();
-  }, [getArtworks]);
 
   return (
     <div className="h-screen relative overflow-hidden">

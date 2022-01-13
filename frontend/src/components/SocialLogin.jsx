@@ -73,7 +73,7 @@ const SocialLogin = () => {
             <button
               onClick={onClick}
               disabled={disabled}
-              className="py-2.5 rounded-sm shadow-md bg-gray-100 hover:text-white hover:bg-red-500 transition flex items-center justify-center gap-1 w-full"
+              className="py-2 rounded-sm shadow-md bg-gray-100 hover:text-white hover:bg-red-500 transition flex items-center justify-center gap-1 w-full"
             >
               <img src="/icons/google logo.svg" className="h-7" alt="google logo" />
               <p className="font-semibold tracking-wider text-sm">GOOGLE</p>
@@ -91,7 +91,7 @@ const SocialLogin = () => {
           render={({ onClick }) => (
             <button
               onClick={onClick}
-              className="py-2.5 rounded-sm shadow-md bg-gray-100 hover:text-white hover:bg-blue-500 transition flex items-center justify-center gap-1 w-full"
+              className="py-2 rounded-sm shadow-md bg-gray-100 hover:text-white hover:bg-blue-500 transition flex items-center justify-center gap-1 w-full"
             >
               <img src="/icons/facebook logo.svg" className="h-7" alt="facebook logo" />
               <p className="font-semibold tracking-wider text-sm">FACEBOOK</p>

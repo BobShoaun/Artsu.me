@@ -5,6 +5,7 @@ import { apiUrl } from "./config";
 
 import store from "./store";
 import { Provider } from "react-redux";
+import { useAuthentication } from "./hooks/useAuthentication";
 
 import MainPage from "./pages/MainPage";
 import PortfolioPage from "./pages/PortfolioPage";
@@ -20,6 +21,7 @@ import AdminArtworkViewer from "./pages/AdminArtworkViewer";
 import ArtworkListPage from "./pages/ArtworkListPage";
 import NotFound from "./components/NotFound";
 import UsernamePage from "./pages/UsernamePage";
+import VerifyEmailPage from "./pages/VerifyEmailPage";
 
 export const AppContext = createContext();
 
@@ -28,8 +30,7 @@ axios.defaults.baseURL = apiUrl;
 const App = () => {
   const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null); // logged in user
-
-  const isLoggedIn = accessToken && user;
+  // const { refreshAccessToken } = useAuthentication(api);
 
   const api = useMemo(() => {
     // for public routes without access token
@@ -72,22 +73,10 @@ const App = () => {
   // authenticate automatically if there is refresh token
   useEffect(refreshAccessToken, []);
 
-  const logout = async () => {
-    try {
-      await api.protected.delete("/auth/logout");
-      setAccessToken(null);
-      setUser(null);
-    } catch (e) {
-      console.error("error logging out", e);
-    }
-  };
-
   return (
     <main className="dark">
       <Provider store={store}>
-        <AppContext.Provider
-          value={{ isLoggedIn, accessToken, setAccessToken, user, setUser, logout, api }}
-        >
+        <AppContext.Provider value={{ accessToken, setAccessToken, user, setUser, api }}>
           <Router>
             <Switch>
               <Route exact path="/portfolio/editor" component={PortfolioEditorPage} />
@@ -96,6 +85,7 @@ const App = () => {
               <Route exact path="/login" component={LoginPage} />
               <Route exact path="/register" component={RegisterPage} />
               <Route exact path="/username" component={UsernamePage} />
+              <Route exact path="/verify-email" component={VerifyEmailPage} />
               <Route exact path="/profile" component={ProfilePage} />
               <Route exact path="/artworks" component={ArtworkListPage} />
               <Route exact path="/search" component={SearchPage} />

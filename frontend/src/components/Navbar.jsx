@@ -9,13 +9,14 @@ import axios from "axios";
 import { defaultAvatarUrl } from "../config";
 import { User, LogOut, Layout, Image, Users } from "react-feather";
 import { AppContext } from "../App";
+import { useAuthentication } from "../hooks/useAuthentication";
 
 const Navbar = ({ onSearch, searchInput }) => {
   const history = useHistory();
   // const { accessToken, isLoggedIn, user, logout: _logout } = useAuthentication();
   const [messages, setMessages] = useState([]);
 
-  const { accessToken, user, logout: _logout } = useContext(AppContext);
+  const { isLoggedIn, accessToken, user, logout: _logout } = useAuthentication();
 
   const logout = () => {
     _logout();
@@ -23,7 +24,7 @@ const Navbar = ({ onSearch, searchInput }) => {
   };
 
   const getMessages = useCallback(async () => {
-    if (!accessToken) return;
+    if (!isLoggedIn) return;
     const { data } = await axios.get(`/users/${user._id}/messages/received`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
@@ -34,7 +35,7 @@ const Navbar = ({ onSearch, searchInput }) => {
   }, [accessToken, user]);
 
   const readMessage = async messageId => {
-    if (!accessToken) return;
+    if (!isLoggedIn) return;
     await axios.patch(
       `/users/${user._id}/messages/${messageId}/remove`,
       {},

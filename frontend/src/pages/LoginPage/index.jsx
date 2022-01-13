@@ -1,8 +1,8 @@
 import { Link, useHistory } from "react-router-dom";
-import { useRef, useState, useContext, useEffect } from "react";
-import { AppContext } from "../../App";
+import { useRef, useState, useEffect } from "react";
 
 import SocialLogin from "../../components/SocialLogin";
+import { useAuthentication } from "../../hooks/useAuthentication";
 
 const LoginPage = () => {
   const history = useHistory();
@@ -13,11 +13,11 @@ const LoginPage = () => {
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  const { accessToken, setAccessToken, setUser, api } = useContext(AppContext);
+  const { login: _login, isLoggedIn } = useAuthentication();
 
   useEffect(() => {
     // redirect to main page if logged in
-    if (!accessToken) return;
+    if (!isLoggedIn) return;
     history.push("/");
   }, []);
 
@@ -31,22 +31,7 @@ const LoginPage = () => {
     if (!usernameOrEmail) return setUsernameError("field cannot be empty");
     if (!password) return setPasswordError("password cannot be empty");
 
-    const isEmail = /\S+@\S+\.\S+/.test(usernameOrEmail);
-    const body = isEmail
-      ? { email: usernameOrEmail, password }
-      : { username: usernameOrEmail, password };
-
-    try {
-      const { data } = await api.public.post(`/auth/login`, body, { withCredentials: true });
-
-      setAccessToken(data.accessToken);
-      setUser(data.user);
-
-      const params = new URLSearchParams(history.location.search);
-      history.push(params.get("destination") ?? "/");
-    } catch (e) {
-      setUsernameError("invalid credentials");
-    }
+    if (!(await _login(usernameOrEmail, password))) setUsernameError("invalid credentials");
   };
 
   return (

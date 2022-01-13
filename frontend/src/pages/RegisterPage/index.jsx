@@ -3,6 +3,7 @@ import { useRef, useState, useEffect, useContext, useCallback } from "react";
 
 import { AppContext } from "../../App";
 import SocialLogin from "../../components/SocialLogin";
+import { useAuthentication } from "../../hooks/useAuthentication";
 
 const RegisterPage = () => {
   const history = useHistory();
@@ -11,53 +12,37 @@ const RegisterPage = () => {
   const emailRef = useRef(null);
 
   const [fullName, setFullName] = useState("");
-  const [username, setUsername] = useState("");
 
   const [errorMessage, setErrorMessage] = useState("");
-  const { accessToken, setAccessToken, setUser, api } = useContext(AppContext);
+  const { setAccessToken, setUser, api } = useContext(AppContext);
+
+  const { isLoggedIn, register: _register } = useAuthentication();
 
   useEffect(() => {
     // redirect to main page if logged in
-    if (!accessToken) return;
+    if (!isLoggedIn) return;
     history.push("/");
-  }, []);
-
-  useEffect(() => {
-    setUsername(fullName.replaceAll(" ", "-").toLocaleLowerCase());
-  }, [fullName]);
+  }, [isLoggedIn]);
 
   const register = async e => {
     e.preventDefault();
-    const password = passwordRef.current.value;
-    const confirmPassword = confirmPasswordRef.current.value;
-
     setErrorMessage("");
 
-    if (fullName.length === 0) return setErrorMessage("name cannot be empty");
-    if (username.length === 0) return setErrorMessage("username cannot be empty");
-    if (username.match(/\s/g)) return setErrorMessage("username cannot have spaces");
+    const form = new FormData(e.target);
+    const givenName = form.get("given-name");
+    const familyName = form.get("family-name");
+    const email = form.get("email");
+    const password = form.get("password");
+    const confirmPassword = form.get("confirm-password");
+
+    if (givenName.length === 0) return setErrorMessage("given name cannot be empty");
+    if (familyName.length === 0) return setErrorMessage("family name cannot be empty");
+    if (email.length === 0) return setErrorMessage("email cannot be empty");
     if (password.length < 8) return setErrorMessage("password too short (min 8 chars)");
-    if (password !== confirmPassword) return setErrorMessage("password does not match");
+    if (password !== confirmPassword) return setErrorMessage("passwords do not match");
 
-    try {
-      await api.public.post("/auth/register", {
-        name: fullName,
-        username,
-        password,
-      });
-
-      const { data } = await api.public.post("/auth/login", {
-        username,
-        password,
-      });
-
-      setUser(data.user);
-      setAccessToken(data.accessToken);
-      history.push("/");
-    } catch (e) {
-      if (e.response.status === 409) return setErrorMessage("username taken");
-      setErrorMessage(e.response.data);
-    }
+    if (!(await _register(email, givenName, familyName, password)))
+      setErrorMessage("something went wrong");
   };
 
   return (
@@ -78,7 +63,7 @@ const RegisterPage = () => {
             <p className="">The best art community awaits you</p>
           </header>
           <div className="bg-gray-800 bg-opacity-90 px-16 py-14 shadow-2xl rounded-lg backdrop-blur-md">
-            <form className="">
+            <form onSubmit={register}>
               <div className="flex items-center gap-6 mb-8">
                 <div className="flex-grow-0">
                   <label
@@ -87,14 +72,7 @@ const RegisterPage = () => {
                   >
                     Given name:
                   </label>
-                  <input
-                    id="given-name"
-                    value={fullName}
-                    onChange={e => setFullName(e.target.value)}
-                    className="px-2 py-1"
-                    type="text"
-                    name="name"
-                  />
+                  <input id="given-name" className="px-2 py-1" type="text" name="given-name" />
                 </div>
                 <div className="flex-grow-0">
                   <label
@@ -103,26 +81,19 @@ const RegisterPage = () => {
                   >
                     Family name:
                   </label>
-                  <input
-                    id="family-name"
-                    value={username}
-                    onChange={e => setUsername(e.target.value)}
-                    className="px-2 py-1"
-                    type="text"
-                    name="username"
-                  />
+                  <input id="family-name" className="px-2 py-1" type="text" name="family-name" />
                 </div>
               </div>
 
               <label htmlFor="email" className="dark:text-gray-200 text-sm text-right mb-3">
                 Email:
               </label>
-              <input id="email" ref={emailRef} className="px-2 py-1 mb-8" type="email" />
+              <input id="email" name="email" className="px-2 py-1 mb-8" type="email" />
 
               <label htmlFor="password" className="dark:text-gray-200 text-sm text-right mb-3">
                 Password:
               </label>
-              <input id="password" ref={passwordRef} className="px-2 py-1 mb-8" type="password" />
+              <input id="password" name="password" className="px-2 py-1 mb-8" type="password" />
 
               <label
                 htmlFor="confirm-password"
@@ -132,15 +103,17 @@ const RegisterPage = () => {
               </label>
               <input
                 id="confirm-password"
-                ref={confirmPasswordRef}
-                className="px-2 py-1 mb-8"
+                name="confirm-password"
+                className="px-2 py-1 mb-4"
                 type="password"
               />
 
-              {errorMessage && <em className="text-rose-400 text-sm">*{errorMessage}</em>}
+              <div className="mb-4 text-center">
+                {errorMessage && <em className="text-rose-400 text-sm">*{errorMessage}</em>}
+              </div>
 
               <button
-                onClick={register}
+                type="submit"
                 className="text-white tracking-wider py-2.5 mb-10 text-sm rounded-sm shadow-lg font-semibold bg-gradient-to-r from-rose-400 to-teal-500 hover:to-teal-400 hover:from-rose-400 block w-full"
               >
                 SIGN UP

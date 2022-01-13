@@ -1,61 +1,19 @@
-import { Link, useHistory } from "react-router-dom";
-import { useRef, useState, useContext, useEffect } from "react";
 import { googleClientId, facebookAppId } from "../config";
-import axios from "axios";
-import { AppContext } from "../App";
 
 import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import { useAuthentication } from "../hooks/useAuthentication";
 
 const SocialLogin = () => {
-  const history = useHistory();
-
-  const { setAccessToken, setUser } = useContext(AppContext);
+  const { loginGoogle, loginFacebook } = useAuthentication();
 
   const onGoogleLoginSuccess = async response => {
-    try {
-      const { data } = await axios.post(
-        `/auth/google`,
-        {
-          token: response.tokenId,
-        },
-        { withCredentials: true }
-      );
-
-      setUser(data.user);
-      setAccessToken(data.accessToken);
-
-      redirect(data.user);
-    } catch (e) {}
+    loginGoogle(response.tokenId);
   };
 
   const onFacebookLoginSuccess = async response => {
-    try {
-      console.log(response);
-
-      const { data } = await axios.post(
-        `/auth/facebook`,
-        {
-          token: response.accessToken,
-        },
-        { withCredentials: true }
-      );
-
-      setUser(data.user);
-      setAccessToken(data.accessToken);
-
-      redirect(data.user);
-    } catch (e) {}
-  };
-
-  const redirect = user => {
-    if (user.username) {
-      const params = new URLSearchParams(history.location.search);
-      history.push(params.get("destination") ?? "/");
-      return;
-    }
-    // no username, have user set it
-    history.push("/username");
+    console.log(response);
+    loginFacebook(response.accessToken);
   };
 
   return (

@@ -1,26 +1,67 @@
-import ArtsumeModal from "../../components/ArtsumeModal";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import Sentencer from "sentencer";
+import axios from "axios";
+import { Check, X } from "react-feather";
+import { AppContext } from "../../App";
 
 const UsernamePage = () => {
   const history = useHistory();
   const [username, setUsername] = useState("");
+  const [validationMessage, setValidationMessage] = useState("");
 
-  const changeUsername = e => {
+  const { accessToken, user, setUser } = useContext(AppContext);
+
+  const changeUsername = async e => {
     e.preventDefault();
-    console.log("change username");
-    return;
-    history.push("/");
+    if (!(await validate())) return;
+
+    try {
+      const { data } = await axios.patch(
+        `/users/${user._id}`,
+        [{ op: "replace", path: "/username", value: username }],
+        { headers: { Authorization: `Bearer ${accessToken}` } }
+      );
+      console.log("change username", data);
+      setUser(data);
+      history.push("/");
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const generateRandom = e => {
     e.preventDefault();
-    const username = Sentencer.make(
-      "This sentence has {{ a_noun }} and {{ an_adjective }} {{ noun }} in it."
-    );
-    console.log(username);
+    const username = Sentencer.make("{{ adjective }}-{{ noun }}");
+    setUsername(username);
   };
+
+  const validate = async e => {
+    e?.preventDefault();
+    setValidationMessage("");
+    try {
+      await axios.post("/users/username/validate", { username });
+      setValidationMessage("valid");
+      return true;
+    } catch (e) {
+      switch (e.response.data.result) {
+        case "invalid":
+          setValidationMessage("invalid: only [a-z0-9_.-] are allowed");
+          break;
+        case "duplicate":
+          setValidationMessage("username taken");
+          break;
+        default:
+          setValidationMessage(e.response.data.result);
+          break;
+      }
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    setValidationMessage("");
+  }, [username]);
 
   return (
     <div className="h-screen relative overflow-hidden">
@@ -46,9 +87,26 @@ const UsernamePage = () => {
             action=""
             className="bg-gray-800 bg-opacity-90 px-16 py-14 shadow-2xl rounded-lg backdrop-blur-md"
           >
-            <label htmlFor="username" className="dark:text-gray-200 text-sm text-right mb-2">
-              Username:
-            </label>
+            <div className="flex items-center mb-2 mr-2">
+              <label htmlFor="username" className="dark:text-gray-200 text-sm">
+                Username:
+              </label>
+
+              {validationMessage === "valid" ? (
+                <div className="text-sm text-teal-400 ml-auto flex items-center gap-1">
+                  <Check size={15} />
+                  <em className="">Available</em>
+                </div>
+              ) : (
+                validationMessage && (
+                  <div className="text-sm text-red-400 flex items-center gap-1 ml-auto">
+                    <X size={15} />
+                    <em className="">{validationMessage}</em>
+                  </div>
+                )
+              )}
+            </div>
+
             <input
               id="username"
               value={username}
@@ -57,12 +115,21 @@ const UsernamePage = () => {
               type="text"
             />
 
-            <button
-              onClick={generateRandom}
-              className="mb-5 text-gray-800 tracking-wider py-2.5 text-sm rounded-sm shadow-lg font-semibold bg-gray-100 block w-full"
-            >
-              Randomly Generate
-            </button>
+            <div className="flex items-center gap-3 mb-4 text-sm">
+              <button
+                onClick={validate}
+                className="text-gray-800 grow tracking-wider py-2.5 font-semibold rounded-sm shadow-lg bg-gray-100 hover:bg-white"
+              >
+                Check Availability
+              </button>
+
+              <button
+                onClick={generateRandom}
+                className="text-gray-800 grow tracking-wider py-2.5 font-semibold rounded-sm shadow-lg bg-gray-100 hover:bg-white"
+              >
+                Randomly Generate
+              </button>
+            </div>
 
             <button
               onClick={changeUsername}

@@ -1,6 +1,5 @@
 import { Link, useHistory } from "react-router-dom";
 import { useRef, useState, useContext, useEffect } from "react";
-import ArtsumeModal from "../../components/ArtsumeModal";
 import axios from "axios";
 import { AppContext } from "../../App";
 

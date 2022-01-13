@@ -172,6 +172,24 @@ router.delete(
   }
 );
 
+/**
+ * Validates username and checks availability
+ */
+router.post("/users/username/validate", async (req, res, next) => {
+  const { username } = req.body;
+  if (!username) return res.status(400).send({ result: "missing" });
+  // only allow lowercase, numbers, -, ., and _
+  if (!/^[a-z0-9_\.-]+$/.test(username)) return res.status(400).send({ result: "invalid" });
+
+  try {
+    const duplicate = await User.exists({ username });
+    if (duplicate) return res.status(400).send({ result: "duplicate" });
+    res.sendStatus(200);
+  } catch (e) {
+    next(e);
+  }
+});
+
 router.use(mongoHandler);
 
 export default router;

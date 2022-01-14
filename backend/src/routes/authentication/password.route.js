@@ -1,9 +1,16 @@
 import express from "express";
 import bcrypt from "bcrypt";
-import { issueTokens, usernameHandler } from "../../middlewares/authentication.middleware.js";
+import {
+  issueAccessToken,
+  issueRefreshToken,
+  usernameHandler,
+} from "../../middlewares/authentication.middleware.js";
 import { authorizeUser } from "../../middlewares/authentication.middleware.js";
 
 import { User, Portfolio } from "../../models/index.js";
+import jwt from "jsonwebtoken";
+import { emailTokenSecret, port, gmailUsername, gmailPassword } from "../../config.js";
+import nodemailer from "nodemailer";
 
 const router = express.Router();
 
@@ -67,7 +74,8 @@ router.post(
       next(e);
     }
   },
-  issueTokens,
+  issueAccessToken,
+  issueRefreshToken,
   (req, res) => res.send({ user: req.user, accessToken: req.accessToken })
 );
 
@@ -85,6 +93,70 @@ router.put("/users/:userId/password", authorizeUser, async (req, res, next) => {
     res.send(user);
   } catch (e) {
     next(e);
+  }
+});
+
+const transporter = nodemailer.createTransport({
+  service: "Gmail",
+  auth: {
+    user: gmailUsername,
+    pass: gmailPassword,
+  },
+});
+
+router.post("/users/:userId/email/verification/send", authorizeUser, async (req, res, next) => {
+  const { userId } = req.params;
+  const { redirectUrl } = req.body;
+  if (userId !== req.user._id) return res.sendStatus(403);
+
+  // generate jwt
+  const emailToken = jwt.sign(
+    { _id: userId },
+    emailTokenSecret,
+    { expiresIn: "12h" } // expires in 12 hours
+  );
+
+  try {
+    const params = new URLSearchParams({ redirectUrl });
+    const verificationUrl = `${req.protocol}://${req.hostname}:${port}/users/${userId}/email/verification/${emailToken}?${params}`;
+    await transporter.sendMail({
+      from: '"Artsu.me" <artsu.me18@gmail.com>',
+      to: "hbmlhapjzjfbnamyxc@nthrw.com",
+      subject: "Artsu.me - Email Verification",
+      html: /*html*/ `
+      <p>
+        Please click the link to verify your email
+        <a href="${verificationUrl}" target="_blank">click here</a>
+      </p>
+      <p>
+        if the link doesn't work, copy and paste this into your browser:
+        <a href="${verificationUrl}" target="_blank">${verificationUrl}</a>
+      </p>
+    `,
+    });
+
+    res.sendStatus(200);
+  } catch (e) {
+    next(e);
+  }
+});
+
+/**
+ * Has to be GET request for it to work with anchor tag
+ */
+router.get("/users/:userId/email/verification/:token", async (req, res, next) => {
+  const { userId, token } = req.params;
+  const { redirectUrl } = req.query;
+  if (!userId || !token) return res.sendStatus(400);
+  try {
+    const payload = jwt.verify(token, emailTokenSecret);
+    if (payload._id !== userId) return res.sendStatus(400); // userId does not match that in jwt
+
+    console.log("EMAIL VERIFIED!", redirectUrl);
+
+    res.redirect(redirectUrl);
+  } catch {
+    res.sendStatus(401); // unauthorized, jwt invalid or expired
   }
 });
 

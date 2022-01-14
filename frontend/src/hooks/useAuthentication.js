@@ -72,7 +72,7 @@ export const useAuthentication = () => {
 
     if (!user.isVerified) {
       // email not verified, verify first
-      history.push("/verify-email");
+      history.push("/email-verification");
       return;
     }
     if (!user.username) {

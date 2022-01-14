@@ -5,8 +5,8 @@ const { Schema } = mongoose;
 const user = new Schema(
   {
     email: { type: String, required: true, minlength: 1, unique: true },
-    givenName: { type: String, required: true, minlength: 1 },
-    familyName: { type: String, required: true, minlength: 1 },
+    givenName: { type: String, required: true, minlength: 1, trim: true },
+    familyName: { type: String, required: true, minlength: 1, trim: true },
     username: {
       type: String,
       // required: true,
@@ -23,8 +23,8 @@ const user = new Schema(
     provider: { type: String },
     avatarUrl: { type: String },
     avatarId: { type: String },
-    followerIds: [{ type: Schema.ObjectId, required: true, ref: "users", immutable: true }],
-    followingIds: [{ type: Schema.ObjectId, required: true, ref: "users", immutable: true }],
+    // followerIds: [{ type: Schema.ObjectId, required: true, ref: "users", immutable: true }],
+    // followingIds: [{ type: Schema.ObjectId, required: true, ref: "users", immutable: true }],
     isFeatured: { type: Boolean, default: false },
     isAdmin: { type: Boolean, default: false },
     isBanned: { type: Boolean, default: false },
@@ -46,6 +46,6 @@ const user = new Schema(
   }
 );
 
-user.index({ name: "text", username: "text" });
+user.index({ givenName: "text", familyName: "text", username: "text" });
 
 export default user;

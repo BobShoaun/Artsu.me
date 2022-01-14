@@ -39,7 +39,7 @@ export const usernameHandler = async (err, req, res, next) => {
   next(err);
 };
 
-export const issueTokens = async (req, res, next) => {
+export const issueAccessToken = async (req, res, next) => {
   const payload = {
     _id: req.user._id,
     email: req.user.email,
@@ -51,12 +51,23 @@ export const issueTokens = async (req, res, next) => {
   const accessToken = jwt.sign(
     payload,
     accessTokenSecret,
-    { expiresIn: "15m" } // expires in 15 minutes
+    { expiresIn: "10s" } // expires in 15 minutes
   );
+
+  req.accessToken = accessToken;
+  next();
+};
+
+export const issueRefreshToken = async (req, res, next) => {
+  const payload = {
+    _id: req.user._id,
+    email: req.user.email,
+    isAdmin: req.user.isAdmin,
+    isBanned: req.user.isBanned,
+  }; // TODO remove all just keep id
 
   // generate refresh token
   const refreshToken = jwt.sign(payload, refreshTokenSecret);
-
   try {
     // upsert token
     const token = await Token.findOne({ userId: req.user._id });
@@ -66,7 +77,6 @@ export const issueTokens = async (req, res, next) => {
     } else await new Token({ value: refreshToken, userId: req.user._id }).save();
 
     res.cookie("refresh-token", refreshToken, { httpOnly: true, secure: isProduction });
-    req.accessToken = accessToken;
     next();
   } catch (e) {
     next(e);

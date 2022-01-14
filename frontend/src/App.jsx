@@ -21,7 +21,8 @@ import AdminArtworkViewer from "./pages/AdminArtworkViewer";
 import ArtworkListPage from "./pages/ArtworkListPage";
 import NotFound from "./components/NotFound";
 import UsernamePage from "./pages/UsernamePage";
-import VerifyEmailPage from "./pages/VerifyEmailPage";
+import EmailVerificationPage from "./pages/EmailVerificationPage";
+import EmailVericationSuccessPage from "./pages/EmailVerificationSuccessPage";
 
 export const AppContext = createContext();
 
@@ -49,7 +50,7 @@ const App = () => {
       const newAccessToken = await refreshAccessToken();
       if (!newAccessToken) return Promise.reject(error);
 
-      console.log("refreshed access token");
+      console.log("refreshed access token", newAccessToken);
 
       originalRequest._retry = true;
       originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
@@ -85,7 +86,12 @@ const App = () => {
               <Route exact path="/login" component={LoginPage} />
               <Route exact path="/register" component={RegisterPage} />
               <Route exact path="/username" component={UsernamePage} />
-              <Route exact path="/verify-email" component={VerifyEmailPage} />
+              <Route exact path="/email-verification" component={EmailVerificationPage} />
+              <Route
+                exact
+                path="/email-verification/success"
+                component={EmailVericationSuccessPage}
+              />
               <Route exact path="/profile" component={ProfilePage} />
               <Route exact path="/artworks" component={ArtworkListPage} />
               <Route exact path="/search" component={SearchPage} />

@@ -1,6 +1,9 @@
 import express from "express";
 import { User, Portfolio } from "../../models/index.js";
-import { issueTokens } from "../../middlewares/authentication.middleware.js";
+import {
+  issueAccessToken,
+  issueRefreshToken,
+} from "../../middlewares/authentication.middleware.js";
 import axios from "axios";
 
 const router = express.Router();
@@ -67,7 +70,8 @@ router.post(
       next(e);
     }
   },
-  issueTokens,
+  issueAccessToken,
+  issueRefreshToken,
   (req, res) => res.send({ user: req.user, accessToken: req.accessToken, isNew: req.isNew })
 );
 

@@ -1,6 +1,6 @@
 import express from "express";
 import { Artwork, Portfolio, User } from "../models/index.js";
-import { authenticate, authorize } from "../middlewares/user.middleware.js";
+import { authorizeUser, authorizeAdmin } from "../middlewares/authentication.middleware.js";
 import { executeJsonPatch } from "../middlewares/general.middleware.js";
 import {
   checkDatabaseConn,
@@ -60,8 +60,8 @@ router.get("/users/:userId/portfolio", async (req, res, next) => {
  */
 router.patch(
   "/users/:userId/portfolio",
-  authenticate,
-  authorize,
+  authorizeUser,
+  authorizeAdmin,
   async (req, res, next) => {
     const { userId } = req.params;
     try {

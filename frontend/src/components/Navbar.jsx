@@ -1,18 +1,22 @@
 import { Link, useHistory } from "react-router-dom";
-import { useAuthentication } from "../hooks/useAuthentication";
-import { useState, useEffect, useCallback } from "react"; // removed useRef
+// import { useAuthentication } from "../hooks/useAuthentication";
+import { useState, useEffect, useCallback, useContext } from "react"; // removed useRef
 import { Search, Bell } from "react-feather"; // removed Check
 import MessagePanel from "./MessagePanel";
 import "./index.css";
 
 import axios from "axios";
-import { apiUrl, defaultAvatarUrl } from "../config";
+import { defaultAvatarUrl } from "../config";
 import { User, LogOut, Layout, Image, Users } from "react-feather";
+import { AppContext } from "../App";
+import { useAuthentication } from "../hooks/useAuthentication";
 
 const Navbar = ({ onSearch, searchInput }) => {
   const history = useHistory();
-  const { accessToken, isLoggedIn, user, logout: _logout } = useAuthentication();
+  // const { accessToken, isLoggedIn, user, logout: _logout } = useAuthentication();
   const [messages, setMessages] = useState([]);
+
+  const { isLoggedIn, accessToken, user, logout: _logout } = useAuthentication();
 
   const logout = () => {
     _logout();
@@ -21,19 +25,19 @@ const Navbar = ({ onSearch, searchInput }) => {
 
   const getMessages = useCallback(async () => {
     if (!isLoggedIn) return;
-    const { data } = await axios.get(`${apiUrl}/users/${user._id}/messages/received`, {
+    const { data } = await axios.get(`/users/${user._id}/messages/received`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     const messages = data
       .filter(m => !m.hasRead)
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     setMessages(messages);
-  }, [accessToken, isLoggedIn, user]);
+  }, [accessToken, user]);
 
   const readMessage = async messageId => {
     if (!isLoggedIn) return;
     await axios.patch(
-      `${apiUrl}/users/${user._id}/messages/${messageId}/remove`,
+      `/users/${user._id}/messages/${messageId}/remove`,
       {},
       {
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -44,7 +48,7 @@ const Navbar = ({ onSearch, searchInput }) => {
 
   useEffect(() => {
     getMessages();
-  }, [getMessages, isLoggedIn]);
+  }, [getMessages, accessToken, user]);
 
   return (
     <nav className=" bg-gray-800 bg-opacity-80 z-20 py-5 shadow-lg backdrop-filter backdrop-blur-lg fixed top-0 left-0 right-0">
@@ -88,7 +92,9 @@ const Navbar = ({ onSearch, searchInput }) => {
               <MessagePanel messages={messages} onReadMessage={readMessage} />
             </li>
             <li className="dropdown-wrapper relative text-white text-sm flex items-center gap-5">
-              <p className="font-semibold z-10">{user.name}</p>
+              <p className="font-semibold z-10">
+                {user.name || `${user.givenName} ${user.familyName}`}
+              </p>
               <img
                 className="rounded-full w-10 h-10 object-cover z-10"
                 src={user.avatarUrl || defaultAvatarUrl}

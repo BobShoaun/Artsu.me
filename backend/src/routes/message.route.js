@@ -1,6 +1,6 @@
 import express from "express";
 import { Message, User } from "../models/index.js";
-import { authenticate } from "../middlewares/user.middleware.js";
+import { authorizeUser } from "../middlewares/authentication.middleware.js";
 import {
   checkDatabaseConn,
   mongoHandler,
@@ -16,7 +16,7 @@ router.param("userId", validateIdParam);
 /**
  * Get all messages sent by a user
  */
-router.get("/users/:userId/messages/sent", authenticate, async (req, res, next) => {
+router.get("/users/:userId/messages/sent", authorizeUser, async (req, res, next) => {
   const { userId } = req.params;
   if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403); // can only check yours, unless admin
   try {
@@ -30,7 +30,7 @@ router.get("/users/:userId/messages/sent", authenticate, async (req, res, next) 
 /**
  * Get all messages received by a user
  */
-router.get("/users/:userId/messages/received", authenticate, async (req, res, next) => {
+router.get("/users/:userId/messages/received", authorizeUser, async (req, res, next) => {
   const { userId } = req.params;
   if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403); // can only check yours, unless admin
   try {
@@ -44,7 +44,7 @@ router.get("/users/:userId/messages/received", authenticate, async (req, res, ne
 /**
  * Get a specific message
  */
-router.get("/users/:userId/messages/:messageId", authenticate, async (req, res, next) => {
+router.get("/users/:userId/messages/:messageId", authorizeUser, async (req, res, next) => {
   const { userId } = req.params;
   const { messageId } = req.params;
   if (userId !== req.user._id && !req.user.isAdmin) return res.sendStatus(403); // can only check yours, unless admin
@@ -69,7 +69,7 @@ router.get("/users/:userId/messages/:messageId", authenticate, async (req, res, 
 /**
  * Send a message
  */
-router.post("/users/:userId/messages", authenticate, async (req, res, next) => {
+router.post("/users/:userId/messages", authorizeUser, async (req, res, next) => {
   const { userId } = req.params;
   if (userId !== req.user._id) return res.sendStatus(403); // can only send messages at yourself. No admin override!
   const senderId = userId;
@@ -93,7 +93,7 @@ router.post("/users/:userId/messages", authenticate, async (req, res, next) => {
 /**
  * Remove a message from your inbox. Note that this does not delete it!
  */
-router.patch("/users/:userId/messages/:messageId/remove", authenticate, async (req, res, next) => {
+router.patch("/users/:userId/messages/:messageId/remove", authorizeUser, async (req, res, next) => {
   const { userId } = req.params;
   const { messageId } = req.params;
   if (userId !== req.user._id) return res.sendStatus(403); // can only remove messages at yourself. No admin override!

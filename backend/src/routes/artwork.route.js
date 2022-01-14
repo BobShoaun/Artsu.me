@@ -1,6 +1,6 @@
 import express from "express";
 import { Artwork } from "../models/index.js";
-import { authenticate, authorize } from "../middlewares/user.middleware.js";
+import { authorizeUser, authorizeAdmin } from "../middlewares/authentication.middleware.js";
 import { executeJsonPatch } from "../middlewares/general.middleware.js";
 import {
   checkDatabaseConn,
@@ -23,8 +23,8 @@ router.param("artworkId", validateIdParam);
  */
 router.post(
   "/users/:userId/artworks",
-  authenticate,
-  authorize,
+  authorizeUser,
+  authorizeAdmin,
   multipart,
   (req, res, next) => {
     if (!req.body.name || !req.body.summary) return res.sendStatus(400);
@@ -60,8 +60,8 @@ router.post(
  */
 router.delete(
   "/users/:userId/artworks/:artworkId",
-  authenticate,
-  authorize,
+  authorizeUser,
+  authorizeAdmin,
   async (req, res, next) => {
     const { userId, artworkId } = req.params;
     try {
@@ -134,7 +134,7 @@ router.get("/artworks/:artworkId", async (req, res, next) => {
  */
 router.patch(
   "/artworks/:artworkId",
-  authenticate,
+  authorizeUser,
   async (req, res, next) => {
     const { artworkId } = req.params;
     try {
@@ -169,7 +169,7 @@ router.patch(
 /**
  * Allows a user to report a piece of artwork
  */
-router.post("/artworks/:artworkId/reports", authenticate, async (req, res, next) => {
+router.post("/artworks/:artworkId/reports", authorizeUser, async (req, res, next) => {
   const artworkId = req.params.artworkId;
   const reportingUser = req.user._id;
   const reportText = req.body.message;
@@ -198,7 +198,7 @@ router.post("/artworks/:artworkId/reports", authenticate, async (req, res, next)
 /**
  * Allows a user to like a piece of artwork
  */
-router.post("/artworks/:artworkId/like", authenticate, async (req, res, next) => {
+router.post("/artworks/:artworkId/like", authorizeUser, async (req, res, next) => {
   const artworkId = req.params.artworkId;
   const userId = req.user._id;
 
@@ -219,7 +219,7 @@ router.post("/artworks/:artworkId/like", authenticate, async (req, res, next) =>
 /**
  * Allows a user to unlike a piece of artwork
  */
-router.delete("/artworks/:artworkId/unlike", authenticate, async (req, res, next) => {
+router.delete("/artworks/:artworkId/unlike", authorizeUser, async (req, res, next) => {
   const artworkId = req.params.artworkId;
   const userId = req.user._id;
 

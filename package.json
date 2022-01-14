@@ -6,8 +6,8 @@
   "scripts": {
     "frontend:init": "cd frontend && yarn install",
     "backend:init": "cd backend && npm install",
-    "frontend:dev": "cd frontend && yarn start",
-    "backend:dev": "cd backend && npm run dev",
+    "frontend": "cd frontend && yarn start",
+    "backend": "cd backend && npm run dev",
     "frontend:deploy": "cd frontend && npm run build && firebase deploy",
     "backend:deploy": "git push heroku main",
     "init": "concurrently --kill-others \"npm run frontend:init\" \"npm run backend:init\"",

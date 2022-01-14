@@ -110,6 +110,7 @@ const UsernamePage = () => {
               onChange={e => setUsername(e.target.value)}
               className="px-2 py-1 mb-8"
               type="text"
+              required
             />
 
             <div className="flex items-center gap-3 mb-4 text-sm">

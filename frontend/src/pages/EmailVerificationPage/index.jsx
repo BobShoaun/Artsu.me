@@ -1,6 +1,5 @@
-import { useRef, useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { Check, X } from "react-feather";
 import { AppContext } from "../../App";
 import { useAuthentication } from "../../hooks/useAuthentication";
 
@@ -8,15 +7,14 @@ const EmailVerificationPage = () => {
   const history = useHistory();
 
   const [verificationStatus, setVerificationStatus] = useState("");
-  const { user, setUser, api } = useContext(AppContext);
+  const { user, api } = useContext(AppContext);
   const { isLoggedIn } = useAuthentication();
 
   const sendEmail = async () => {
-    console.log("resend");
     const { data } = await api.protected.post(`/users/${user._id}/email/verification/send`, {
       redirectUrl: `${window.location.origin}/email-verification/success`,
     });
-    console.log(data);
+    console.log("Email sent", data);
   };
 
   const contactSupport = () => {};
@@ -35,10 +33,10 @@ const EmailVerificationPage = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (!isLoggedIn) return;
-  //   sendEmail();
-  // }, [isLoggedIn]);
+  useEffect(() => {
+    if (!isLoggedIn) return;
+    sendEmail();
+  }, [isLoggedIn]);
 
   if (!isLoggedIn) return null;
 

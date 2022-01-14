@@ -1,6 +1,6 @@
 import express from "express";
 import jwt from "jsonwebtoken";
-import { accessTokenSecret, refreshTokenSecret } from "../../config.js";
+import { refreshTokenSecret } from "../../config.js";
 import { checkDatabaseConn, mongoHandler } from "../../middlewares/mongo.middleware.js";
 import { authorizeUser, issueAccessToken } from "../../middlewares/authentication.middleware.js";
 import { Token } from "../../models/index.js";
@@ -37,19 +37,6 @@ router.get(
 
       req.user = token.user;
       next();
-
-      // const accessToken = jwt.sign(
-      //   {
-      //     _id: token.user._id,
-      //     email: token.user.email,
-      //     isAdmin: token.user.isAdmin,
-      //     isBanned: token.user.isBanned,
-      //   },
-      //   accessTokenSecret,
-      //   { expiresIn: "10s" } // expires in 2 weeks
-      // );
-
-      // res.send({ accessToken, user: token.user });
     } catch {
       res.sendStatus(403); // forbidden, jwt failed to verify
     }

@@ -72,7 +72,13 @@ const RegisterPage = () => {
                   >
                     Given name:
                   </label>
-                  <input id="given-name" className="px-2 py-1" type="text" name="given-name" />
+                  <input
+                    id="given-name"
+                    className="px-2 py-1"
+                    type="text"
+                    name="given-name"
+                    required
+                  />
                 </div>
                 <div className="flex-grow-0">
                   <label
@@ -81,19 +87,31 @@ const RegisterPage = () => {
                   >
                     Family name:
                   </label>
-                  <input id="family-name" className="px-2 py-1" type="text" name="family-name" />
+                  <input
+                    id="family-name"
+                    className="px-2 py-1"
+                    type="text"
+                    name="family-name"
+                    required
+                  />
                 </div>
               </div>
 
               <label htmlFor="email" className="dark:text-gray-200 text-sm text-right mb-3">
                 Email:
               </label>
-              <input id="email" name="email" className="px-2 py-1 mb-8" type="email" />
+              <input id="email" name="email" className="px-2 py-1 mb-8" type="email" required />
 
               <label htmlFor="password" className="dark:text-gray-200 text-sm text-right mb-3">
                 Password:
               </label>
-              <input id="password" name="password" className="px-2 py-1 mb-8" type="password" />
+              <input
+                id="password"
+                name="password"
+                className="px-2 py-1 mb-8"
+                type="password"
+                required
+              />
 
               <label
                 htmlFor="confirm-password"
@@ -106,6 +124,7 @@ const RegisterPage = () => {
                 name="confirm-password"
                 className="px-2 py-1 mb-4"
                 type="password"
+                required
               />
 
               <div className="mb-4 text-center">

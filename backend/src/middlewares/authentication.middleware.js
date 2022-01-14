@@ -30,6 +30,7 @@ export const unauthorizeBanned = async (req, res, next) => {
   next();
 };
 
+// TODO move to user.middleware.js
 export const usernameHandler = async (err, req, res, next) => {
   // check if duplicate key error
   if (err.code === 11000) return res.status(409).type("plain").send("Conflict: Username Taken");
@@ -51,7 +52,7 @@ export const issueAccessToken = async (req, res, next) => {
   const accessToken = jwt.sign(
     payload,
     accessTokenSecret,
-    { expiresIn: "10s" } // expires in 15 minutes
+    { expiresIn: "15m" } // expires in 15 minutes
   );
 
   req.accessToken = accessToken;

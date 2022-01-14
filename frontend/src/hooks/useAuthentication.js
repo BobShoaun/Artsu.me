@@ -12,7 +12,7 @@ export const useAuthentication = () => {
     history.push(`/login?${params}`);
   };
 
-  const isLoggedIn = accessToken && user;
+  const isLoggedIn = !!(accessToken && user);
 
   const register = async (email, givenName, familyName, password) => {
     try {
@@ -35,7 +35,17 @@ export const useAuthentication = () => {
       : { username: usernameOrEmail, password };
     try {
       const { data } = await api.public.post(`/auth/login`, body, { withCredentials: true });
-      doneLogin(data.accessToken, data.user);
+
+      if (!data.user.isVerified)
+        // email not verified, verify first
+        history.push("/email-verification");
+      else if (!data.user.username)
+        // no username, have user set it
+        history.push("/username");
+      else gotoDestination();
+
+      setAccessToken(data.accessToken);
+      setUser(data.user);
       return true;
     } catch {
       return false;
@@ -45,7 +55,12 @@ export const useAuthentication = () => {
   const loginGoogle = async token => {
     try {
       const { data } = await api.public.post(`/auth/google`, { token }, { withCredentials: true });
-      doneLogin(data.accessToken, data.user);
+      if (!data.user.username)
+        // no username, have user set it
+        history.push("/username");
+      else gotoDestination();
+      setAccessToken(data.accessToken);
+      setUser(data.user);
       return true;
     } catch {
       return false;
@@ -59,42 +74,23 @@ export const useAuthentication = () => {
         { token },
         { withCredentials: true }
       );
-      doneLogin(data.accessToken, data.user);
+
+      if (!data.user.username)
+        // no username, have user set it
+        history.push("/username");
+      else gotoDestination();
+      setAccessToken(data.accessToken);
+      setUser(data.user);
       return true;
     } catch {
       return false;
     }
   };
 
-  const doneLogin = (accessToken, user) => {
-    setAccessToken(accessToken);
-    setUser(user);
-
-    if (!user.isVerified) {
-      // email not verified, verify first
-      history.push("/email-verification");
-      return;
-    }
-    if (!user.username) {
-      // no username, have user set it
-      history.push("/username");
-      return;
-    }
+  const gotoDestination = () => {
     const params = new URLSearchParams(history.location.search);
     history.push(params.get("destination") ?? "/");
   };
-
-  // const refreshAccessToken = async () => {
-  //   try {
-  //     const { data } = await api.public.get("/auth/refresh", { withCredentials: true });
-  //     setUser(data.user);
-  //     setAccessToken(data.accessToken);
-  //     return data.accessToken;
-  //   } catch (e) {
-  //     // unauthenticated
-  //   }
-  //   return null;
-  // };
 
   const logout = async () => {
     try {
@@ -114,8 +110,8 @@ export const useAuthentication = () => {
     login,
     loginGoogle,
     loginFacebook,
-    // refreshAccessToken,
     logout,
     redirectToLogin,
+    gotoDestination,
   };
 };

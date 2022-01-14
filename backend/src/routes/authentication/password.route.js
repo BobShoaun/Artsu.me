@@ -121,7 +121,7 @@ router.post("/users/:userId/email/verification/send", authorizeUser, async (req,
     const verificationUrl = `${req.protocol}://${req.hostname}:${port}/users/${userId}/email/verification/${emailToken}?${params}`;
     await transporter.sendMail({
       from: '"Artsu.me" <artsu.me18@gmail.com>',
-      to: "hbmlhapjzjfbnamyxc@nthrw.com",
+      to: req.user.email,
       subject: "Artsu.me - Email Verification",
       html: /*html*/ `
       <p>
@@ -134,6 +134,8 @@ router.post("/users/:userId/email/verification/send", authorizeUser, async (req,
       </p>
     `,
     });
+
+    console.log("sending email to", req.user.email);
 
     res.sendStatus(200);
   } catch (e) {
@@ -151,12 +153,18 @@ router.get("/users/:userId/email/verification/:token", async (req, res, next) =>
   try {
     const payload = jwt.verify(token, emailTokenSecret);
     if (payload._id !== userId) return res.sendStatus(400); // userId does not match that in jwt
-
-    console.log("EMAIL VERIFIED!", redirectUrl);
-
-    res.redirect(redirectUrl);
   } catch {
-    res.sendStatus(401); // unauthorized, jwt invalid or expired
+    res.status(401).send("Email verification failed"); // unauthorized, jwt invalid or expired
+  }
+  try {
+    const user = await User.findById(userId);
+    if (user.isVerified) return res.status(200).send("User already verified");
+
+    user.isVerified = true; // confirm user verification
+    await user.save();
+    res.redirect(redirectUrl);
+  } catch (e) {
+    next(e);
   }
 });
 

@@ -50,7 +50,7 @@ const App = () => {
       const newAccessToken = await refreshAccessToken();
       if (!newAccessToken) return Promise.reject(error);
 
-      console.log("refreshed access token", newAccessToken);
+      console.log("refreshed access token");
 
       originalRequest._retry = true;
       originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;

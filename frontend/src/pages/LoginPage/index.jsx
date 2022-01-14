@@ -61,14 +61,26 @@ const LoginPage = () => {
               {usernameError && (
                 <em className="text-rose-400 text-sm float-right">*{usernameError}</em>
               )}
-              <input id="username-email" ref={usernameRef} className="px-2 py-1 mb-8" type="text" />
+              <input
+                id="username-email"
+                ref={usernameRef}
+                className="px-2 py-1 mb-8"
+                type="text"
+                required
+              />
               <label htmlFor="password" className="dark:text-gray-200 text-sm text-right mb-3">
                 Password:
               </label>
               {passwordError && (
                 <em className="text-rose-400 text-sm float-right">*{passwordError}</em>
               )}
-              <input id="password" ref={passwordRef} className="px-2 py-1 mb-4" type="password" />
+              <input
+                id="password"
+                ref={passwordRef}
+                className="px-2 py-1 mb-4"
+                type="password"
+                required
+              />
 
               <div className="flex items-center gap-2 mb-8">
                 <input

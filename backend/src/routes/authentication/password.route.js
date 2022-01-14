@@ -60,7 +60,7 @@ router.post(
       return res.status(400).send("Bad request: invalid email format");
 
     try {
-      const user = await User.findOne({ email, username });
+      const user = await User.findOne(email ? { email } : { username });
       if (!user) return res.sendStatus(404);
 
       if (!user.password) return res.sendStatus(401); // no password, auth from other provider.

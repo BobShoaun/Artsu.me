@@ -51,7 +51,7 @@ const LoginPage = () => {
             <p className="">The best art community awaits you</p>
           </header>
           <div className="bg-gray-800 bg-opacity-90 px-16 py-14 shadow-2xl rounded-lg backdrop-blur-md">
-            <form className="">
+            <form onSubmit={login}>
               <label
                 htmlFor="username-email"
                 className="dark:text-gray-200 text-sm text-right mb-2"
@@ -102,7 +102,7 @@ const LoginPage = () => {
               </div>
 
               <button
-                onClick={login}
+                type="submit"
                 className="text-white tracking-wider py-2.5 mb-10 text-sm rounded-sm shadow-lg font-semibold bg-gradient-to-r from-rose-400 to-teal-500 hover:to-teal-400 hover:from-rose-400 transition block w-full"
               >
                 LOGIN

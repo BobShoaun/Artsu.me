@@ -7,7 +7,7 @@ import "./index.css";
 
 import axios from "axios";
 import { defaultAvatarUrl } from "../config";
-import { User, LogOut, Layout, Image, Users } from "react-feather";
+import { User, LogOut, Layout, Image, Users, Gift } from "react-feather";
 import { AppContext } from "../App";
 import { useAuthentication } from "../hooks/useAuthentication";
 
@@ -117,6 +117,14 @@ const Navbar = ({ onSearch, searchInput }) => {
                       to="/artworks"
                     >
                       <Image size={15} /> Artworks
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="py-2 px-5 flex items-center gap-2 hover:bg-gray-800 transition"
+                      to="/collection"
+                    >
+                      <Gift size={15} /> NFT Collection
                     </Link>
                   </li>
                   <li>

@@ -18,6 +18,7 @@ import SearchPage from "./pages/SearchPage";
 import AdminPanel from "./pages/AdminPanel";
 import AdminProfileViewer from "./pages/AdminProfileViewer";
 import AdminArtworkViewer from "./pages/AdminArtworkViewer";
+import CollectionPage from "./pages/CollectionPage";
 import ArtworkListPage from "./pages/ArtworkListPage";
 import NotFound from "./components/NotFound";
 import UsernamePage from "./pages/UsernamePage";
@@ -93,6 +94,7 @@ const App = () => {
                 component={EmailVericationSuccessPage}
               />
               <Route exact path="/profile" component={ProfilePage} />
+              <Route exact path="/collection" component={CollectionPage} />
               <Route exact path="/artworks" component={ArtworkListPage} />
               <Route exact path="/search" component={SearchPage} />
               <Route exact path="/admin/artwork/:id" component={AdminArtworkViewer} />

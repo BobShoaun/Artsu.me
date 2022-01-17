@@ -10,7 +10,7 @@
     "backend": "cd backend && npm run dev",
     "frontend:deploy": "cd frontend && npm run build && firebase deploy",
     "backend:deploy": "git push heroku main",
-    "init": "concurrently --kill-others \"npm run frontend:init\" \"npm run backend:init\"",
+    "init": "npm install && npm run frontend:init && npm run backend:init",
     "dev": "concurrently --kill-others \"npm run frontend:dev\" \"npm run backend:dev\""
   },
   "repository": {

@@ -9,7 +9,7 @@
     "frontend": "cd frontend && yarn start",
     "backend": "cd backend && npm run dev",
     "frontend:deploy": "cd frontend && npm run build && firebase deploy",
-    "backend:deploy": "git push heroku main",
+    "backend:deploy": "cd backend && npm run deploy:gcloud",
     "init": "npm install && npm run frontend:init && npm run backend:init",
     "dev": "concurrently --kill-others \"npm run frontend:dev\" \"npm run backend:dev\""
   },

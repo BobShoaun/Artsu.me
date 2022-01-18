@@ -7,6 +7,8 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
+    "deploy:heroku": "git push heroku main",
+    "deploy:gcloud": "docker build -t gcr.io/artsu-me/backend . && docker push gcr.io/artsu-me/backend",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest",
     "test:auth": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest -- authentication.test.js",
     "test:user": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest -- user.test.js",

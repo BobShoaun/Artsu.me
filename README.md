@@ -18,8 +18,9 @@ Website:
 
 API:
 
-- https://artsu-me.herokuapp.com/ (with SSL certificate)
-- http://api.artsu.me/ (without SSL certificate)
+- https://api.artsu.me/ (gcloud)
+- https://backend-s5l76qp6aq-ue.a.run.app/ (gcloud)
+- https://artsu-me.herokuapp.com/ (heroku)
 
 # Team Members (team18):
 

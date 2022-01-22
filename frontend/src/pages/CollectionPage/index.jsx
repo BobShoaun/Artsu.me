@@ -59,19 +59,23 @@ const CollectionPage = () => {
       <Navbar />
 
 
-      <section className="container mx-auto py-10 mb-10">
-        <h1 className="dark:text-gray-200 text-xl font-semibold mb-14">My Artworks</h1>
-        <div className="flex flex-wrap items-center justify-evely gap-4 mb-12">
+      <section className="larger-container mx-auto py-10 mb-10">
+        <h1 className="dark:text-gray-200 text-xl font-semibold mb-10">Frames</h1>
+        <div className="flex flex-wrap items-center gap-8 mb-14">
           {artworks.map(artwork => (
             <div
               key={artwork._id}
-              className={`transition-all bg-gray-800 rounded-lg p-5 shadow-lg`}
+              className={`transition-all bg-gray-800 rounded-lg w-72 shadow-lg cursor-pointer hover:shadow-lg hover:scale-105 transition-transform transform`}
             >
-              <img
-                className="mb-5 shadow-xl mx-auto h-44"
-                src={artwork.imageUrl} // to keep old one working
-                alt={artwork.name}
-              />
+              <div
+                className="h-72 mb-5"
+              >
+                <img
+                  className="shadow-xl object-scale-down w-full h-full rounded-t-lg"
+                  src={artwork.imageUrl} // to keep old one working
+                  alt={artwork.name}
+                />
+              </div>
               <div className="text-center">
                 <h2 className="dark:text-white text-lg font-semibold mb-1">{artwork.name}</h2>
                 <p className="dark:text-gray-300 text-sm mb-3">{artwork.summary}</p>
@@ -98,14 +102,6 @@ const CollectionPage = () => {
               </div>
             </div>
           ))}
-        </div>
-        <div className="text-center">
-          <button
-            onClick={() => setShowArtworkModal(true)}
-            className="text-white tracking-wider py-2.5 px-10 mb-5 text-sm rounded-sm shadow-lg font-semibold bg-gradient-to-r from-rose-400 to-teal-500 hover:to-teal-400 hover:from-rose-400 transition"
-          >
-            Upload New Artwork
-          </button>
         </div>
       </section>
       <Footer />

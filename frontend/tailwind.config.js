@@ -18,7 +18,30 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addComponents }) {
+      addComponents({
+        '.larger-container': {
+          maxWidth: '100%',
+          '@screen sm': {
+            maxWidth: '640px',
+          },
+          '@screen md': {
+            maxWidth: '768px',
+          },
+          '@screen lg': {
+            maxWidth: '1224px',
+          },
+          '@screen xl': {
+            maxWidth: '1568px',
+          },
+          '@screen 2xl': {
+            maxWidth: '1568px',
+          }
+        }
+      })
+    }
+  ],
   corePlugins: {
     container: false,
   },

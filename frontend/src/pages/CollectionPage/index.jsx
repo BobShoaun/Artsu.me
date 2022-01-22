@@ -60,7 +60,28 @@ const CollectionPage = () => {
 
 
       <section className="larger-container mx-auto py-10 mb-10">
+
+        <div
+          className="flex justify-center mt-7 mb-10"
+        >
+          <button
+            className={`${
+              "bg-gray-600 shadow-inner"
+          } px-5 py-2 rounded-l-lg hover:bg-gray-600`}
+          >
+            Artsume
+          </button>
+          <button
+            className={`${
+              "bg-gray-800"
+          } px-6 py-2 rounded-r-lg hover:bg-gray-600`}
+          >
+            Others
+          </button>
+        </div>
+
         <h1 className="dark:text-gray-200 text-xl font-semibold mb-10">Frames</h1>
+
         <div className="flex flex-wrap items-center gap-8 mb-14">
           {artworks.map(artwork => (
             <div

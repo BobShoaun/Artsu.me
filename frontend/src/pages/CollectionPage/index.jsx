@@ -8,6 +8,8 @@ import Loading from "../../components/Loading";
 import { AppContext } from "../../App";
 import axios from "axios";
 
+import myData from './data'
+
 import Unauthenticated from "../../components/Unauthenticated";
 import { Edit, Eye, Trash2 } from "react-feather";
 
@@ -83,19 +85,30 @@ const CollectionPage = () => {
         <h1 className="dark:text-gray-200 text-xl font-semibold mb-10">Frames</h1>
 
         <div className="flex flex-wrap items-center gap-8 mb-14">
-          {artworks.map(artwork => (
+          {myData.map(artwork => (
             <div
-              key={artwork._id}
+              key={artwork.id}
               className={`transition-all bg-gray-800 rounded-lg w-72 shadow-lg cursor-pointer hover:shadow-lg hover:scale-105 transition-transform transform`}
             >
               <div
                 className="h-72 mb-5"
               >
-                <img
-                  className="shadow-xl object-scale-down w-full h-full rounded-t-lg"
-                  src={artwork.imageUrl} // to keep old one working
-                  alt={artwork.name}
-                />
+                {artwork.type === "video/mp4" &&
+                  <video
+                    className="shadow-xl object-scale-down w-full h-full rounded-t-lg"
+                    src={artwork.external_link} // to keep old one working
+                    alt={artwork.name}
+                  >
+                    <source src="movie.mp4" type="video/mp4"/>
+                  </video>
+                }
+                {artwork.type === "image" &&
+                  <img
+                    className="shadow-xl object-scale-down w-full h-full rounded-t-lg"
+                    src={artwork.external_link} // to keep old one working
+                    alt={artwork.name}
+                  />
+                }
               </div>
               <div className="text-center">
                 <h2 className="dark:text-white text-lg font-semibold mb-1">{artwork.name}</h2>

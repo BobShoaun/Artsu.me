@@ -8,7 +8,8 @@ import Loading from "../../components/Loading";
 import { AppContext } from "../../App";
 import axios from "axios";
 
-import myData from './data'
+import myData from "./data";
+import NFThumb from "../../components/NFThumb";
 
 import Unauthenticated from "../../components/Unauthenticated";
 import { Edit, Eye, Trash2 } from "react-feather";
@@ -90,49 +91,12 @@ const CollectionPage = () => {
               key={artwork.id}
               className={`transition-all bg-gray-800 rounded-lg w-72 shadow-lg cursor-pointer hover:shadow-lg hover:scale-105 transition-transform transform`}
             >
-              <div
-                className="h-72 mb-5"
-              >
-                {artwork.type === "video/mp4" &&
-                  <video
-                    className="shadow-xl object-scale-down w-full h-full rounded-t-lg"
-                    src={artwork.external_link} // to keep old one working
-                    alt={artwork.name}
-                  >
-                    <source src="movie.mp4" type="video/mp4"/>
-                  </video>
-                }
-                {artwork.type === "image" &&
-                  <img
-                    className="shadow-xl object-scale-down w-full h-full rounded-t-lg"
-                    src={artwork.external_link} // to keep old one working
-                    alt={artwork.name}
-                  />
-                }
+              <div className="h-72 mb-4">
+                  <NFThumb artwork={artwork}/>
               </div>
               <div className="text-center">
                 <h2 className="dark:text-white text-lg font-semibold mb-1">{artwork.name}</h2>
-                <p className="dark:text-gray-300 text-sm mb-3">{artwork.summary}</p>
-              </div>
-              <div className="flex items-center gap-2 justify-center">
-                <button
-                  onClick={() => deleteArtwork(artwork)}
-                  className="flex items-center text-sm font-medium shadow-md bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded-sm text-gray-100 gap-2"
-                >
-                  <Trash2 size={15} /> Delete
-                </button>
-                <button
-                  onClick={() => setEditingArtwork(artwork)}
-                  className="flex items-center text-sm font-medium shadow-md bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded-sm text-gray-100 gap-2"
-                >
-                  <Edit size={15} /> Edit
-                </button>
-                <Link
-                  to={`/artwork/${artwork._id}`}
-                  className="flex items-center text-sm font-medium bg-gray-700 shadow-md hover:bg-gray-600 px-3 py-1 rounded-sm text-gray-100 gap-2"
-                >
-                  <Eye size={15} /> View
-                </Link>
+                <p className="dark:text-gray-300 text-sm mb-4">{artwork.floor}</p>
               </div>
             </div>
           ))}

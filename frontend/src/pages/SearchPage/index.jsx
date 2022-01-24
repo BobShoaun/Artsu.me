@@ -130,7 +130,7 @@ const SearchPage = () => {
               }}
               className={`${
                 type.current === "artwork" ? "bg-gray-600 shadow-inner" : "bg-gray-800"
-              } px-3 py-1 mr-px rounded-l-sm hover:bg-gray-600`}
+              } px-3 py-1 mr-px rounded-l-sm hover:bg-gray-700`}
             >
               Artworks
             </button>
@@ -141,7 +141,7 @@ const SearchPage = () => {
               }}
               className={`${
                 type.current === "user" ? "bg-gray-600" : "bg-gray-800"
-              } px-3 py-1 rounded-r-sm hover:bg-gray-600`}
+              } px-3 py-1 rounded-r-sm hover:bg-gray-700`}
             >
               Artists
             </button>

@@ -8,7 +8,8 @@ import Loading from "../../components/Loading";
 import { AppContext } from "../../App";
 import axios from "axios";
 
-import myData from "./data";
+import othersData from "./othersData";
+import artsumeData from "./artsumeData";
 import NFThumb from "../../components/NFThumb";
 
 import Unauthenticated from "../../components/Unauthenticated";
@@ -16,42 +17,21 @@ import { Edit, Eye, Trash2 } from "react-feather";
 
 const CollectionPage = () => {
   const { redirectToLogin } = useAuthentication();
-  const [artworks, setArtworks] = useState([]);
-  const [showArtworkModal, setShowArtworkModal] = useState(false);
+  const [isArtsume, setIsArtsume] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const [editingArtwork, setEditingArtwork] = useState(null);
   const { accessToken, user } = useContext(AppContext);
 
-  const getArtworks = useCallback(async () => {
-    try {
-      const { data } = await axios.get(`/users/${user._id}/artworks`);
-      setArtworks(data);
-      setLoading(false);
-    } catch (e) {
-      console.log(e);
-    }
-  }, [user]);
 
   useEffect(() => {
     if (!accessToken) {
       redirectToLogin();
       return;
     }
-    getArtworks();
-  }, [accessToken, redirectToLogin, getArtworks]);
+    setLoading(false);
+  }, [accessToken, redirectToLogin]);
 
-  const deleteArtwork = async artwork => {
-    if (!window.confirm("Are you sure u want to delete " + artwork.name + "?")) return;
-    try {
-      await axios.delete(`/users/${user._id}/artworks/${artwork._id}`, {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-      getArtworks();
-    } catch (e) {
-      console.log(e);
-    }
-  };
+
 
   if (!accessToken) return <Unauthenticated />;
 
@@ -64,46 +44,68 @@ const CollectionPage = () => {
 
       <section className="larger-container mx-auto py-10 mb-10">
 
+        {/* Artsume/Others buttons */}
+
         <div
           className="flex justify-center mt-7 mb-10"
         >
           <button
+            onClick={() => {setIsArtsume(true)}}
             className={`${
-              "bg-gray-600 shadow-inner"
-          } px-5 py-2 rounded-l-lg hover:bg-gray-600`}
+              isArtsume === true ? "bg-gray-600" : "bg-gray-800"
+            } px-6 py-2 rounded-l-lg hover:bg-gray-700`}
           >
             Artsume
           </button>
           <button
+            onClick={() => {setIsArtsume(false)}}
             className={`${
-              "bg-gray-800"
-          } px-6 py-2 rounded-r-lg hover:bg-gray-600`}
+              isArtsume === false ? "bg-gray-600" : "bg-gray-800"
+            } px-6 py-2 rounded-r-lg hover:bg-gray-700`}
           >
             Others
           </button>
         </div>
 
-        <h1 className="dark:text-gray-200 text-xl font-semibold mb-10">Frames</h1>
+        {isArtsume ?
 
-        <div className="flex flex-wrap items-center gap-8 mb-14">
-          {myData.map(artwork => (
-            <div
-              key={artwork.id}
-              className={`transition-all bg-gray-800 rounded-lg w-72 shadow-lg cursor-pointer hover:shadow-lg hover:scale-105 transition-transform transform`}
-            >
-              <div className="h-72 mb-4">
-                  <NFThumb artwork={artwork}/>
-              </div>
-              <div className="text-center">
-                <h2 className="float-left ml-4 dark:text-white text-lg font-semibold mb-1">{artwork.name}</h2>
-                <p className="float-right mr-4 flex dark:text-gray-300 mb-4">
-                  <img src="/icons/ethereum logo.svg" className="h-5 dark:brightness-200" alt="eth logo" />
-                  <span className="ml-2 text-md">{artwork.floor}</span>
-                </p>
-              </div>
+          // Artsume NFTs
+          
+          <div>
+            <h1 className="dark:text-gray-200 text-xl font-semibold mb-10">Frames</h1>
+
+            <div className="flex flex-wrap items-center gap-8 mb-14">
+              {artsumeData.filter(i => i.category === "frame").map(artwork => (
+                <NFThumb artwork={artwork}/>
+              ))}
             </div>
-          ))}
-        </div>
+
+            <h1 className="dark:text-gray-200 text-xl font-semibold mb-10">Walls</h1>
+
+            <div className="flex flex-wrap items-center gap-8 mb-14">
+              {artsumeData.filter(i => i.category === "wall").map(artwork => (
+                <NFThumb artwork={artwork}/>
+              ))}
+            </div>
+
+          </div>
+
+        :
+
+          // Other NFTs
+
+          <div>
+            <h1 className="dark:text-gray-200 text-xl font-semibold mb-10">Ethereum</h1>
+
+            <div className="flex flex-wrap items-center gap-8 mb-14">
+              {othersData.map(artwork => (
+                <NFThumb artwork={artwork}/>
+              ))}
+            </div>
+
+          </div>
+
+        }
       </section>
       <Footer />
     </main>

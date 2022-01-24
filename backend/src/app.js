@@ -25,7 +25,7 @@ app.use(artworkRoutes);
 app.use(messageRoutes);
 app.use(imageRoutes);
 
-app.get("/", (_, res) => res.send("Hello from Artsu.me"));
+app.get("/", (_, res) => res.send("Hello from the Artsu.me API"));
 app.all("*", (_, res) => res.sendStatus(404));
 
 export default app;

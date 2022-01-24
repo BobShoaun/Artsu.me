@@ -11,15 +11,17 @@
 
 Showcase your projects and experiences as an artist, share your amazing artworks, connect with the best art community.
 
-Website:
+Client: (firebase)
 
 - https://artsu.me/
 - https://artsume-2260e.web.app/
 
-API:
+API: (gcloud)
 
-- https://artsu-me.herokuapp.com/ (with SSL certificate)
-- http://api.artsu.me/ (without SSL certificate)
+- https://api.artsu.me/
+- https://backend-s5l76qp6aq-ue.a.run.app/
+
+- https://artsu-me.herokuapp.com/ (heroku - outdated)
 
 # Team Members (team18):
 

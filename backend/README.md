@@ -11,3 +11,21 @@ EMAIL_TOKEN_SECRET
 GOOGLE_CLIENT_ID
 GMAIL_USERNAME
 GMAIL_PASSWORD
+
+docker gcloud deploy stuff
+
+## using gloud api, does not work cuz it doesnt include .env variables for some reason
+
+gcloud builds submit --tag gcr.io/artsu-me/artsume-backend --project artsu-me
+gcloud run deploy --image gcr.io/artsu-me/artsume-backend --project artsu-me --platform managed
+
+## using docker and push to gcr.io container registry, have to tag docker image with the registry url
+
+docker build -t gcr.io/artsu-me/backend .
+docker push gcr.io/artsu-me/backend
+
+# Deploy steps
+
+npm run deploy:gcloud
+
+then go to gcloud and edit service to use new docker image version.

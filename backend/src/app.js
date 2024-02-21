@@ -18,6 +18,7 @@ app.use(cookieParser());
 // app.use(cors({ credentials: true, origin: "http://localhost:3000" })); // only for development
 app.use(
   cors({
+    credentials: true,
     origin: [
       "http://localhost:3000",
       "https://artsume-2260e.web.app",

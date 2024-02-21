@@ -51,14 +51,14 @@ const Navbar = ({ onSearch, searchInput }) => {
   }, [getMessages, accessToken, user]);
 
   return (
-    <nav className=" bg-gray-800 bg-opacity-80 z-20 py-5 shadow-lg backdrop-filter backdrop-blur-lg fixed top-0 left-0 right-0">
-      <ul className="flex items-center gap-5 container mx-auto">
+    <nav className=" bg-gray-800 bg-opacity-80 z-20 shadow-lg backdrop-filter backdrop-blur-lg fixed top-0 left-0 right-0 h-16 flex">
+      <ul className="flex items-center gap-5 container w-full m-auto">
         <li>
           <Link to="/" className="dark:text-white text-2xl font-semibold">
             artsu.me
           </Link>
         </li>
-        <li className="ml-auto relative searchbox">
+        <li className="ml-auto relative searchbox w-full max-w-xl">
           <form
             action=""
             onSubmit={e => {
@@ -66,7 +66,7 @@ const Navbar = ({ onSearch, searchInput }) => {
               onSearch();
             }}
           >
-            <input ref={searchInput} className="w-96" type="text" placeholder="Search" />
+            <input ref={searchInput} type="text" placeholder="Search" />
           </form>
 
           <Search

@@ -48,7 +48,7 @@ const LoginPage = () => {
             <h1 to="/" className="text-5xl mb-1 font-extrabold">
               Welcome back!
             </h1>
-            <p className="">The best art community awaits you</p>
+            <p className="font-medium">The best art community awaits you</p>
           </header>
           <div className="bg-gray-800 bg-opacity-90 px-16 py-14 shadow-2xl rounded-lg backdrop-blur-md">
             <form onSubmit={login}>
@@ -124,7 +124,7 @@ const LoginPage = () => {
             <br />
             <span className="opacity-100 text-[9rem] text-white blurry-text">Artsu.me</span>
             <br />
-            <span className="opacity-80 text-[8rem] blurry-text">today.</span>
+            <span className="opacity-80 text-[8rem] blurry-text">today</span>
           </h1>
         </section>
       </div>

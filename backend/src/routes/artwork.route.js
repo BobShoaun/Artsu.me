@@ -101,13 +101,14 @@ router.get("/artworks", async (req, res, next) => {
   const offset = parseInt(req.query.offset);
 
   try {
-    const artworks = await Artwork.aggregate([
+    const mongoQuery = Artwork.aggregate([
       { $match: query ? { $text: { $search: query } } : { isBanned: false } },
       { $addFields: { length: { $size: "$likes" } } },
       { $sort: { length: -1 } },
-    ])
-      .skip(offset > 0 ? offset : 0)
-      .limit(limit > 0 ? limit : Number.POSITIVE_INFINITY);
+    ]).skip(offset > 0 ? offset : 0);
+    if (limit > 0) mongoQuery.limit(limit);
+
+    const artworks = await mongoQuery;
 
     res.send(artworks);
   } catch (e) {

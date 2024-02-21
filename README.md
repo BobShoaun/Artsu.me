@@ -13,15 +13,14 @@ Showcase your projects and experiences as an artist, share your amazing artworks
 
 Client: (firebase)
 
-- https://artsu.me/
-- https://artsume-2260e.web.app/
+- https://artsu.me
+- https://artsume-2260e.web.app
+- https://artsume-2260e.firebaseapp.com
 
-API: (gcloud)
+API: (render)
 
-- https://api.artsu.me/
-- https://backend-s5l76qp6aq-ue.a.run.app/
-
-- https://artsu-me.herokuapp.com/ (heroku - outdated)
+- https://api.artsu.me
+- https://artsu-me.onrender.com
 
 # Team Members (team18):
 

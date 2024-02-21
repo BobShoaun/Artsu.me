@@ -36,7 +36,7 @@ export const useAuthentication = () => {
     try {
       const { data } = await api.public.post(`/auth/login`, body, { withCredentials: true });
 
-      if (!data.user.isVerified)
+      if (!data.user.isVerified && data.user.provider)
         // email not verified, verify first
         history.push("/email-verification");
       else if (!data.user.username)

@@ -45,7 +45,7 @@ const MainPage = () => {
 
   const getArtworks = useCallback(async () => {
     try {
-      const { data } = await axios.get(`/artworks?limit=14`);
+      const { data } = await axios.get(`/artworks?limit=25`);
       setArtworks(data.filter(artwork => !artwork.isBanned));
     } catch (e) {
       console.log(e);
@@ -64,7 +64,7 @@ const MainPage = () => {
   if (users.length <= 0) return <Loading />;
 
   return (
-    <main className="bg-gray-900 pt-20">
+    <main className="bg-gray-900 pt-16">
       <Navbar
         onSearch={() => {
           const params = new URLSearchParams();
@@ -74,10 +74,10 @@ const MainPage = () => {
         searchInput={searchInput}
       />
       <div className="relative">
-        <div className="absolute inset-0 container flex">
+        <div className="absolute inset-0 container flex mx-auto">
           <div className="my-auto pl-5 bg-opacity-20 shadow-xl bg-gray-900 backdrop-filter backdrop-blur-sm p-5">
             <h1 className="text-white text-4xl font-bold">Discover</h1>
-            <p className="text-gray-100 text-xl font-medium">
+            <p className="text-gray-100 text-lg font-medium">
               Great Artwork &#38; Talented Artists
             </p>
           </div>
@@ -108,9 +108,9 @@ const MainPage = () => {
         <h2 className="text-gray-200 text-lg font-light py-2">Top Artworks:</h2>
       </div>
 
-      <div className="overflow-hidden py-3">
-        <section className="flex gap-3 justify-center mb-3">
-          {artworks.slice(0, 7).map(artwork => (
+      <div className="overflow-hidden py-3 mb-8">
+        <section className="flex gap-3 justify-center">
+          {artworks.slice(0, 10).map(artwork => (
             <Link className="flex-shrink-0" key={artwork._id} to={`/artwork/${artwork._id}`}>
               <img
                 className="h-52 hover:shadow-lg hover:scale-105 transition-transform transform"
@@ -120,8 +120,19 @@ const MainPage = () => {
             </Link>
           ))}
         </section>
-        <section className="flex gap-3 justify-center mb-8">
-          {artworks.slice(7).map(artwork => (
+        <section className="flex gap-3 mt-3 justify-center">
+          {artworks.slice(9, 17).map(artwork => (
+            <Link className="flex-shrink-0" key={artwork._id} to={`/artwork/${artwork._id}`}>
+              <img
+                className="h-52 hover:shadow-lg hover:scale-105 transition-transform transform"
+                src={artwork.imageUrl}
+                alt={artwork.name}
+              />
+            </Link>
+          ))}
+        </section>
+        <section className="flex gap-3 mt-3 justify-center">
+          {artworks.slice(16, 25).map(artwork => (
             <Link className="flex-shrink-0" key={artwork._id} to={`/artwork/${artwork._id}`}>
               <img
                 className="h-52 hover:shadow-lg hover:scale-105 transition-transform transform"

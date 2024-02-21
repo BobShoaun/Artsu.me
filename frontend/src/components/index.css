@@ -7,23 +7,8 @@
   }
 }
 
-@keyframes appear {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 0.8;
-  }
-}
-
 .fade-up {
   animation: fade-up 0.6s ease;
-  animation-delay: 0.2s;
-  animation-fill-mode: both;
-}
-
-.appear {
-  animation: appear 0.2s ease;
   animation-delay: 0.2s;
   animation-fill-mode: both;
 }
@@ -43,10 +28,6 @@
   100% {
     background-position: 0%;
   }
-}
-
-.artsume-heading {
-  font-size: 13rem !important;
 }
 
 .dropdown-wrapper {

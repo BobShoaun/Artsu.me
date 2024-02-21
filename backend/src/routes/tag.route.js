@@ -1,6 +1,6 @@
 import express from "express";
 import { Tag } from "../models/index.js";
-import { authenticate } from "../middlewares/user.middleware.js";
+import { authorizeUser } from "../middlewares/authentication.middleware.js";
 import { executeJsonPatch } from "../middlewares/general.middleware.js";
 import {
   checkDatabaseConn,
@@ -28,19 +28,21 @@ router.get("/tags", async (req, res, next) => {
 /**
  * Get a tag
  */
- router.get("/tags/:tagId", async (req, res, next) => {
+router.get("/tags/:tagId", async (req, res, next) => {
   const { tagId } = req.params;
   try {
     const tag = await Tag.findById(tagId);
     if (!tag) return res.sendStatus(404);
     res.send(tag);
-  } catch (e) {next(e);}
+  } catch (e) {
+    next(e);
+  }
 });
 
 /**
  * Add a tag
  */
-router.post("/tags", authenticate, async (req, res, next) => {
+router.post("/tags", authorizeUser, async (req, res, next) => {
   if (!req.user.isAdmin) return res.sendStatus(403); // Admin-only route
   const label = req.body.label;
   const color = req.body.color;
@@ -60,7 +62,7 @@ router.post("/tags", authenticate, async (req, res, next) => {
  */
 router.patch(
   "/tags/:tagId",
-  authenticate,
+  authorizeUser,
   async (req, res, next) => {
     if (!req.user.isAdmin) return res.sendStatus(403); // Admin-only route
     const { tagId } = req.params;
@@ -91,7 +93,7 @@ router.patch(
 /**
  * Delete a tag with tagID
  */
-router.delete("/tags/:tagId", authenticate, async (req, res, next) => {
+router.delete("/tags/:tagId", authorizeUser, async (req, res, next) => {
   if (!req.user.isAdmin) return res.sendStatus(403); // Admin-only route
   const { tagId } = req.params;
 

@@ -1,15 +1,17 @@
 {
   "name": "artsu.me",
   "version": "1.0.0",
-  "description": "- Ng Bob Shoaun (1006568992)\r - Jessica Hypatia Boritz (1006163189)\r - Ran Shi (1004793495)\r - Louis Scheffer V (1005879284)",
+  "description": "An art hosting site where artists can upload their work, and make a personalized portfolio to showcase their work in a meaningful way. Dive into an amazing community of talented artists, and share your work through Artsu.me",
   "main": "index.js",
   "scripts": {
-    "frontend": "cd frontend && yarn start",
-    "backend": "cd backend && npm run dev",
     "frontend:init": "cd frontend && yarn install",
     "backend:init": "cd backend && npm install",
+    "frontend": "cd frontend && yarn start",
+    "backend": "cd backend && npm run dev",
     "frontend:deploy": "cd frontend && npm run build && firebase deploy",
-    "backend:deploy": "git push heroku main"
+    "backend:deploy": "cd backend && npm run deploy:gcloud",
+    "init": "npm install && npm run frontend:init && npm run backend:init",
+    "dev": "concurrently --kill-others \"npm run frontend:dev\" \"npm run backend:dev\""
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/csc309-fall-2021/team18/issues"
   },
-  "homepage": "https://github.com/csc309-fall-2021/team18#readme"
+  "homepage": "https://github.com/csc309-fall-2021/team18#readme",
+  "devDependencies": {
+    "concurrently": "^7.0.0"
+  }
 }

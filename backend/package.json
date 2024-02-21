@@ -7,6 +7,8 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
+    "deploy:heroku": "git push heroku main",
+    "deploy:gcloud": "docker build -t gcr.io/artsu-me/backend . && docker push gcr.io/artsu-me/backend",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest",
     "test:auth": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest -- authentication.test.js",
     "test:user": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest -- user.test.js",
@@ -15,14 +17,18 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
     "cloudinary": "^1.27.1",
     "connect-multiparty": "^2.2.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
+    "google-auth-library": "^7.11.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^6.0.13"
+    "mongoose": "^6.0.13",
+    "nodemailer": "^6.7.2"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

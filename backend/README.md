@@ -29,3 +29,10 @@ docker push gcr.io/artsu-me/backend
 npm run deploy:gcloud
 
 then go to gcloud and edit service to use new docker image version.
+
+## Update 2024 Feb
+
+Artsume api is no longer hosted on google cloud but on render.com under the artsu.me18@gmail.com account.
+
+Render provided url: https://artsu-me.onrender.com
+Custome domain url: https://api.artsu.me

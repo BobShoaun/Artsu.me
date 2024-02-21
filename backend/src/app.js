@@ -15,7 +15,17 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors({ credentials: true, origin: "http://localhost:3000" })); // only for development
+// app.use(cors({ credentials: true, origin: "http://localhost:3000" })); // only for development
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://artsume-2260e.web.app",
+      "https://artsume-2260e.firebaseapp.com",
+      "https://artsu.me",
+    ],
+  })
+);
 
 app.use(authenticationRoutes);
 app.use(userRoutes);
